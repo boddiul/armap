@@ -1,0 +1,1699 @@
+{
+  "name": "Тестовое здание",
+  "id": 220,
+  "description": "Карта тестового несуществующего строения",
+  "address": "Покровский б-р, 11, Москва, Россия",
+  "floors": [
+    {
+      "id": 0,
+      "name": "Этаж 1",
+      "rooms": [
+        {
+          "id": 3,
+          "name": "Главный вход",
+          "description": "Помещение с главным входом",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            4.05,
+            7.95,
+            7.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 11,
+              "x": 7.0,
+              "y": 2.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            },
+            {
+              "id": 7,
+              "x": 6.5,
+              "y": 7.95,
+              "z": 0,
+              "direction": 90,
+              "wall_id": -1
+            },
+            {
+              "id": 9,
+              "x": 4.05,
+              "y": 6.0,
+              "z": 0,
+              "direction": 180,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Проход",
+          "description": "",
+          "can_search": false,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            1.05,
+            8.95,
+            3.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 4,
+              "x": 3.5,
+              "y": 8.95,
+              "z": 0,
+              "direction": 90,
+              "wall_id": -1
+            },
+            {
+              "id": 10,
+              "x": 3.95,
+              "y": 4.0,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 0,
+          "name": "Крутая комната",
+          "description": "Какая-то комната",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            1.05,
+            14.95,
+            3.95,
+            9.05
+          ],
+          "qrs": [
+            {
+              "id": 1,
+              "x": 3.95,
+              "y": 11.0,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            },
+            {
+              "id": 2,
+              "x": 1.5,
+              "y": 9.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 1,
+          "name": "Холл на первом этаже",
+          "description": "Холл",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            4.05,
+            14.95,
+            11.95,
+            8.05
+          ],
+          "qrs": [
+            {
+              "id": 0,
+              "x": 4.05,
+              "y": 13.5,
+              "z": 0,
+              "direction": 180,
+              "wall_id": -1
+            },
+            {
+              "id": 3,
+              "x": 11.95,
+              "y": 9.5,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            },
+            {
+              "id": 5,
+              "x": 4.25,
+              "y": 8.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            },
+            {
+              "id": 6,
+              "x": 8.5,
+              "y": 8.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Лестничная площадка",
+          "description": "",
+          "can_search": false,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            8.05,
+            7.95,
+            11.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 8,
+              "x": 11.0,
+              "y": 7.95,
+              "z": 0,
+              "direction": 90,
+              "wall_id": -1
+            }
+          ]
+        }
+      ],
+      "doors": [
+        {
+          "id": 0,
+          "x1": 3.95,
+          "x2": 4.05,
+          "y1": 12.0,
+          "y2": 12.0,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 0,
+          "room2_id": 1
+        },
+        {
+          "id": 1,
+          "x1": 2.5,
+          "x2": 2.5,
+          "y1": 9.05,
+          "y2": 8.95,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 0,
+          "room2_id": 2
+        },
+        {
+          "id": 2,
+          "x1": 4.5,
+          "x2": 4.5,
+          "y1": 8.05,
+          "y2": 7.95,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 1,
+          "room2_id": 3
+        },
+        {
+          "id": 3,
+          "x1": 10.0,
+          "x2": 10.0,
+          "y1": 8.05,
+          "y2": 7.95,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 1,
+          "room2_id": 4
+        },
+        {
+          "id": 4,
+          "x1": 3.95,
+          "x2": 4.05,
+          "y1": 5.0,
+          "y2": 5.0,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 2,
+          "room2_id": 3
+        },
+        {
+          "id": 5,
+          "x1": 5.5,
+          "x2": 5.5,
+          "y1": 1.95,
+          "y2": 2.05,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": -1,
+          "room2_id": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Этаж 2",
+      "rooms": [
+        {
+          "id": 5,
+          "name": "Кабинет",
+          "description": "Главный кабинет",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            1.05,
+            14.95,
+            5.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 13,
+              "x": 5.95,
+              "y": 11.0,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Холл на втором этаже",
+          "description": "Холл",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            6.05,
+            14.95,
+            11.95,
+            8.05
+          ],
+          "qrs": [
+            {
+              "id": 12,
+              "x": 6.05,
+              "y": 13.0,
+              "z": 0,
+              "direction": 180,
+              "wall_id": -1
+            },
+            {
+              "id": 14,
+              "x": 11.95,
+              "y": 10.5,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            },
+            {
+              "id": 15,
+              "x": 8.0,
+              "y": 8.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Лестничная площадка",
+          "description": "",
+          "can_search": false,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            6.05,
+            7.95,
+            11.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 16,
+              "x": 10.0,
+              "y": 7.95,
+              "z": 0,
+              "direction": 90,
+              "wall_id": -1
+            },
+            {
+              "id": 17,
+              "x": 10.0,
+              "y": 2.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            }
+          ]
+        }
+      ],
+      "doors": [
+        {
+          "id": 6,
+          "x1": 5.95,
+          "x2": 6.05,
+          "y1": 12.0,
+          "y2": 12.0,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 5,
+          "room2_id": 6
+        },
+        {
+          "id": 7,
+          "x1": 9.0,
+          "x2": 9.0,
+          "y1": 7.95,
+          "y2": 8.05,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 7,
+          "room2_id": 6
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Этаж 3",
+      "rooms": [
+        {
+          "id": 8,
+          "name": "Склад",
+          "description": "Главный склад",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            1.05,
+            14.95,
+            5.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 19,
+              "x": 5.95,
+              "y": 11.0,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Холл на третьем этаже",
+          "description": "Холл",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            6.05,
+            14.95,
+            11.95,
+            8.05
+          ],
+          "qrs": [
+            {
+              "id": 18,
+              "x": 7.035355339059327,
+              "y": 13.964644660940673,
+              "z": 0,
+              "direction": 135,
+              "wall_id": -1
+            },
+            {
+              "id": 20,
+              "x": 11.95,
+              "y": 10.5,
+              "z": 0,
+              "direction": 0,
+              "wall_id": -1
+            },
+            {
+              "id": 21,
+              "x": 8.0,
+              "y": 8.05,
+              "z": 0,
+              "direction": 270,
+              "wall_id": -1
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Лестничная площадка",
+          "description": "",
+          "can_search": false,
+          "elevators": [],
+          "staircases": [],
+          "walls": [],
+          "dummy_walls": [
+            6.05,
+            7.95,
+            11.95,
+            2.05
+          ],
+          "qrs": [
+            {
+              "id": 22,
+              "x": 10.0,
+              "y": 7.95,
+              "z": 0,
+              "direction": 90,
+              "wall_id": -1
+            }
+          ]
+        }
+      ],
+      "doors": [
+        {
+          "id": 8,
+          "x1": 5.95,
+          "x2": 6.05,
+          "y1": 12.0,
+          "y2": 12.0,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 8,
+          "room2_id": 9
+        },
+        {
+          "id": 9,
+          "x1": 9.0,
+          "x2": 9.0,
+          "y1": 8.05,
+          "y2": 7.95,
+          "width": 0.9,
+          "wall1_id": -1,
+          "wall2_id": -1,
+          "room1_id": 9,
+          "room2_id": 10
+        }
+      ]
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": 0,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "in_room",
+        "x": 8,
+        "y": 14,
+        "z": 0
+      },
+      {
+        "id": 1,
+        "dummy_floor_id": 0,
+        "obj_id": 0,
+        "obj_type": "in_room",
+        "x": 2.5,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 2,
+        "dummy_floor_id": 0,
+        "obj_id": 0,
+        "obj_type": "door",
+        "x": 4,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 3,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "in_room",
+        "x": 6.5,
+        "y": 11.5,
+        "z": 0
+      },
+      {
+        "id": 4,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "in_room",
+        "x": 10.5,
+        "y": 11.5,
+        "z": 0
+      },
+      {
+        "id": 5,
+        "dummy_floor_id": 0,
+        "obj_id": -1,
+        "obj_type": "elevator",
+        "x": 12,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 6,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "door",
+        "x": 2.5,
+        "y": 9,
+        "z": 0
+      },
+      {
+        "id": 7,
+        "dummy_floor_id": 0,
+        "obj_id": 2,
+        "obj_type": "door",
+        "x": 4.5,
+        "y": 8,
+        "z": 0
+      },
+      {
+        "id": 8,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "in_room",
+        "x": 8,
+        "y": 9,
+        "z": 0
+      },
+      {
+        "id": 9,
+        "dummy_floor_id": 0,
+        "obj_id": 3,
+        "obj_type": "door",
+        "x": 10,
+        "y": 8,
+        "z": 0
+      },
+      {
+        "id": 10,
+        "dummy_floor_id": 0,
+        "obj_id": 2,
+        "obj_type": "in_room",
+        "x": 2.5,
+        "y": 5.5,
+        "z": 0
+      },
+      {
+        "id": 11,
+        "dummy_floor_id": 0,
+        "obj_id": 4,
+        "obj_type": "door",
+        "x": 4,
+        "y": 5,
+        "z": 0
+      },
+      {
+        "id": 12,
+        "dummy_floor_id": 0,
+        "obj_id": 3,
+        "obj_type": "in_room",
+        "x": 6,
+        "y": 5,
+        "z": 0
+      },
+      {
+        "id": 13,
+        "dummy_floor_id": 0,
+        "obj_id": 4,
+        "obj_type": "in_room",
+        "x": 9.5,
+        "y": 5.5,
+        "z": 0
+      },
+      {
+        "id": 14,
+        "dummy_floor_id": 0,
+        "obj_id": -1,
+        "obj_type": "staircase",
+        "x": 11,
+        "y": 6,
+        "z": 0
+      },
+      {
+        "id": 15,
+        "dummy_floor_id": 0,
+        "obj_id": 5,
+        "obj_type": "door",
+        "x": 5.5,
+        "y": 2,
+        "z": 0
+      },
+      {
+        "id": 16,
+        "dummy_floor_id": 1,
+        "obj_id": 6,
+        "obj_type": "door",
+        "x": 6,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 17,
+        "dummy_floor_id": 1,
+        "obj_id": 6,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 18,
+        "dummy_floor_id": 1,
+        "obj_id": -1,
+        "obj_type": "elevator",
+        "x": 12,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 19,
+        "dummy_floor_id": 1,
+        "obj_id": 5,
+        "obj_type": "in_room",
+        "x": 3.5,
+        "y": 8.5,
+        "z": 0
+      },
+      {
+        "id": 20,
+        "dummy_floor_id": 1,
+        "obj_id": 7,
+        "obj_type": "door",
+        "x": 9,
+        "y": 8,
+        "z": 0
+      },
+      {
+        "id": 21,
+        "dummy_floor_id": 1,
+        "obj_id": 7,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 7,
+        "z": 0
+      },
+      {
+        "id": 22,
+        "dummy_floor_id": 1,
+        "obj_id": 7,
+        "obj_type": "in_room",
+        "x": 7.5,
+        "y": 5,
+        "z": 0
+      },
+      {
+        "id": 23,
+        "dummy_floor_id": 1,
+        "obj_id": 7,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 2.5,
+        "z": 0
+      },
+      {
+        "id": 24,
+        "dummy_floor_id": 1,
+        "obj_id": -1,
+        "obj_type": "staircase",
+        "x": 10,
+        "y": 3,
+        "z": 0
+      },
+      {
+        "id": 25,
+        "dummy_floor_id": 2,
+        "obj_id": 8,
+        "obj_type": "door",
+        "x": 6,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 26,
+        "dummy_floor_id": 2,
+        "obj_id": 9,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 27,
+        "dummy_floor_id": 2,
+        "obj_id": -1,
+        "obj_type": "elevator",
+        "x": 12,
+        "y": 12,
+        "z": 0
+      },
+      {
+        "id": 28,
+        "dummy_floor_id": 2,
+        "obj_id": 8,
+        "obj_type": "in_room",
+        "x": 3.5,
+        "y": 8.5,
+        "z": 0
+      },
+      {
+        "id": 29,
+        "dummy_floor_id": 2,
+        "obj_id": 9,
+        "obj_type": "door",
+        "x": 9,
+        "y": 8,
+        "z": 0
+      },
+      {
+        "id": 30,
+        "dummy_floor_id": 2,
+        "obj_id": 10,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 7,
+        "z": 0
+      },
+      {
+        "id": 31,
+        "dummy_floor_id": 2,
+        "obj_id": -1,
+        "obj_type": "staircase",
+        "x": 9,
+        "y": 6,
+        "z": 0
+      },
+      {
+        "id": 32,
+        "dummy_floor_id": 2,
+        "obj_id": 10,
+        "obj_type": "in_room",
+        "x": 7.5,
+        "y": 5,
+        "z": 0
+      },
+      {
+        "id": 33,
+        "dummy_floor_id": 2,
+        "obj_id": 10,
+        "obj_type": "in_room",
+        "x": 11,
+        "y": 5,
+        "z": 0
+      },
+      {
+        "id": 34,
+        "dummy_floor_id": 2,
+        "obj_id": 10,
+        "obj_type": "in_room",
+        "x": 9,
+        "y": 2.5,
+        "z": 0
+      },
+      {
+        "id": 35,
+        "dummy_floor_id": 0,
+        "obj_id": 11,
+        "obj_type": "qr",
+        "x": 7.0,
+        "y": 2.25,
+        "z": 0
+      },
+      {
+        "id": 36,
+        "dummy_floor_id": 0,
+        "obj_id": 7,
+        "obj_type": "qr",
+        "x": 6.5,
+        "y": 7.75,
+        "z": 0
+      },
+      {
+        "id": 37,
+        "dummy_floor_id": 0,
+        "obj_id": 9,
+        "obj_type": "qr",
+        "x": 4.25,
+        "y": 6.0,
+        "z": 0
+      },
+      {
+        "id": 38,
+        "dummy_floor_id": 0,
+        "obj_id": 4,
+        "obj_type": "qr",
+        "x": 3.5,
+        "y": 8.75,
+        "z": 0
+      },
+      {
+        "id": 39,
+        "dummy_floor_id": 0,
+        "obj_id": 10,
+        "obj_type": "qr",
+        "x": 3.75,
+        "y": 4.0,
+        "z": 0
+      },
+      {
+        "id": 40,
+        "dummy_floor_id": 0,
+        "obj_id": 1,
+        "obj_type": "qr",
+        "x": 3.75,
+        "y": 11.0,
+        "z": 0
+      },
+      {
+        "id": 41,
+        "dummy_floor_id": 0,
+        "obj_id": 2,
+        "obj_type": "qr",
+        "x": 1.5,
+        "y": 9.25,
+        "z": 0
+      },
+      {
+        "id": 42,
+        "dummy_floor_id": 0,
+        "obj_id": 0,
+        "obj_type": "qr",
+        "x": 4.25,
+        "y": 13.5,
+        "z": 0
+      },
+      {
+        "id": 43,
+        "dummy_floor_id": 0,
+        "obj_id": 3,
+        "obj_type": "qr",
+        "x": 11.75,
+        "y": 9.5,
+        "z": 0
+      },
+      {
+        "id": 44,
+        "dummy_floor_id": 0,
+        "obj_id": 5,
+        "obj_type": "qr",
+        "x": 4.25,
+        "y": 8.25,
+        "z": 0
+      },
+      {
+        "id": 45,
+        "dummy_floor_id": 0,
+        "obj_id": 6,
+        "obj_type": "qr",
+        "x": 8.5,
+        "y": 8.25,
+        "z": 0
+      },
+      {
+        "id": 46,
+        "dummy_floor_id": 0,
+        "obj_id": 8,
+        "obj_type": "qr",
+        "x": 11.0,
+        "y": 7.75,
+        "z": 0
+      },
+      {
+        "id": 47,
+        "dummy_floor_id": 1,
+        "obj_id": 13,
+        "obj_type": "qr",
+        "x": 5.75,
+        "y": 11.0,
+        "z": 0
+      },
+      {
+        "id": 48,
+        "dummy_floor_id": 1,
+        "obj_id": 12,
+        "obj_type": "qr",
+        "x": 6.25,
+        "y": 13.0,
+        "z": 0
+      },
+      {
+        "id": 49,
+        "dummy_floor_id": 1,
+        "obj_id": 14,
+        "obj_type": "qr",
+        "x": 11.75,
+        "y": 10.5,
+        "z": 0
+      },
+      {
+        "id": 50,
+        "dummy_floor_id": 1,
+        "obj_id": 15,
+        "obj_type": "qr",
+        "x": 8.0,
+        "y": 8.25,
+        "z": 0
+      },
+      {
+        "id": 51,
+        "dummy_floor_id": 1,
+        "obj_id": 16,
+        "obj_type": "qr",
+        "x": 10.0,
+        "y": 7.75,
+        "z": 0
+      },
+      {
+        "id": 52,
+        "dummy_floor_id": 1,
+        "obj_id": 17,
+        "obj_type": "qr",
+        "x": 10.0,
+        "y": 2.25,
+        "z": 0
+      },
+      {
+        "id": 53,
+        "dummy_floor_id": 2,
+        "obj_id": 19,
+        "obj_type": "qr",
+        "x": 5.75,
+        "y": 11.0,
+        "z": 0
+      },
+      {
+        "id": 54,
+        "dummy_floor_id": 2,
+        "obj_id": 18,
+        "obj_type": "qr",
+        "x": 7.1767766952966365,
+        "y": 13.823223304703363,
+        "z": 0
+      },
+      {
+        "id": 55,
+        "dummy_floor_id": 2,
+        "obj_id": 20,
+        "obj_type": "qr",
+        "x": 11.75,
+        "y": 10.5,
+        "z": 0
+      },
+      {
+        "id": 56,
+        "dummy_floor_id": 2,
+        "obj_id": 21,
+        "obj_type": "qr",
+        "x": 8.0,
+        "y": 8.25,
+        "z": 0
+      },
+      {
+        "id": 57,
+        "dummy_floor_id": 2,
+        "obj_id": 22,
+        "obj_type": "qr",
+        "x": 10.0,
+        "y": 7.75,
+        "z": 0
+      }
+    ],
+    "edges": [
+      {
+        "id": 0,
+        "node1_id": 1,
+        "node2_id": 2,
+        "weight": 3.0
+      },
+      {
+        "id": 1,
+        "node1_id": 1,
+        "node2_id": 6,
+        "weight": 6.0
+      },
+      {
+        "id": 2,
+        "node1_id": 2,
+        "node2_id": 6,
+        "weight": 6.708203932499369
+      },
+      {
+        "id": 3,
+        "node1_id": 2,
+        "node2_id": 3,
+        "weight": 5.0990195135927845
+      },
+      {
+        "id": 4,
+        "node1_id": 2,
+        "node2_id": 7,
+        "weight": 8.06225774829855
+      },
+      {
+        "id": 5,
+        "node1_id": 7,
+        "node2_id": 3,
+        "weight": 8.06225774829855
+      },
+      {
+        "id": 6,
+        "node1_id": 3,
+        "node2_id": 0,
+        "weight": 5.830951894845301
+      },
+      {
+        "id": 7,
+        "node1_id": 3,
+        "node2_id": 8,
+        "weight": 5.830951894845301
+      },
+      {
+        "id": 8,
+        "node1_id": 0,
+        "node2_id": 4,
+        "weight": 7.0710678118654755
+      },
+      {
+        "id": 9,
+        "node1_id": 4,
+        "node2_id": 5,
+        "weight": 3.1622776601683795
+      },
+      {
+        "id": 10,
+        "node1_id": 4,
+        "node2_id": 8,
+        "weight": 7.0710678118654755
+      },
+      {
+        "id": 11,
+        "node1_id": 4,
+        "node2_id": 9,
+        "weight": 7.0710678118654755
+      },
+      {
+        "id": 12,
+        "node1_id": 8,
+        "node2_id": 9,
+        "weight": 4.47213595499958
+      },
+      {
+        "id": 13,
+        "node1_id": 7,
+        "node2_id": 8,
+        "weight": 7.280109889280518
+      },
+      {
+        "id": 14,
+        "node1_id": 6,
+        "node2_id": 10,
+        "weight": 7.0
+      },
+      {
+        "id": 15,
+        "node1_id": 6,
+        "node2_id": 11,
+        "weight": 8.54400374531753
+      },
+      {
+        "id": 16,
+        "node1_id": 10,
+        "node2_id": 11,
+        "weight": 3.1622776601683795
+      },
+      {
+        "id": 17,
+        "node1_id": 11,
+        "node2_id": 12,
+        "weight": 4.0
+      },
+      {
+        "id": 18,
+        "node1_id": 11,
+        "node2_id": 15,
+        "weight": 6.708203932499369
+      },
+      {
+        "id": 19,
+        "node1_id": 7,
+        "node2_id": 12,
+        "weight": 6.708203932499369
+      },
+      {
+        "id": 20,
+        "node1_id": 7,
+        "node2_id": 11,
+        "weight": 6.082762530298219
+      },
+      {
+        "id": 21,
+        "node1_id": 12,
+        "node2_id": 15,
+        "weight": 6.082762530298219
+      },
+      {
+        "id": 22,
+        "node1_id": 9,
+        "node2_id": 13,
+        "weight": 5.0990195135927845
+      },
+      {
+        "id": 23,
+        "node1_id": 9,
+        "node2_id": 14,
+        "weight": 4.47213595499958
+      },
+      {
+        "id": 24,
+        "node1_id": 13,
+        "node2_id": 14,
+        "weight": 3.1622776601683795
+      },
+      {
+        "id": 25,
+        "node1_id": 19,
+        "node2_id": 16,
+        "weight": 8.602325267042627
+      },
+      {
+        "id": 26,
+        "node1_id": 16,
+        "node2_id": 17,
+        "weight": 6.0
+      },
+      {
+        "id": 27,
+        "node1_id": 17,
+        "node2_id": 18,
+        "weight": 6.0
+      },
+      {
+        "id": 28,
+        "node1_id": 16,
+        "node2_id": 20,
+        "weight": 10.0
+      },
+      {
+        "id": 29,
+        "node1_id": 17,
+        "node2_id": 20,
+        "weight": 8.0
+      },
+      {
+        "id": 30,
+        "node1_id": 18,
+        "node2_id": 20,
+        "weight": 10.0
+      },
+      {
+        "id": 31,
+        "node1_id": 20,
+        "node2_id": 21,
+        "weight": 2.0
+      },
+      {
+        "id": 32,
+        "node1_id": 21,
+        "node2_id": 22,
+        "weight": 5.0
+      },
+      {
+        "id": 33,
+        "node1_id": 22,
+        "node2_id": 24,
+        "weight": 6.4031242374328485
+      },
+      {
+        "id": 34,
+        "node1_id": 23,
+        "node2_id": 24,
+        "weight": 2.23606797749979
+      },
+      {
+        "id": 35,
+        "node1_id": 28,
+        "node2_id": 25,
+        "weight": 8.602325267042627
+      },
+      {
+        "id": 36,
+        "node1_id": 25,
+        "node2_id": 26,
+        "weight": 6.0
+      },
+      {
+        "id": 37,
+        "node1_id": 26,
+        "node2_id": 27,
+        "weight": 6.0
+      },
+      {
+        "id": 38,
+        "node1_id": 29,
+        "node2_id": 25,
+        "weight": 10.0
+      },
+      {
+        "id": 39,
+        "node1_id": 29,
+        "node2_id": 26,
+        "weight": 8.0
+      },
+      {
+        "id": 40,
+        "node1_id": 29,
+        "node2_id": 27,
+        "weight": 10.0
+      },
+      {
+        "id": 41,
+        "node1_id": 29,
+        "node2_id": 30,
+        "weight": 2.0
+      },
+      {
+        "id": 42,
+        "node1_id": 30,
+        "node2_id": 32,
+        "weight": 5.0
+      },
+      {
+        "id": 43,
+        "node1_id": 30,
+        "node2_id": 33,
+        "weight": 5.656854249492381
+      },
+      {
+        "id": 44,
+        "node1_id": 30,
+        "node2_id": 31,
+        "weight": 2.0
+      },
+      {
+        "id": 45,
+        "node1_id": 32,
+        "node2_id": 31,
+        "weight": 3.605551275463989
+      },
+      {
+        "id": 46,
+        "node1_id": 33,
+        "node2_id": 31,
+        "weight": 4.47213595499958
+      },
+      {
+        "id": 47,
+        "node1_id": 34,
+        "node2_id": 32,
+        "weight": 5.830951894845301
+      },
+      {
+        "id": 48,
+        "node1_id": 34,
+        "node2_id": 33,
+        "weight": 6.4031242374328485
+      },
+      {
+        "id": 49,
+        "node1_id": 5,
+        "node2_id": 18,
+        "weight": 20
+      },
+      {
+        "id": 50,
+        "node1_id": 18,
+        "node2_id": 27,
+        "weight": 20
+      },
+      {
+        "id": 51,
+        "node1_id": 14,
+        "node2_id": 23,
+        "weight": 15
+      },
+      {
+        "id": 52,
+        "node1_id": 23,
+        "node2_id": 31,
+        "weight": 15
+      },
+      {
+        "id": 53,
+        "node1_id": 35,
+        "node2_id": 12,
+        "weight": 5.852349955359813
+      },
+      {
+        "id": 54,
+        "node1_id": 35,
+        "node2_id": 15,
+        "weight": 3.0413812651491097
+      },
+      {
+        "id": 55,
+        "node1_id": 36,
+        "node2_id": 7,
+        "weight": 4.031128874149275
+      },
+      {
+        "id": 56,
+        "node1_id": 36,
+        "node2_id": 12,
+        "weight": 5.5901699437494745
+      },
+      {
+        "id": 57,
+        "node1_id": 37,
+        "node2_id": 7,
+        "weight": 4.031128874149275
+      },
+      {
+        "id": 58,
+        "node1_id": 37,
+        "node2_id": 11,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 59,
+        "node1_id": 37,
+        "node2_id": 12,
+        "weight": 4.031128874149275
+      },
+      {
+        "id": 60,
+        "node1_id": 38,
+        "node2_id": 6,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 61,
+        "node1_id": 38,
+        "node2_id": 11,
+        "weight": 7.566372975210778
+      },
+      {
+        "id": 62,
+        "node1_id": 39,
+        "node2_id": 10,
+        "weight": 3.905124837953327
+      },
+      {
+        "id": 63,
+        "node1_id": 39,
+        "node2_id": 11,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 64,
+        "node1_id": 40,
+        "node2_id": 2,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 65,
+        "node1_id": 40,
+        "node2_id": 6,
+        "weight": 4.716990566028302
+      },
+      {
+        "id": 66,
+        "node1_id": 41,
+        "node2_id": 1,
+        "weight": 5.852349955359813
+      },
+      {
+        "id": 67,
+        "node1_id": 41,
+        "node2_id": 6,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 68,
+        "node1_id": 42,
+        "node2_id": 0,
+        "weight": 7.566372975210778
+      },
+      {
+        "id": 69,
+        "node1_id": 42,
+        "node2_id": 2,
+        "weight": 3.0413812651491097
+      },
+      {
+        "id": 70,
+        "node1_id": 42,
+        "node2_id": 3,
+        "weight": 6.020797289396148
+      },
+      {
+        "id": 71,
+        "node1_id": 43,
+        "node2_id": 4,
+        "weight": 4.716990566028302
+      },
+      {
+        "id": 72,
+        "node1_id": 43,
+        "node2_id": 5,
+        "weight": 5.024937810560445
+      },
+      {
+        "id": 73,
+        "node1_id": 43,
+        "node2_id": 9,
+        "weight": 4.6097722286464435
+      },
+      {
+        "id": 74,
+        "node1_id": 44,
+        "node2_id": 2,
+        "weight": 7.516648189186454
+      },
+      {
+        "id": 75,
+        "node1_id": 44,
+        "node2_id": 7,
+        "weight": 0.7071067811865476
+      },
+      {
+        "id": 76,
+        "node1_id": 45,
+        "node2_id": 7,
+        "weight": 8.0156097709407
+      },
+      {
+        "id": 77,
+        "node1_id": 45,
+        "node2_id": 8,
+        "weight": 1.8027756377319946
+      },
+      {
+        "id": 78,
+        "node1_id": 45,
+        "node2_id": 9,
+        "weight": 3.0413812651491097
+      },
+      {
+        "id": 79,
+        "node1_id": 46,
+        "node2_id": 9,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 80,
+        "node1_id": 46,
+        "node2_id": 14,
+        "weight": 3.5
+      },
+      {
+        "id": 81,
+        "node1_id": 47,
+        "node2_id": 16,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 82,
+        "node1_id": 47,
+        "node2_id": 19,
+        "weight": 6.726812023536855
+      },
+      {
+        "id": 83,
+        "node1_id": 48,
+        "node2_id": 16,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 84,
+        "node1_id": 48,
+        "node2_id": 17,
+        "weight": 5.852349955359813
+      },
+      {
+        "id": 85,
+        "node1_id": 48,
+        "node2_id": 18,
+        "weight": 11.672617529928752
+      },
+      {
+        "id": 86,
+        "node1_id": 49,
+        "node2_id": 18,
+        "weight": 3.0413812651491097
+      },
+      {
+        "id": 87,
+        "node1_id": 49,
+        "node2_id": 20,
+        "weight": 7.433034373659253
+      },
+      {
+        "id": 88,
+        "node1_id": 50,
+        "node2_id": 16,
+        "weight": 8.5
+      },
+      {
+        "id": 89,
+        "node1_id": 50,
+        "node2_id": 20,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 90,
+        "node1_id": 51,
+        "node2_id": 20,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 91,
+        "node1_id": 51,
+        "node2_id": 21,
+        "weight": 2.5
+      },
+      {
+        "id": 92,
+        "node1_id": 51,
+        "node2_id": 22,
+        "weight": 7.433034373659253
+      },
+      {
+        "id": 93,
+        "node1_id": 51,
+        "node2_id": 24,
+        "weight": 9.5
+      },
+      {
+        "id": 94,
+        "node1_id": 52,
+        "node2_id": 23,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 95,
+        "node1_id": 52,
+        "node2_id": 24,
+        "weight": 1.5
+      },
+      {
+        "id": 96,
+        "node1_id": 53,
+        "node2_id": 25,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 97,
+        "node1_id": 53,
+        "node2_id": 28,
+        "weight": 6.726812023536855
+      },
+      {
+        "id": 98,
+        "node1_id": 54,
+        "node2_id": 25,
+        "weight": 4.340021478936125
+      },
+      {
+        "id": 99,
+        "node1_id": 54,
+        "node2_id": 26,
+        "weight": 5.1568542494923815
+      },
+      {
+        "id": 100,
+        "node1_id": 54,
+        "node2_id": 27,
+        "weight": 10.312638123360498
+      },
+      {
+        "id": 101,
+        "node1_id": 55,
+        "node2_id": 27,
+        "weight": 3.0413812651491097
+      },
+      {
+        "id": 102,
+        "node1_id": 55,
+        "node2_id": 29,
+        "weight": 7.433034373659253
+      },
+      {
+        "id": 103,
+        "node1_id": 56,
+        "node2_id": 25,
+        "weight": 8.5
+      },
+      {
+        "id": 104,
+        "node1_id": 56,
+        "node2_id": 29,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 105,
+        "node1_id": 57,
+        "node2_id": 29,
+        "weight": 2.0615528128088303
+      },
+      {
+        "id": 106,
+        "node1_id": 57,
+        "node2_id": 30,
+        "weight": 2.5
+      },
+      {
+        "id": 107,
+        "node1_id": 57,
+        "node2_id": 33,
+        "weight": 5.852349955359813
+      }
+    ]
+  }
+}
