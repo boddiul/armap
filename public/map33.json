@@ -344,6 +344,7 @@
         "floor_id": 0,
         "obj_id": 0,
         "obj_type": "qr",
+        "direction": 0.0,
         "x": 7.68,
         "y": 5.3,
         "z": 0
@@ -353,6 +354,7 @@
         "floor_id": 0,
         "obj_id": 1,
         "obj_type": "qr",
+        "direction": 4.71238898038469,
         "x": 2.95,
         "y": 3.64,
         "z": 0

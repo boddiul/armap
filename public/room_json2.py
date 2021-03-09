@@ -162,12 +162,13 @@ def new_portal(floor,_id,x,y,portal_type):
     
     return
 
-def new_qr_node(floor,_id,x,y,qr_id):
+def new_qr_node(floor,_id,x,y,qr_id,direction):
     mapp["graph"]["nodes"].append({
         "id":_id,
         "floor_id":floor,
         "obj_id":qr_id,
         "obj_type":"qr",
+        "direction":direction,
         "x":x,
         "y":y,
         "z":0
@@ -662,7 +663,7 @@ for f in mapp["floors"]:
 
             xx = q["x"]-0.2*(math.cos(aa))
             yy = q["y"]+0.2*(-math.sin(aa))
-            new_qr_node(f["id"],l_node_id,xx,yy,q["id"])
+            new_qr_node(f["id"],l_node_id,xx,yy,q["id"],aa)
 
             ok_node_id = []
 
