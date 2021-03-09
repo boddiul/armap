@@ -21,6 +21,9 @@ function isNumeric(value) {
 
 mapData = {}
 mapData[220] = JSON.parse(fs.readFileSync('public/map220.json'));
+mapData[22] = JSON.parse(fs.readFileSync('public/map22.json'));
+mapData[33] = JSON.parse(fs.readFileSync('public/map33.json'));
+
 
 
 
@@ -66,7 +69,12 @@ app.get('/scheme/:schemeId/info', (req, res) => {
 app.get('/scheme/:schemeId/qrImage/:qrId', (req, res) => {
     schemeId = req.params.schemeId
     qrId = req.params.qrId
-    txt = "https://armap.boddiul.com/?schemeid="+schemeId+"&qrid="+qrId
+    //txt = "https://armap.boddiul.com/
+    txt = "arindoorapp://"
+
+    txt+=("?schemeid="+schemeId+"&qrid="+qrId);
+
+
     QRCode.toDataURL(txt,  { errorCorrectionLevel: 'L' },function (err, url) {
         const im = url.split(',')[1];
         const img = Buffer.from(im, 'base64');

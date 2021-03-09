@@ -26,24 +26,23 @@
 </style>
 
 <head>
+    <script>drawJS = {}</script>
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="js/paper-full.js"></script>
-
+    <!-- Define inlined PaperScript associate it with myCanvas -->
+    <script type="text/paperscript" src="js/draw.js" canvas="myCanvas"> </script>
     <script type="text/javascript" src="js/init.js"></script>
 
-    <!-- Define inlined PaperScript associate it with myCanvas -->
-    <script type="text/paperscript" src="js/draw.js" canvas="myCanvas">
-    </script>
+
+
 </head>
-<body>
+<body onload="loadLevel(CURRENT_SCHEME_ID)">
 <div id="controller">
 
-    id: <input type="text" value="220"><br />
-    <button onclick="myFunction()">Load</button><br />
-    <button onclick="myFunction()">Button</button><br />
-    <button onclick="myFunction()">Button</button><br />
-    <button onclick="myFunction()">Button</button><br />
-    <button onclick="myFunction()">Button</button><br />
+    id: <input type="text" value=33><br />
+    <button onclick="loadLevel(33)">Example 33</button><br />
+    <button onclick="loadLevel(22)">Example 22</button><br />
+    <button onclick="loadLevel(220)">Example 220</button><br />
 
     <br/>
     SHOW:<br/>
@@ -72,6 +71,11 @@
     <input type="checkbox" id="elevatorsDataBox"  onchange="onEditorLayerBox('elevators',true)" />
     <label for="elevatorsDataBox">Elevators Data</label><br/>
 
+    <input type="checkbox" id="furnitureBox"  onchange="onEditorLayerBox('furniture',false)" checked/>
+    <label for="furnitureBox">Furniture</label><br/>
+
+    <input type="checkbox" id="furnitureDataBox"  onchange="onEditorLayerBox('furniture',true)" />
+    <label for="furnitureDataBox">Furniture Data</label><br/>
 
     <input type="checkbox" id="qrsBox"  onchange="onEditorLayerBox('qrs',false)" checked/>
     <label for="qrsBox">QRs</label><br/>
@@ -97,7 +101,7 @@
 
     <br/>
     REQUEST URLS:<br/>
-    id: <input id="requestIdBox" type="text" value="220"  onchange="onRequestIdBox()"><br />
+    id: <input id="requestIdBox" type="text" value="33"  onchange="onRequestIdBox()"><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />

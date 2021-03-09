@@ -8,15 +8,7 @@ import json
 
 
 
-mapp = {"name":"Тестовое здание",
-        "id":220,
-        "description":"Карта тестового несуществующего строения",
-        "address":"Покровский б-р, 11, Москва, Россия",            
-        "floors":[],
-        "graph":{"nodes":[],"edges":[]}
-        
-        
-        }
+
 
 
 
@@ -31,8 +23,24 @@ def new_floor(id,name):
         })
     return
 
-def new_room(floor,_id,name,descr,can_search,coords):
+wall_ids = 0
 
+def new_room(floor,_id,name,descr,can_search,dummy_coords,coords):
+    global wall_ids
+    walls = []
+    if (dummy_coords!=None):
+        coords = [[dummy_coords[0]+0.05,dummy_coords[1]-0.05],[dummy_coords[2]-0.05,dummy_coords[1]-0.05],[dummy_coords[2]-0.05,dummy_coords[3]+0.05],[dummy_coords[0]+0.05,dummy_coords[3]+0.05]]
+
+       
+        
+        
+    coords.append(coords[0])
+    st_wall_ids = wall_ids
+    for i in range(0,len(coords)-1):
+        walls.append({
+            "id":wall_ids,"x1":coords[i][0],"y1":coords[i][1],"x2":coords[i+1][0],"y2":coords[i+1][1],"wall_prev_id":wall_ids-1,"wall_next_id":wall_ids+1})
+        wall_ids+=1
+    walls[-1]["wall_next_id"]=st_wall_ids
 
 
     for f in mapp["floors"]:
@@ -45,12 +53,34 @@ def new_room(floor,_id,name,descr,can_search,coords):
                 "can_search":can_search,
                 "elevators":[],
                 "staircases":[],
-                "walls":[],
-                "dummy_walls":[coords[0]+0.05,coords[1]-0.05,coords[2]-0.05,coords[3]+0.05],
+                "furniture":[],
+                "walls":walls,
+                #"dummy_walls":[coords[0]+0.05,coords[1]-0.05,coords[2]-0.05,coords[3]+0.05],
                 "qrs":[]
                 })
 
     return
+
+
+furn_id = 0
+
+def new_furniture(floor_id,room_id,name,coords):
+    global furn_id
+
+    
+    for f in mapp["floors"]:
+        if f["id"] == floor_id:
+            for r in f["rooms"]:
+                if r["id"]==room_id:
+                    r["furniture"].append({
+                        "id":furn_id,
+                        "name":name,
+                        "x1":coords[0],
+                        "y1":coords[1],
+                        "x2":coords[2],
+                        "y2":coords[3]
+                        })
+                    furn_id+=1
 
 
 nd_fl = {}
@@ -60,7 +90,7 @@ def new_room_node(floor,_id,x,y,room_id):
 
     mapp["graph"]["nodes"].append({
         "id":_id,
-        "dummy_floor_id":floor,
+        "floor_id":floor,
         "obj_id":room_id,
         "obj_type":"in_room",
         "x":x,
@@ -98,7 +128,7 @@ def new_door_node(floor,_id,x,y,r1,r2,direction):
 
     mapp["graph"]["nodes"].append({
         "id":_id,
-        "dummy_floor_id":floor,
+        "floor_id":floor,
         "obj_id":door_ids,
         "obj_type":"door",
         "x":x,
@@ -121,7 +151,7 @@ def new_portal(floor,_id,x,y,portal_type):
 
     mapp["graph"]["nodes"].append({
         "id":_id,
-        "dummy_floor_id":floor,
+        "floor_id":floor,
         "obj_id":-1,
         "obj_type":portal_type,
         "x":x,
@@ -135,7 +165,7 @@ def new_portal(floor,_id,x,y,portal_type):
 def new_qr_node(floor,_id,x,y,qr_id):
     mapp["graph"]["nodes"].append({
         "id":_id,
-        "dummy_floor_id":floor,
+        "floor_id":floor,
         "obj_id":qr_id,
         "obj_type":"qr",
         "x":x,
@@ -212,14 +242,14 @@ def new_edge(id1,id2):
 
 
 
-def new_qr(floor,_id,x,y,direction,room):
+def new_qr(floor,_id,x,y,direction,room,off = 0.05):
 
-
+    
 
     aa = direction*math.pi/180
 
-    xx = x-0.05*(math.cos(aa))
-    yy = y-0.05*(math.sin(aa))
+    xx = x-off*(math.cos(aa))
+    yy = y-off*(math.sin(aa))
 
 
     for f in mapp["floors"]:
@@ -230,7 +260,7 @@ def new_qr(floor,_id,x,y,direction,room):
                     "x":xx,
                     "y":yy,
                     "z":0,
-                    "direction":direction,
+                    "direction":aa,
                     "wall_id":-1,
 
                     })
@@ -244,18 +274,32 @@ def new_qr(floor,_id,x,y,direction,room):
 
 
 
+'''
+map_id = 220
 
+mapp = {"name":"Тестовое здание",
+        "id":map_id,
+        "description":"Карта тестового несуществующего строения",
+        "address":"Покровский б-р, 11, Москва, Россия",            
+        "floors":[],
+        "graph":{"nodes":[],"edges":[]}
+        
+        
+        }
 
 new_floor(0,'Этаж 1')
 new_floor(1,'Этаж 2')
 new_floor(2,'Этаж 3')
 
-new_room(0,3,'Главный вход','Помещение с главным входом',True,[4,8,8,2])
-new_room(0,2,'Проход','',False,[1,9,4,2])
-new_room(0,0,'Крутая комната','Какая-то комната',True,[1,15,4,9])
-new_room(0,1,'Холл на первом этаже','Холл',True,[4,15,12,8])
-new_room(0,4,'Лестничная площадка','',False,[8,8,12,2])
+new_room(0,3,'Главный вход','Помещение с главным входом',True,[4,8,8,2],None)
+new_room(0,2,'Проход','',False,[1,9,4,2],None)
+new_room(0,0,'Крутая комната','Какая-то комната',True,[1,15,4,9],None)
+new_room(0,1,'Холл на первом этаже','Холл',True,[4,15,12,8],None)
+new_room(0,4,'Лестничная площадка','',False,[8,8,12,2],None)
 
+
+new_furniture(0,3,'Шкаф',[7,7.75,7.75,6])
+new_furniture(0,1,'Стол',[7,13,9,10])
 
 
 
@@ -264,7 +308,7 @@ new_room_node(0,    1,  2.5,    12,     0)
 
 new_door_node(0,    2,  4,      12,0,1,0)
 
-new_room_node(0,    3,  6.5,    11.5,   1)
+new_room_node(0,    3,  5.5,    11.5,   1)
 new_room_node(0,    4,  10.5,   11.5,   1)
 new_portal(0,       5,  12,     12,     'elevator')
 
@@ -331,9 +375,9 @@ new_qr(0,           10,  4,      4,      0,     2)
 
 
 
-new_room(1,5,'Кабинет','Главный кабинет',True,[1,15,6,2])
-new_room(1,6,'Холл на втором этаже','Холл',True,[6,15,12,8])
-new_room(1,7,'Лестничная площадка','',False,[6,8,12,2])
+new_room(1,5,'Кабинет','Главный кабинет',True,[1,15,6,2],None)
+new_room(1,6,'Холл на втором этаже','Холл',True,[6,15,12,8],None)
+new_room(1,7,'Лестничная площадка','',False,[6,8,12,2],None)
 
 new_door_node(1,    16, 6,      12,5,6,0)
 
@@ -376,9 +420,9 @@ new_qr(1,           17,  10,    2,      270,      7)
 
 
 
-new_room(2,8,'Склад','Главный склад',True,[1,15,6,2])
-new_room(2,9,'Холл на третьем этаже','Холл',True,[6,15,12,8])
-new_room(2,10,'Лестничная площадка','',False,[6,8,12,2])
+new_room(2,8,'Склад','Главный склад',True,[1,15,6,2],None)
+new_room(2,9,'Холл на третьем этаже','Холл',True,[6,15,12,8],None)
+new_room(2,10,'Лестничная площадка','',False,[6,8,12,2],None)
 
 new_door_node(2,    25, 6,      12,8,9,0)
 
@@ -428,6 +472,173 @@ new_edge(14,23)
 new_edge(23,31)
 
 
+map_id = 22
+
+mapp = {"name":"Тестовое здание 2",
+        "id":map_id,
+        "description":"Карта тестового несуществующего строения но с одним этажом",
+        "address":"Покровский б-р, 11, Москва, Россия",            
+        "floors":[],
+        "graph":{"nodes":[],"edges":[]}
+        
+        
+        }
+
+new_floor(0,'Этаж 1')
+
+new_room(0,3,'Главный вход','Помещение с главным входом',True,[4,8,8,2],None)
+new_room(0,2,'Проход','',False,[1,9,4,2],None)
+new_room(0,0,'Крутая комната','Какая-то комната',True,[1,15,4,9],None)
+new_room(0,1,'Холл на первом этаже','Холл',True,[4,15,12,8],None)
+new_room(0,4,'Лестничная площадка','',False,[8,8,12,2],None)
+
+
+new_furniture(0,3,'Шкаф',[7,7.75,7.75,6])
+new_furniture(0,1,'Стол',[7,13,9,10])
+
+
+
+new_room_node(0,    0,  8,      14,     1)
+new_room_node(0,    1,  2.5,    12,     0)
+
+new_door_node(0,    2,  4,      12,0,1,0)
+
+new_room_node(0,    3,  5.5,    11.5,   1)
+new_room_node(0,    4,  10.5,   11.5,   1)
+new_portal(0,       5,  12,     12,     'elevator')
+
+new_door_node(0,    6,  2.5,    9,0,2,270)
+new_door_node(0,    7,  4.5,    8,1,3,270)
+
+new_room_node(0,    8,  8,      9,      1)
+
+new_door_node(0,    9,  10,     8,1,4,270)
+
+new_room_node(0,    10, 2.5,    5.5,    2)
+
+new_door_node(0,    11, 4,      5,2,3,0)
+
+new_room_node(0,    12, 6,      5,      3)
+new_room_node(0,    13, 9.5,    5.5,    4)
+new_portal(0,       14, 11,     6,      'staircase')
+
+new_door_node(0,    15, 5.5,    2,-1,3,90)
+
+
+new_edge(1,2)
+new_edge(1,6)
+new_edge(2,6)
+new_edge(2,3)
+new_edge(2,7)
+new_edge(7,3)
+new_edge(3,0)
+new_edge(3,8)
+new_edge(0,4)
+new_edge(4,5)
+new_edge(4,8)
+new_edge(4,9)
+new_edge(8,9)
+new_edge(7,8)
+new_edge(6,10)
+new_edge(6,11)
+new_edge(10,11)
+new_edge(11,12)
+new_edge(11,15)
+new_edge(7,12)
+new_edge(7,11)
+new_edge(12,15)
+new_edge(9,13)
+new_edge(9,14)
+new_edge(13,14)
+
+
+
+new_qr(0,           11,  7,      2,      270,     3)
+
+new_qr(0,           0,  4,      13.5,   180,    1)
+new_qr(0,           1,  4,      11,     0,      0)
+new_qr(0,           2,  1.5,    9,      270,    0)
+new_qr(0,           3,  12,     9.5,    0,      1)
+new_qr(0,           4,  3.5,    9,      90,     2)
+new_qr(0,           5,  4.25,   8,      270,    1)
+new_qr(0,           6,  8.5,    8,      270,    1)
+new_qr(0,           7,  6.5,      8,      90,   3)
+new_qr(0,           8,  11,      8,      90,    4)
+new_qr(0,           9,  4,      6,      180,    3)
+new_qr(0,           10,  4,      4,      0,     2)
+
+
+
+'''
+
+
+
+map_id = 33
+
+mapp = {"name":"Квартира Тимура 1",
+        "id":map_id,
+        "description":"Квартира для тестирования приложения 1",
+        "address":"Москва, Россия",            
+        "floors":[],
+        "graph":{"nodes":[],"edges":[]}
+        
+        }
+
+new_floor(0,'Этаж 0')
+
+new_room(0,1,'Балкон','Место для отдыха',True,None,[[1,6.98],[1.93,6.98],[1.93,1],[1,1]])
+new_room(0,2,'Комната','Главная комната для тестирования',True,None,[[2.02,6.98],[7.88,6.98],[7.88,4.38],[6.18,4.38],[6.18,3.44],[2.02,3.44]])
+new_room(0,3,'Прихожая','Помещение для входа и выхода',True,None,[[2.02,3.35],[6.18,3.35],[6.18,1],[2.02,1]])
+
+
+new_room_node(0,    0,  3.3,      5.5,     1)
+new_room_node(0,    1,  6.44,      5.5,     1)
+new_room_node(0,    2,  4.8,      4.3,     1)
+new_room_node(0,    3,  6.17,      4.5,     1)
+
+new_room_node(0,    4,  1.5,      4.0,     0)
+
+new_door_node(0,    5,  5.7,      3.4,     1,2,270)
+new_door_node(0,    6,  1.97,      2.2,     0,2,0)
+
+new_room_node(0,    7,  4,      2.3,     2)
+
+
+
+new_edge(0,2)
+new_edge(2,1)
+new_edge(1,3)
+new_edge(3,5)
+new_edge(2,3)
+new_edge(2,5)
+
+new_edge(5,7)
+new_edge(6,7)
+new_edge(6,5)
+
+
+
+new_edge(4,6)
+
+
+new_qr(0,           0,  7.88,      5.3,   0,    1,0)
+new_qr(0,           1,  2.95,      3.44,     270,      1,0)
+
+
+new_furniture(0,1,'Диван',[3.5,6.9,5.6,5.9])
+new_furniture(0,1,'Стол',[7.3,6.9,7.8,5.5])
+new_furniture(0,1,'Столик',[4.3,5.7,5,5])
+new_furniture(0,1,'Стол',[2.1,5,2.8,3.5])
+new_furniture(0,1,'Стол',[3.7,3.9,5.2,3.5])
+new_furniture(0,1,'Стул',[7.4,5.2,7.8,4.8])
+
+
+
+
+
+
+
+
 
 def ccw(A,B,C):
     return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
@@ -447,7 +658,7 @@ for f in mapp["floors"]:
             print(l_node_id)
 
 
-            aa = q["direction"]*math.pi/180
+            aa = q["direction"]
 
             xx = q["x"]-0.2*(math.cos(aa))
             yy = q["y"]+0.2*(-math.sin(aa))
@@ -465,6 +676,10 @@ for f in mapp["floors"]:
                         n1_id = e["node1_id"]
                         n2_id = e["node2_id"]
 
+                        if (map_id==33 and (n1_id == 5 or n2_id == 5)):
+                            continue
+                        
+
                         no_id = -1
                         if n1_id == n["id"]:
                             no_id = n2_id
@@ -475,7 +690,7 @@ for f in mapp["floors"]:
                         
                         if no_id!=-1:
                             for nn in mapp["graph"]["nodes"]:
-                                if nn["id"]==no_id and nn["obj_type"]=="in_room" and nn["obj_id"]==r["id"] and nn["dummy_floor_id"]==n["dummy_floor_id"]:
+                                if nn["id"]==no_id and nn["obj_type"]=="in_room" and nn["obj_id"]==r["id"] and nn["floor_id"]==n["floor_id"]:
                                     ye = True
 
 
@@ -503,9 +718,14 @@ for f in mapp["floors"]:
             for o in ok_node_id:
                 ye = True
                 for e in mapp["graph"]["edges"]:
+                    
                     n1_id = e["node1_id"]
                     n2_id = e["node2_id"]
+                    
+                    
                     if n1_id!=o[0] and n2_id!=o[0] and n1_id!=l_node_id and n2_id!=l_node_id:
+                        
+                        
                         n1 = None
                         n2 = None
                         for nn in mapp["graph"]["nodes"]:
@@ -514,7 +734,7 @@ for f in mapp["floors"]:
                             if nn["id"]==n2_id:
                                 n2 = nn
 
-                        if (n1["dummy_floor_id"]==n2["dummy_floor_id"] and n1["dummy_floor_id"]==f["id"]):
+                        if (n1["floor_id"]==n2["floor_id"] and n1["floor_id"]==f["id"]):
                             if intersect([xx,yy],[o[2],o[3]],[n1["x"],n1["y"]],[n2["x"],n2["y"]]):
                                 #print('INTERSECT',l_node_id,o[0],n1["id"],n2["id"])
                                 ye = False
@@ -526,9 +746,7 @@ for f in mapp["floors"]:
             
             
 
-print(mapp)
-
-with open("map220.json", "w",encoding='utf8') as data_file:
+with open("map"+str(map_id)+".json", "w",encoding='utf8') as data_file:
     json.dump(mapp, data_file, indent=2, sort_keys=False,ensure_ascii=False)
 
 

@@ -15,12 +15,53 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            4.05,
-            7.95,
-            7.95,
-            2.05
+          "furniture": [
+            {
+              "id": 0,
+              "name": "Шкаф",
+              "x1": 7,
+              "y1": 7.75,
+              "x2": 7.75,
+              "y2": 6
+            }
+          ],
+          "walls": [
+            {
+              "id": 0,
+              "x1": 4.05,
+              "y1": 7.95,
+              "x2": 7.95,
+              "y2": 7.95,
+              "wall_prev_id": -1,
+              "wall_next_id": 1
+            },
+            {
+              "id": 1,
+              "x1": 7.95,
+              "y1": 7.95,
+              "x2": 7.95,
+              "y2": 2.05,
+              "wall_prev_id": 0,
+              "wall_next_id": 2
+            },
+            {
+              "id": 2,
+              "x1": 7.95,
+              "y1": 2.05,
+              "x2": 4.05,
+              "y2": 2.05,
+              "wall_prev_id": 1,
+              "wall_next_id": 3
+            },
+            {
+              "id": 3,
+              "x1": 4.05,
+              "y1": 2.05,
+              "x2": 4.05,
+              "y2": 7.95,
+              "wall_prev_id": 2,
+              "wall_next_id": 0
+            }
           ],
           "qrs": [
             {
@@ -28,7 +69,7 @@
               "x": 7.0,
               "y": 2.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             },
             {
@@ -36,7 +77,7 @@
               "x": 6.5,
               "y": 7.95,
               "z": 0,
-              "direction": 90,
+              "direction": 1.5707963267948966,
               "wall_id": -1
             },
             {
@@ -44,7 +85,7 @@
               "x": 4.05,
               "y": 6.0,
               "z": 0,
-              "direction": 180,
+              "direction": 3.141592653589793,
               "wall_id": -1
             }
           ]
@@ -56,12 +97,44 @@
           "can_search": false,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            1.05,
-            8.95,
-            3.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 4,
+              "x1": 1.05,
+              "y1": 8.95,
+              "x2": 3.95,
+              "y2": 8.95,
+              "wall_prev_id": 3,
+              "wall_next_id": 5
+            },
+            {
+              "id": 5,
+              "x1": 3.95,
+              "y1": 8.95,
+              "x2": 3.95,
+              "y2": 2.05,
+              "wall_prev_id": 4,
+              "wall_next_id": 6
+            },
+            {
+              "id": 6,
+              "x1": 3.95,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 2.05,
+              "wall_prev_id": 5,
+              "wall_next_id": 7
+            },
+            {
+              "id": 7,
+              "x1": 1.05,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 8.95,
+              "wall_prev_id": 6,
+              "wall_next_id": 4
+            }
           ],
           "qrs": [
             {
@@ -69,7 +142,7 @@
               "x": 3.5,
               "y": 8.95,
               "z": 0,
-              "direction": 90,
+              "direction": 1.5707963267948966,
               "wall_id": -1
             },
             {
@@ -77,7 +150,7 @@
               "x": 3.95,
               "y": 4.0,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             }
           ]
@@ -89,12 +162,44 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            1.05,
-            14.95,
-            3.95,
-            9.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 8,
+              "x1": 1.05,
+              "y1": 14.95,
+              "x2": 3.95,
+              "y2": 14.95,
+              "wall_prev_id": 7,
+              "wall_next_id": 9
+            },
+            {
+              "id": 9,
+              "x1": 3.95,
+              "y1": 14.95,
+              "x2": 3.95,
+              "y2": 9.05,
+              "wall_prev_id": 8,
+              "wall_next_id": 10
+            },
+            {
+              "id": 10,
+              "x1": 3.95,
+              "y1": 9.05,
+              "x2": 1.05,
+              "y2": 9.05,
+              "wall_prev_id": 9,
+              "wall_next_id": 11
+            },
+            {
+              "id": 11,
+              "x1": 1.05,
+              "y1": 9.05,
+              "x2": 1.05,
+              "y2": 14.95,
+              "wall_prev_id": 10,
+              "wall_next_id": 8
+            }
           ],
           "qrs": [
             {
@@ -102,7 +207,7 @@
               "x": 3.95,
               "y": 11.0,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             },
             {
@@ -110,7 +215,7 @@
               "x": 1.5,
               "y": 9.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             }
           ]
@@ -122,12 +227,53 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            4.05,
-            14.95,
-            11.95,
-            8.05
+          "furniture": [
+            {
+              "id": 1,
+              "name": "Стол",
+              "x1": 7,
+              "y1": 13,
+              "x2": 9,
+              "y2": 10
+            }
+          ],
+          "walls": [
+            {
+              "id": 12,
+              "x1": 4.05,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 14.95,
+              "wall_prev_id": 11,
+              "wall_next_id": 13
+            },
+            {
+              "id": 13,
+              "x1": 11.95,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 8.05,
+              "wall_prev_id": 12,
+              "wall_next_id": 14
+            },
+            {
+              "id": 14,
+              "x1": 11.95,
+              "y1": 8.05,
+              "x2": 4.05,
+              "y2": 8.05,
+              "wall_prev_id": 13,
+              "wall_next_id": 15
+            },
+            {
+              "id": 15,
+              "x1": 4.05,
+              "y1": 8.05,
+              "x2": 4.05,
+              "y2": 14.95,
+              "wall_prev_id": 14,
+              "wall_next_id": 12
+            }
           ],
           "qrs": [
             {
@@ -135,7 +281,7 @@
               "x": 4.05,
               "y": 13.5,
               "z": 0,
-              "direction": 180,
+              "direction": 3.141592653589793,
               "wall_id": -1
             },
             {
@@ -143,7 +289,7 @@
               "x": 11.95,
               "y": 9.5,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             },
             {
@@ -151,7 +297,7 @@
               "x": 4.25,
               "y": 8.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             },
             {
@@ -159,7 +305,7 @@
               "x": 8.5,
               "y": 8.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             }
           ]
@@ -171,12 +317,44 @@
           "can_search": false,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            8.05,
-            7.95,
-            11.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 16,
+              "x1": 8.05,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 7.95,
+              "wall_prev_id": 15,
+              "wall_next_id": 17
+            },
+            {
+              "id": 17,
+              "x1": 11.95,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 2.05,
+              "wall_prev_id": 16,
+              "wall_next_id": 18
+            },
+            {
+              "id": 18,
+              "x1": 11.95,
+              "y1": 2.05,
+              "x2": 8.05,
+              "y2": 2.05,
+              "wall_prev_id": 17,
+              "wall_next_id": 19
+            },
+            {
+              "id": 19,
+              "x1": 8.05,
+              "y1": 2.05,
+              "x2": 8.05,
+              "y2": 7.95,
+              "wall_prev_id": 18,
+              "wall_next_id": 16
+            }
           ],
           "qrs": [
             {
@@ -184,7 +362,7 @@
               "x": 11.0,
               "y": 7.95,
               "z": 0,
-              "direction": 90,
+              "direction": 1.5707963267948966,
               "wall_id": -1
             }
           ]
@@ -276,12 +454,44 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            1.05,
-            14.95,
-            5.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 20,
+              "x1": 1.05,
+              "y1": 14.95,
+              "x2": 5.95,
+              "y2": 14.95,
+              "wall_prev_id": 19,
+              "wall_next_id": 21
+            },
+            {
+              "id": 21,
+              "x1": 5.95,
+              "y1": 14.95,
+              "x2": 5.95,
+              "y2": 2.05,
+              "wall_prev_id": 20,
+              "wall_next_id": 22
+            },
+            {
+              "id": 22,
+              "x1": 5.95,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 2.05,
+              "wall_prev_id": 21,
+              "wall_next_id": 23
+            },
+            {
+              "id": 23,
+              "x1": 1.05,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 14.95,
+              "wall_prev_id": 22,
+              "wall_next_id": 20
+            }
           ],
           "qrs": [
             {
@@ -289,7 +499,7 @@
               "x": 5.95,
               "y": 11.0,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             }
           ]
@@ -301,12 +511,44 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            6.05,
-            14.95,
-            11.95,
-            8.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 24,
+              "x1": 6.05,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 14.95,
+              "wall_prev_id": 23,
+              "wall_next_id": 25
+            },
+            {
+              "id": 25,
+              "x1": 11.95,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 8.05,
+              "wall_prev_id": 24,
+              "wall_next_id": 26
+            },
+            {
+              "id": 26,
+              "x1": 11.95,
+              "y1": 8.05,
+              "x2": 6.05,
+              "y2": 8.05,
+              "wall_prev_id": 25,
+              "wall_next_id": 27
+            },
+            {
+              "id": 27,
+              "x1": 6.05,
+              "y1": 8.05,
+              "x2": 6.05,
+              "y2": 14.95,
+              "wall_prev_id": 26,
+              "wall_next_id": 24
+            }
           ],
           "qrs": [
             {
@@ -314,7 +556,7 @@
               "x": 6.05,
               "y": 13.0,
               "z": 0,
-              "direction": 180,
+              "direction": 3.141592653589793,
               "wall_id": -1
             },
             {
@@ -322,7 +564,7 @@
               "x": 11.95,
               "y": 10.5,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             },
             {
@@ -330,7 +572,7 @@
               "x": 8.0,
               "y": 8.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             }
           ]
@@ -342,12 +584,44 @@
           "can_search": false,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            6.05,
-            7.95,
-            11.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 28,
+              "x1": 6.05,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 7.95,
+              "wall_prev_id": 27,
+              "wall_next_id": 29
+            },
+            {
+              "id": 29,
+              "x1": 11.95,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 2.05,
+              "wall_prev_id": 28,
+              "wall_next_id": 30
+            },
+            {
+              "id": 30,
+              "x1": 11.95,
+              "y1": 2.05,
+              "x2": 6.05,
+              "y2": 2.05,
+              "wall_prev_id": 29,
+              "wall_next_id": 31
+            },
+            {
+              "id": 31,
+              "x1": 6.05,
+              "y1": 2.05,
+              "x2": 6.05,
+              "y2": 7.95,
+              "wall_prev_id": 30,
+              "wall_next_id": 28
+            }
           ],
           "qrs": [
             {
@@ -355,7 +629,7 @@
               "x": 10.0,
               "y": 7.95,
               "z": 0,
-              "direction": 90,
+              "direction": 1.5707963267948966,
               "wall_id": -1
             },
             {
@@ -363,7 +637,7 @@
               "x": 10.0,
               "y": 2.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             }
           ]
@@ -407,12 +681,44 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            1.05,
-            14.95,
-            5.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 32,
+              "x1": 1.05,
+              "y1": 14.95,
+              "x2": 5.95,
+              "y2": 14.95,
+              "wall_prev_id": 31,
+              "wall_next_id": 33
+            },
+            {
+              "id": 33,
+              "x1": 5.95,
+              "y1": 14.95,
+              "x2": 5.95,
+              "y2": 2.05,
+              "wall_prev_id": 32,
+              "wall_next_id": 34
+            },
+            {
+              "id": 34,
+              "x1": 5.95,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 2.05,
+              "wall_prev_id": 33,
+              "wall_next_id": 35
+            },
+            {
+              "id": 35,
+              "x1": 1.05,
+              "y1": 2.05,
+              "x2": 1.05,
+              "y2": 14.95,
+              "wall_prev_id": 34,
+              "wall_next_id": 32
+            }
           ],
           "qrs": [
             {
@@ -420,7 +726,7 @@
               "x": 5.95,
               "y": 11.0,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             }
           ]
@@ -432,12 +738,44 @@
           "can_search": true,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            6.05,
-            14.95,
-            11.95,
-            8.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 36,
+              "x1": 6.05,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 14.95,
+              "wall_prev_id": 35,
+              "wall_next_id": 37
+            },
+            {
+              "id": 37,
+              "x1": 11.95,
+              "y1": 14.95,
+              "x2": 11.95,
+              "y2": 8.05,
+              "wall_prev_id": 36,
+              "wall_next_id": 38
+            },
+            {
+              "id": 38,
+              "x1": 11.95,
+              "y1": 8.05,
+              "x2": 6.05,
+              "y2": 8.05,
+              "wall_prev_id": 37,
+              "wall_next_id": 39
+            },
+            {
+              "id": 39,
+              "x1": 6.05,
+              "y1": 8.05,
+              "x2": 6.05,
+              "y2": 14.95,
+              "wall_prev_id": 38,
+              "wall_next_id": 36
+            }
           ],
           "qrs": [
             {
@@ -445,7 +783,7 @@
               "x": 7.035355339059327,
               "y": 13.964644660940673,
               "z": 0,
-              "direction": 135,
+              "direction": 2.356194490192345,
               "wall_id": -1
             },
             {
@@ -453,7 +791,7 @@
               "x": 11.95,
               "y": 10.5,
               "z": 0,
-              "direction": 0,
+              "direction": 0.0,
               "wall_id": -1
             },
             {
@@ -461,7 +799,7 @@
               "x": 8.0,
               "y": 8.05,
               "z": 0,
-              "direction": 270,
+              "direction": 4.71238898038469,
               "wall_id": -1
             }
           ]
@@ -473,12 +811,44 @@
           "can_search": false,
           "elevators": [],
           "staircases": [],
-          "walls": [],
-          "dummy_walls": [
-            6.05,
-            7.95,
-            11.95,
-            2.05
+          "furniture": [],
+          "walls": [
+            {
+              "id": 40,
+              "x1": 6.05,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 7.95,
+              "wall_prev_id": 39,
+              "wall_next_id": 41
+            },
+            {
+              "id": 41,
+              "x1": 11.95,
+              "y1": 7.95,
+              "x2": 11.95,
+              "y2": 2.05,
+              "wall_prev_id": 40,
+              "wall_next_id": 42
+            },
+            {
+              "id": 42,
+              "x1": 11.95,
+              "y1": 2.05,
+              "x2": 6.05,
+              "y2": 2.05,
+              "wall_prev_id": 41,
+              "wall_next_id": 43
+            },
+            {
+              "id": 43,
+              "x1": 6.05,
+              "y1": 2.05,
+              "x2": 6.05,
+              "y2": 7.95,
+              "wall_prev_id": 42,
+              "wall_next_id": 40
+            }
           ],
           "qrs": [
             {
@@ -486,7 +856,7 @@
               "x": 10.0,
               "y": 7.95,
               "z": 0,
-              "direction": 90,
+              "direction": 1.5707963267948966,
               "wall_id": -1
             }
           ]
@@ -524,7 +894,7 @@
     "nodes": [
       {
         "id": 0,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "in_room",
         "x": 8,
@@ -533,7 +903,7 @@
       },
       {
         "id": 1,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 0,
         "obj_type": "in_room",
         "x": 2.5,
@@ -542,7 +912,7 @@
       },
       {
         "id": 2,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 0,
         "obj_type": "door",
         "x": 4,
@@ -551,16 +921,16 @@
       },
       {
         "id": 3,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "in_room",
-        "x": 6.5,
+        "x": 5.5,
         "y": 11.5,
         "z": 0
       },
       {
         "id": 4,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "in_room",
         "x": 10.5,
@@ -569,7 +939,7 @@
       },
       {
         "id": 5,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": -1,
         "obj_type": "elevator",
         "x": 12,
@@ -578,7 +948,7 @@
       },
       {
         "id": 6,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "door",
         "x": 2.5,
@@ -587,7 +957,7 @@
       },
       {
         "id": 7,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 2,
         "obj_type": "door",
         "x": 4.5,
@@ -596,7 +966,7 @@
       },
       {
         "id": 8,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "in_room",
         "x": 8,
@@ -605,7 +975,7 @@
       },
       {
         "id": 9,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 3,
         "obj_type": "door",
         "x": 10,
@@ -614,7 +984,7 @@
       },
       {
         "id": 10,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 2,
         "obj_type": "in_room",
         "x": 2.5,
@@ -623,7 +993,7 @@
       },
       {
         "id": 11,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 4,
         "obj_type": "door",
         "x": 4,
@@ -632,7 +1002,7 @@
       },
       {
         "id": 12,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 3,
         "obj_type": "in_room",
         "x": 6,
@@ -641,7 +1011,7 @@
       },
       {
         "id": 13,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 4,
         "obj_type": "in_room",
         "x": 9.5,
@@ -650,7 +1020,7 @@
       },
       {
         "id": 14,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": -1,
         "obj_type": "staircase",
         "x": 11,
@@ -659,7 +1029,7 @@
       },
       {
         "id": 15,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 5,
         "obj_type": "door",
         "x": 5.5,
@@ -668,7 +1038,7 @@
       },
       {
         "id": 16,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 6,
         "obj_type": "door",
         "x": 6,
@@ -677,7 +1047,7 @@
       },
       {
         "id": 17,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 6,
         "obj_type": "in_room",
         "x": 9,
@@ -686,7 +1056,7 @@
       },
       {
         "id": 18,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": -1,
         "obj_type": "elevator",
         "x": 12,
@@ -695,7 +1065,7 @@
       },
       {
         "id": 19,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 5,
         "obj_type": "in_room",
         "x": 3.5,
@@ -704,7 +1074,7 @@
       },
       {
         "id": 20,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 7,
         "obj_type": "door",
         "x": 9,
@@ -713,7 +1083,7 @@
       },
       {
         "id": 21,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 7,
         "obj_type": "in_room",
         "x": 9,
@@ -722,7 +1092,7 @@
       },
       {
         "id": 22,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 7,
         "obj_type": "in_room",
         "x": 7.5,
@@ -731,7 +1101,7 @@
       },
       {
         "id": 23,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 7,
         "obj_type": "in_room",
         "x": 9,
@@ -740,7 +1110,7 @@
       },
       {
         "id": 24,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": -1,
         "obj_type": "staircase",
         "x": 10,
@@ -749,7 +1119,7 @@
       },
       {
         "id": 25,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 8,
         "obj_type": "door",
         "x": 6,
@@ -758,7 +1128,7 @@
       },
       {
         "id": 26,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 9,
         "obj_type": "in_room",
         "x": 9,
@@ -767,7 +1137,7 @@
       },
       {
         "id": 27,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": -1,
         "obj_type": "elevator",
         "x": 12,
@@ -776,7 +1146,7 @@
       },
       {
         "id": 28,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 8,
         "obj_type": "in_room",
         "x": 3.5,
@@ -785,7 +1155,7 @@
       },
       {
         "id": 29,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 9,
         "obj_type": "door",
         "x": 9,
@@ -794,7 +1164,7 @@
       },
       {
         "id": 30,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 10,
         "obj_type": "in_room",
         "x": 9,
@@ -803,7 +1173,7 @@
       },
       {
         "id": 31,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": -1,
         "obj_type": "staircase",
         "x": 9,
@@ -812,7 +1182,7 @@
       },
       {
         "id": 32,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 10,
         "obj_type": "in_room",
         "x": 7.5,
@@ -821,7 +1191,7 @@
       },
       {
         "id": 33,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 10,
         "obj_type": "in_room",
         "x": 11,
@@ -830,7 +1200,7 @@
       },
       {
         "id": 34,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 10,
         "obj_type": "in_room",
         "x": 9,
@@ -839,7 +1209,7 @@
       },
       {
         "id": 35,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 11,
         "obj_type": "qr",
         "x": 7.0,
@@ -848,7 +1218,7 @@
       },
       {
         "id": 36,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 7,
         "obj_type": "qr",
         "x": 6.5,
@@ -857,7 +1227,7 @@
       },
       {
         "id": 37,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 9,
         "obj_type": "qr",
         "x": 4.25,
@@ -866,7 +1236,7 @@
       },
       {
         "id": 38,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 4,
         "obj_type": "qr",
         "x": 3.5,
@@ -875,7 +1245,7 @@
       },
       {
         "id": 39,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 10,
         "obj_type": "qr",
         "x": 3.75,
@@ -884,7 +1254,7 @@
       },
       {
         "id": 40,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 1,
         "obj_type": "qr",
         "x": 3.75,
@@ -893,7 +1263,7 @@
       },
       {
         "id": 41,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 2,
         "obj_type": "qr",
         "x": 1.5,
@@ -902,7 +1272,7 @@
       },
       {
         "id": 42,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 0,
         "obj_type": "qr",
         "x": 4.25,
@@ -911,7 +1281,7 @@
       },
       {
         "id": 43,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 3,
         "obj_type": "qr",
         "x": 11.75,
@@ -920,7 +1290,7 @@
       },
       {
         "id": 44,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 5,
         "obj_type": "qr",
         "x": 4.25,
@@ -929,7 +1299,7 @@
       },
       {
         "id": 45,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 6,
         "obj_type": "qr",
         "x": 8.5,
@@ -938,7 +1308,7 @@
       },
       {
         "id": 46,
-        "dummy_floor_id": 0,
+        "floor_id": 0,
         "obj_id": 8,
         "obj_type": "qr",
         "x": 11.0,
@@ -947,7 +1317,7 @@
       },
       {
         "id": 47,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 13,
         "obj_type": "qr",
         "x": 5.75,
@@ -956,7 +1326,7 @@
       },
       {
         "id": 48,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 12,
         "obj_type": "qr",
         "x": 6.25,
@@ -965,7 +1335,7 @@
       },
       {
         "id": 49,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 14,
         "obj_type": "qr",
         "x": 11.75,
@@ -974,7 +1344,7 @@
       },
       {
         "id": 50,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 15,
         "obj_type": "qr",
         "x": 8.0,
@@ -983,7 +1353,7 @@
       },
       {
         "id": 51,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 16,
         "obj_type": "qr",
         "x": 10.0,
@@ -992,7 +1362,7 @@
       },
       {
         "id": 52,
-        "dummy_floor_id": 1,
+        "floor_id": 1,
         "obj_id": 17,
         "obj_type": "qr",
         "x": 10.0,
@@ -1001,7 +1371,7 @@
       },
       {
         "id": 53,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 19,
         "obj_type": "qr",
         "x": 5.75,
@@ -1010,7 +1380,7 @@
       },
       {
         "id": 54,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 18,
         "obj_type": "qr",
         "x": 7.1767766952966365,
@@ -1019,7 +1389,7 @@
       },
       {
         "id": 55,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 20,
         "obj_type": "qr",
         "x": 11.75,
@@ -1028,7 +1398,7 @@
       },
       {
         "id": 56,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 21,
         "obj_type": "qr",
         "x": 8.0,
@@ -1037,7 +1407,7 @@
       },
       {
         "id": 57,
-        "dummy_floor_id": 2,
+        "floor_id": 2,
         "obj_id": 22,
         "obj_type": "qr",
         "x": 10.0,
@@ -1068,7 +1438,7 @@
         "id": 3,
         "node1_id": 2,
         "node2_id": 3,
-        "weight": 5.0990195135927845
+        "weight": 3.1622776601683795
       },
       {
         "id": 4,
@@ -1080,19 +1450,19 @@
         "id": 5,
         "node1_id": 7,
         "node2_id": 3,
-        "weight": 8.06225774829855
+        "weight": 7.280109889280518
       },
       {
         "id": 6,
         "node1_id": 3,
         "node2_id": 0,
-        "weight": 5.830951894845301
+        "weight": 7.0710678118654755
       },
       {
         "id": 7,
         "node1_id": 3,
         "node2_id": 8,
-        "weight": 5.830951894845301
+        "weight": 7.0710678118654755
       },
       {
         "id": 8,
@@ -1470,7 +1840,7 @@
         "id": 70,
         "node1_id": 42,
         "node2_id": 3,
-        "weight": 6.020797289396148
+        "weight": 4.716990566028302
       },
       {
         "id": 71,

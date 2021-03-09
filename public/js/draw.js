@@ -20,11 +20,15 @@ mainGroup = new Group();
 
 
 
-
+mainGroup = null
 
 
 function drawInit()
 {
+
+    if (mainGroup!=null)
+        mainGroup.removeChildren();
+
 
     mainGroup = new Group();
 
@@ -51,6 +55,9 @@ function drawInit()
 
         r = rooms[ii];
 
+
+
+        /*
         console.log(r.dummy_walls)
 
         var xy1 =  coordsToEditor(r.dummy_walls[0],r.dummy_walls[1],r.floor.editorHpos);
@@ -68,10 +75,33 @@ function drawInit()
         path.strokeColor = 'black';
 
 
-        mainGroup.addChild(path);
+
+        */
+
+        p = new Path();
+
+        end = null
+        p.strokeColor = 'black';
+        r.walls.forEach(function (w) {
+            var xy1 =  coordsToEditor(w.x1,w.y1,r.floor.editorHpos);
+            var xy2 =  coordsToEditor(w.x2,w.y2,r.floor.editorHpos);
+
+            start = new Point(xy1);
+            end = new Point(xy2);
+
+
+            p.moveTo(start);
+            p.lineTo(end)
+
+
+        })
+
+
+        mainGroup.addChild(p);
+        typeLayers["rooms"].push(p);
 
         t = new PointText({
-            point: start+new Point(5,20),
+            point: end+new Point(5,20),
             content: r.id,
             fontSize: 20,
             justification: 'left'
@@ -81,6 +111,48 @@ function drawInit()
 
 
         typeLayers["roomsData"].push(t);
+
+
+
+
+        r.furniture.forEach(function (f) {
+
+            var xy1 =  coordsToEditor(f.x1,f.y1,r.floor.editorHpos);
+            var xy2 =  coordsToEditor(f.x2,f.y2,r.floor.editorHpos);
+
+            console.log(xy1,xy2)
+
+            start = new Point(xy1);
+            end = new Point(xy2);
+            rectangle = new Rectangle(start, end);
+            var path = new Path.Rectangle(rectangle);
+
+            path.strokeColor = 'grey';
+
+
+            mainGroup.addChild(path);
+            typeLayers["furniture"].push(path);
+
+
+            t = new PointText({
+                point: start+new Point(4,10),
+                content: f.name,
+                fontSize: 10,
+                justification: 'left'
+            });
+
+            mainGroup.addChild(t)
+
+
+            typeLayers["furnitureData"].push(t);
+        })
+
+
+
+
+
+
+
 
 
 
@@ -310,7 +382,7 @@ function onMouseDrag(event) {
 
 
 
-drawInit();
+drawJS.drawInit = drawInit;
 
 
 
