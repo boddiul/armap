@@ -816,7 +816,7 @@ def build34():
 
 
     ww = 1
-    x = 4.76
+    x = 4.76-0.5
     y = 6.0
     new_room(0,0,'Диван','',True,None,[[x-1,y],[x+1,y],[x+1,y-ww],[x-1,y-ww]])
     new_qr(0,0,x,y,90,0,0)
