@@ -190,7 +190,7 @@
         "floor_id": 0,
         "obj_id": 0,
         "obj_type": "qr",
-        "direction": 90,
+        "direction": 1.5707963267948966,
         "x": 4.76,
         "y": 5.9,
         "z": 0
@@ -200,7 +200,7 @@
         "floor_id": 0,
         "obj_id": 1,
         "obj_type": "qr",
-        "direction": 270,
+        "direction": 4.71238898038469,
         "x": 2.95,
         "y": 3.54,
         "z": 0
