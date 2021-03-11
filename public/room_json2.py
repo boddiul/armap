@@ -400,6 +400,7 @@ def qrnodes():
                 #    new_edge(l_node_id,o[0])
 
 
+                ii = 0
                 for o in ok_node_id:
                     ye = True
                     for e in mapp["graph"]["edges"]:
@@ -427,6 +428,10 @@ def qrnodes():
 
                     if ye:
                         #print(l_node_id,o[0])
+                        ii+=1
+
+                        if (map_id==33 and ii>2):
+                            continue
                         new_edge(l_node_id,o[0])
 
 
@@ -762,22 +767,22 @@ def build33():
 
     new_room_node(0,    4,  1.5,      4.0,     0)
 
-    new_door_node(0,    5,  5.7,      3.4,     1,2,270)
+    #new_door_node(0,    5,  5.7,      3.4,     1,2,270)
     #new_door_node(0,    6,  1.97,      2.2,     0,2,0)
 
     new_door_node(0, 6,1.97,6.98-1.5,0,1,0)
-    new_room_node(0,    7,  4,      2.3,     2)
+    #new_room_node(0,    7,  4,      2.3,     2)
 
 
 
     new_edge(0,2)
     new_edge(2,1)
     new_edge(1,3)
-    new_edge(3,5)
+    #new_edge(3,5)
     new_edge(2,3)
-    new_edge(2,5)
+    #new_edge(2,5)
 
-    new_edge(5,7)
+    #new_edge(5,7)
     #new_edge(6,7)
     #new_edge(6,5)
     new_edge(6,0)
