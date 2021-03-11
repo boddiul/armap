@@ -225,7 +225,15 @@
           "name": "Холл на первом этаже",
           "description": "Холл",
           "can_search": true,
-          "elevators": [],
+          "elevators": [
+            {
+              "id": 0,
+              "x": 12,
+              "y": 12,
+              "direction": 0.0,
+              "wall_id": -1
+            }
+          ],
           "staircases": [],
           "furniture": [
             {
@@ -316,7 +324,16 @@
           "description": "",
           "can_search": false,
           "elevators": [],
-          "staircases": [],
+          "staircases": [
+            {
+              "id": 0,
+              "x": 11,
+              "y": 6,
+              "direction": 4.71238898038469,
+              "width": 1,
+              "height": 2.5
+            }
+          ],
           "furniture": [],
           "walls": [
             {
@@ -494,8 +511,9 @@
       {
         "id": 5,
         "floor_id": 0,
-        "obj_id": -1,
+        "obj_id": 0,
         "obj_type": "elevator",
+        "direction": 0.0,
         "x": 12,
         "y": 12,
         "z": 0
@@ -575,8 +593,9 @@
       {
         "id": 14,
         "floor_id": 0,
-        "obj_id": -1,
+        "obj_id": 0,
         "obj_type": "staircase",
+        "direction": 4.71238898038469,
         "x": 11,
         "y": 6,
         "z": 0
@@ -591,109 +610,121 @@
         "z": 0
       },
       {
-        "id": 35,
+        "id": 41,
         "floor_id": 0,
         "obj_id": 11,
         "obj_type": "qr",
+        "direction": 4.71238898038469,
         "x": 7.0,
         "y": 2.25,
         "z": 0
       },
       {
-        "id": 36,
+        "id": 42,
         "floor_id": 0,
         "obj_id": 7,
         "obj_type": "qr",
+        "direction": 1.5707963267948966,
         "x": 6.5,
         "y": 7.75,
         "z": 0
       },
       {
-        "id": 37,
+        "id": 43,
         "floor_id": 0,
         "obj_id": 9,
         "obj_type": "qr",
+        "direction": 3.141592653589793,
         "x": 4.25,
         "y": 6.0,
         "z": 0
       },
       {
-        "id": 38,
+        "id": 44,
         "floor_id": 0,
         "obj_id": 4,
         "obj_type": "qr",
+        "direction": 1.5707963267948966,
         "x": 3.5,
         "y": 8.75,
         "z": 0
       },
       {
-        "id": 39,
+        "id": 45,
         "floor_id": 0,
         "obj_id": 10,
         "obj_type": "qr",
+        "direction": 0.0,
         "x": 3.75,
         "y": 4.0,
         "z": 0
       },
       {
-        "id": 40,
+        "id": 46,
         "floor_id": 0,
         "obj_id": 1,
         "obj_type": "qr",
+        "direction": 0.0,
         "x": 3.75,
         "y": 11.0,
         "z": 0
       },
       {
-        "id": 41,
+        "id": 47,
         "floor_id": 0,
         "obj_id": 2,
         "obj_type": "qr",
+        "direction": 4.71238898038469,
         "x": 1.5,
         "y": 9.25,
         "z": 0
       },
       {
-        "id": 42,
+        "id": 48,
         "floor_id": 0,
         "obj_id": 0,
         "obj_type": "qr",
+        "direction": 3.141592653589793,
         "x": 4.25,
         "y": 13.5,
         "z": 0
       },
       {
-        "id": 43,
+        "id": 49,
         "floor_id": 0,
         "obj_id": 3,
         "obj_type": "qr",
+        "direction": 0.0,
         "x": 11.75,
         "y": 9.5,
         "z": 0
       },
       {
-        "id": 44,
+        "id": 50,
         "floor_id": 0,
         "obj_id": 5,
         "obj_type": "qr",
+        "direction": 4.71238898038469,
         "x": 4.25,
         "y": 8.25,
         "z": 0
       },
       {
-        "id": 45,
+        "id": 51,
         "floor_id": 0,
         "obj_id": 6,
         "obj_type": "qr",
+        "direction": 4.71238898038469,
         "x": 8.5,
         "y": 8.25,
         "z": 0
       },
       {
-        "id": 46,
+        "id": 52,
         "floor_id": 0,
         "obj_id": 8,
         "obj_type": "qr",
+        "direction": 1.5707963267948966,
         "x": 11.0,
         "y": 7.75,
         "z": 0
@@ -852,169 +883,169 @@
       },
       {
         "id": 25,
-        "node1_id": 35,
+        "node1_id": 41,
         "node2_id": 12,
         "weight": 5.852349955359813
       },
       {
         "id": 26,
-        "node1_id": 35,
+        "node1_id": 41,
         "node2_id": 15,
         "weight": 3.0413812651491097
       },
       {
         "id": 27,
-        "node1_id": 36,
+        "node1_id": 42,
         "node2_id": 7,
         "weight": 4.031128874149275
       },
       {
         "id": 28,
-        "node1_id": 36,
+        "node1_id": 42,
         "node2_id": 12,
         "weight": 5.5901699437494745
       },
       {
         "id": 29,
-        "node1_id": 37,
+        "node1_id": 43,
         "node2_id": 7,
         "weight": 4.031128874149275
       },
       {
         "id": 30,
-        "node1_id": 37,
+        "node1_id": 43,
         "node2_id": 11,
         "weight": 2.0615528128088303
       },
       {
         "id": 31,
-        "node1_id": 37,
+        "node1_id": 43,
         "node2_id": 12,
         "weight": 4.031128874149275
       },
       {
         "id": 32,
-        "node1_id": 38,
+        "node1_id": 44,
         "node2_id": 6,
         "weight": 2.0615528128088303
       },
       {
         "id": 33,
-        "node1_id": 38,
+        "node1_id": 44,
         "node2_id": 11,
         "weight": 7.566372975210778
       },
       {
         "id": 34,
-        "node1_id": 39,
+        "node1_id": 45,
         "node2_id": 10,
         "weight": 3.905124837953327
       },
       {
         "id": 35,
-        "node1_id": 39,
+        "node1_id": 45,
         "node2_id": 11,
         "weight": 2.0615528128088303
       },
       {
         "id": 36,
-        "node1_id": 40,
+        "node1_id": 46,
         "node2_id": 2,
         "weight": 2.0615528128088303
       },
       {
         "id": 37,
-        "node1_id": 40,
+        "node1_id": 46,
         "node2_id": 6,
         "weight": 4.716990566028302
       },
       {
         "id": 38,
-        "node1_id": 41,
+        "node1_id": 47,
         "node2_id": 1,
         "weight": 5.852349955359813
       },
       {
         "id": 39,
-        "node1_id": 41,
+        "node1_id": 47,
         "node2_id": 6,
         "weight": 2.0615528128088303
       },
       {
         "id": 40,
-        "node1_id": 42,
+        "node1_id": 48,
         "node2_id": 0,
         "weight": 7.566372975210778
       },
       {
         "id": 41,
-        "node1_id": 42,
+        "node1_id": 48,
         "node2_id": 2,
         "weight": 3.0413812651491097
       },
       {
         "id": 42,
-        "node1_id": 42,
+        "node1_id": 48,
         "node2_id": 3,
         "weight": 4.716990566028302
       },
       {
         "id": 43,
-        "node1_id": 43,
+        "node1_id": 49,
         "node2_id": 4,
         "weight": 4.716990566028302
       },
       {
         "id": 44,
-        "node1_id": 43,
+        "node1_id": 49,
         "node2_id": 5,
         "weight": 5.024937810560445
       },
       {
         "id": 45,
-        "node1_id": 43,
+        "node1_id": 49,
         "node2_id": 9,
         "weight": 4.6097722286464435
       },
       {
         "id": 46,
-        "node1_id": 44,
+        "node1_id": 50,
         "node2_id": 2,
         "weight": 7.516648189186454
       },
       {
         "id": 47,
-        "node1_id": 44,
+        "node1_id": 50,
         "node2_id": 7,
         "weight": 0.7071067811865476
       },
       {
         "id": 48,
-        "node1_id": 45,
+        "node1_id": 51,
         "node2_id": 7,
         "weight": 8.0156097709407
       },
       {
         "id": 49,
-        "node1_id": 45,
+        "node1_id": 51,
         "node2_id": 8,
         "weight": 1.8027756377319946
       },
       {
         "id": 50,
-        "node1_id": 45,
+        "node1_id": 51,
         "node2_id": 9,
         "weight": 3.0413812651491097
       },
       {
         "id": 51,
-        "node1_id": 46,
+        "node1_id": 52,
         "node2_id": 9,
         "weight": 2.0615528128088303
       },
       {
         "id": 52,
-        "node1_id": 46,
+        "node1_id": 52,
         "node2_id": 14,
         "weight": 3.5
       }

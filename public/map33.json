@@ -9,9 +9,57 @@
       "name": "Этаж 0",
       "rooms": [
         {
-          "id": 1,
+          "id": 0,
           "name": "Балкон",
           "description": "Место для отдыха",
+          "can_search": true,
+          "elevators": [],
+          "staircases": [],
+          "furniture": [],
+          "walls": [
+            {
+              "id": 0,
+              "x1": 1,
+              "y1": 6.98,
+              "x2": 1.93,
+              "y2": 6.98,
+              "wall_prev_id": -1,
+              "wall_next_id": 1
+            },
+            {
+              "id": 1,
+              "x1": 1.93,
+              "y1": 6.98,
+              "x2": 1.93,
+              "y2": 1,
+              "wall_prev_id": 0,
+              "wall_next_id": 2
+            },
+            {
+              "id": 2,
+              "x1": 1.93,
+              "y1": 1,
+              "x2": 1,
+              "y2": 1,
+              "wall_prev_id": 1,
+              "wall_next_id": 3
+            },
+            {
+              "id": 3,
+              "x1": 1,
+              "y1": 1,
+              "x2": 1,
+              "y2": 6.98,
+              "wall_prev_id": 2,
+              "wall_next_id": 0
+            }
+          ],
+          "qrs": []
+        },
+        {
+          "id": 1,
+          "name": "Комната",
+          "description": "Главная комната для тестирования",
           "can_search": true,
           "elevators": [],
           "staircases": [],
@@ -65,71 +113,6 @@
               "y2": 4.8
             }
           ],
-          "walls": [
-            {
-              "id": 0,
-              "x1": 1,
-              "y1": 6.98,
-              "x2": 1.93,
-              "y2": 6.98,
-              "wall_prev_id": -1,
-              "wall_next_id": 1
-            },
-            {
-              "id": 1,
-              "x1": 1.93,
-              "y1": 6.98,
-              "x2": 1.93,
-              "y2": 1,
-              "wall_prev_id": 0,
-              "wall_next_id": 2
-            },
-            {
-              "id": 2,
-              "x1": 1.93,
-              "y1": 1,
-              "x2": 1,
-              "y2": 1,
-              "wall_prev_id": 1,
-              "wall_next_id": 3
-            },
-            {
-              "id": 3,
-              "x1": 1,
-              "y1": 1,
-              "x2": 1,
-              "y2": 6.98,
-              "wall_prev_id": 2,
-              "wall_next_id": 0
-            }
-          ],
-          "qrs": [
-            {
-              "id": 0,
-              "x": 7.88,
-              "y": 5.3,
-              "z": 0,
-              "direction": 0.0,
-              "wall_id": -1
-            },
-            {
-              "id": 1,
-              "x": 2.95,
-              "y": 3.44,
-              "z": 0,
-              "direction": 4.71238898038469,
-              "wall_id": -1
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "name": "Комната",
-          "description": "Главная комната для тестирования",
-          "can_search": true,
-          "elevators": [],
-          "staircases": [],
-          "furniture": [],
           "walls": [
             {
               "id": 4,
@@ -186,10 +169,35 @@
               "wall_next_id": 4
             }
           ],
-          "qrs": []
+          "qrs": [
+            {
+              "id": 0,
+              "x": 4.76,
+              "y": 6.0,
+              "z": 0,
+              "direction": 1.5707963267948966,
+              "wall_id": -1
+            },
+            {
+              "id": 1,
+              "x": 2.95,
+              "y": 3.44,
+              "z": 0,
+              "direction": 4.71238898038469,
+              "wall_id": -1
+            },
+            {
+              "id": 2,
+              "x": 7.88,
+              "y": 5.3,
+              "z": 0,
+              "direction": 0.0,
+              "wall_id": -1
+            }
+          ]
         },
         {
-          "id": 3,
+          "id": 2,
           "name": "Прихожая",
           "description": "Помещение для входа и выхода",
           "can_search": true,
@@ -340,23 +348,33 @@
         "z": 0
       },
       {
-        "id": 35,
+        "id": 41,
         "floor_id": 0,
         "obj_id": 0,
         "obj_type": "qr",
-        "direction": 0.0,
-        "x": 7.68,
-        "y": 5.3,
+        "direction": 1.5707963267948966,
+        "x": 4.76,
+        "y": 5.8,
         "z": 0
       },
       {
-        "id": 36,
+        "id": 42,
         "floor_id": 0,
         "obj_id": 1,
         "obj_type": "qr",
         "direction": 4.71238898038469,
         "x": 2.95,
         "y": 3.64,
+        "z": 0
+      },
+      {
+        "id": 43,
+        "floor_id": 0,
+        "obj_id": 2,
+        "obj_type": "qr",
+        "direction": 0.0,
+        "x": 7.68,
+        "y": 5.3,
         "z": 0
       }
     ],
@@ -423,27 +441,45 @@
       },
       {
         "id": 10,
-        "node1_id": 35,
-        "node2_id": 1,
-        "weight": 2.512050954897212
+        "node1_id": 41,
+        "node2_id": 0,
+        "weight": 2.9810065414218734
       },
       {
         "id": 11,
-        "node1_id": 35,
-        "node2_id": 3,
-        "weight": 3.4176600181995864
+        "node1_id": 41,
+        "node2_id": 1,
+        "weight": 3.4131510367986952
       },
       {
         "id": 12,
-        "node1_id": 36,
+        "node1_id": 41,
+        "node2_id": 2,
+        "weight": 3.001066477104431
+      },
+      {
+        "id": 13,
+        "node1_id": 42,
         "node2_id": 0,
         "weight": 3.7852873074576516
       },
       {
-        "id": 13,
-        "node1_id": 36,
+        "id": 14,
+        "node1_id": 42,
         "node2_id": 2,
         "weight": 3.9284093473058523
+      },
+      {
+        "id": 15,
+        "node1_id": 43,
+        "node2_id": 1,
+        "weight": 2.512050954897212
+      },
+      {
+        "id": 16,
+        "node1_id": 43,
+        "node2_id": 3,
+        "weight": 3.4176600181995864
       }
     ]
   }

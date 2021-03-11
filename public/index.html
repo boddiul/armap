@@ -43,7 +43,7 @@
     <button onclick="loadLevel(33)">Example 33</button><br />
     <button onclick="loadLevel(22)">Example 22</button><br />
     <button onclick="loadLevel(220)">Example 220</button><br />
-
+    <button onclick="loadLevel(34)">Example 34</button><br />
     <br/>
     SHOW:<br/>
 
@@ -59,16 +59,16 @@
     <input type="checkbox" id="doorsDataBox"  onchange="onEditorLayerBox('doors',true)" />
     <label for="doorsDataBox">Doors Data</label><br/>
 
-    <input type="checkbox" id="staircasesBox"  onchange="onEditorLayerBox('staircases',false)" />
+    <input type="checkbox" id="staircasesBox"  onchange="onEditorLayerBox('staircases',false)" checked/>
     <label for="staircasesBox">Staircases</label><br/>
 
-    <input type="checkbox" id="staircasesDataBox"  onchange="onEditorLayerBox('staircases',true)" />
+    <input type="checkbox" id="staircasesDataBox"  onchange="onEditorLayerBox('staircases',true)" checked/>
     <label for="staircasesDataBox">Staircases Data</label><br/>
 
-    <input type="checkbox" id="elevatorsBox"  onchange="onEditorLayerBox('elevators',false)" />
+    <input type="checkbox" id="elevatorsBox"  onchange="onEditorLayerBox('elevators',false)" checked/>
     <label for="elevatorsBox">Elevators</label><br/>
 
-    <input type="checkbox" id="elevatorsDataBox"  onchange="onEditorLayerBox('elevators',true)" />
+    <input type="checkbox" id="elevatorsDataBox"  onchange="onEditorLayerBox('elevators',true)" checked/>
     <label for="elevatorsDataBox">Elevators Data</label><br/>
 
     <input type="checkbox" id="furnitureBox"  onchange="onEditorLayerBox('furniture',false)" checked/>
@@ -99,12 +99,19 @@
     <label for="edgesDataBox">Edges Data</label><br/>
 
 
+
+
     <br/>
     REQUEST URLS:<br/>
     id: <input id="requestIdBox" type="text" value="33"  onchange="onRequestIdBox()"><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
+
+    <br/>
+    GRAPH:<br/>
+    <button onclick="clearGraph()">CLEAR</button><br />
+    <button onclick="createGraph()">CREATE</button><br />
 
 
 

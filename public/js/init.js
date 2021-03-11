@@ -8,7 +8,7 @@ function httpGet(theUrl)
 }
 
 
-CURRENT_SCHEME_ID = 33
+CURRENT_SCHEME_ID = 220
 SEARCH_SCHEME_ID = CURRENT_SCHEME_ID
 
 
@@ -39,6 +39,10 @@ function loadLevel(id)
 
     doors = []
 
+    elevators = []
+
+    staircases = []
+
     let hpos = 0
 
     jsonMap.floors.forEach(function (f) {
@@ -51,7 +55,7 @@ function loadLevel(id)
 
         f.rooms.forEach(function (r) {
             //console.log('adding room');
-            newr = {id:r.id,floor:new_f,walls:r.walls,furniture:r.furniture}
+            newr = {id:r.id,name:r.name,floor:new_f,walls:r.walls,furniture:r.furniture}
             rooms.push(newr)
 
 
@@ -60,6 +64,20 @@ function loadLevel(id)
                 var aa = Math.round(q.direction*180/Math.PI)
 
                 qrs.push({id:q.id,direction:aa,x:q.x,y:q.y,room:newr})
+            })
+
+
+            r.elevators.forEach(function (e) {
+                var aa = Math.round(e.direction*180/Math.PI)
+
+                elevators.push({id:e.id,direction:aa,x:e.x,y:e.y,room:newr})
+            })
+
+
+            r.staircases.forEach(function (s) {
+                var aa = Math.round(s.direction*180/Math.PI)
+
+                staircases.push({id:s.id,direction:aa,x:s.x,y:s.y,width:s.width,height:s.height,room:newr})
             })
 
         })
@@ -121,14 +139,27 @@ function loadLevel(id)
 }
 
 
-typeLayers = {}
-types = ["rooms","doors","elevators","staircases","qrs","nodes","edges","furniture"]
-types.forEach(function (t) {
-    typeLayers[t] = []
-    typeLayers[t+"Data"] = []
-})
 
 
+
+function clearGraph() {
+
+    nodes = []
+    edges = []
+
+    drawJS.drawInit();
+}
+
+function createGraph() {
+
+    nodes = []
+    edges = []
+
+
+
+
+    drawJS.drawInit();
+}
 
 
 
@@ -141,18 +172,12 @@ function onEditorLayerBox(layer,isLabel)
     var selection = document.getElementById(layerId+"Box" );
 
 
-    setVisibleLayer(layerId,selection.checked)
+    drawJS.setVisibleLayer(layerId,selection.checked)
     //console.log(selection.checked)
 }
 
 
 
-function setVisibleLayer(layer,visible)
-{
-    typeLayers[layer].forEach(function (o) {
-        o.visible = visible;
-    })
-}
 
 
 

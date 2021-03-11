@@ -1,5 +1,22 @@
 
 
+typeLayers = {}
+types = ["rooms","doors","elevators","staircases","qrs","nodes","edges","furniture"]
+types.forEach(function (t) {
+    typeLayers[t] = []
+    typeLayers[t+"Data"] = []
+})
+
+
+function setVisibleLayer(layer,visible)
+{
+    typeLayers[layer].forEach(function (o) {
+        o.visible = visible;
+    })
+}
+
+
+
 
 function coordsToEditor(x,y,floor) {
     var k = 60
@@ -101,9 +118,9 @@ function drawInit()
         typeLayers["rooms"].push(p);
 
         t = new PointText({
-            point: end+new Point(5,20),
-            content: r.id,
-            fontSize: 20,
+            point: end+new Point(4,15),
+            content: r.id+' '+r.name,
+            fontSize: 14,
             justification: 'left'
         });
 
@@ -171,6 +188,90 @@ function drawInit()
 
 
     }
+
+    elevators.forEach(function (e) {
+
+
+        aa = e.direction/180*Math.PI
+        coords = [[0,0.5],[1,0.5],[1,-0.5],[0,-0.5]]
+
+        for (i=0;i<4;i+=1)
+        {
+            coords[i] = [e.x+coords[i][0]*Math.cos(aa)-coords[i][1]*Math.sin(aa),e.y+coords[i][0]*Math.sin(aa)+coords[i][1]*Math.cos(aa)];
+        }
+
+        coords.push(coords[0])
+        coords.push(coords[2])
+        coords.push(coords[1])
+        coords.push(coords[3])
+
+
+        var p = new Path();
+
+
+
+        p.strokeColor = 'green';
+
+        for (i=0;i<4+3;i+=1)
+        {
+            xy = coordsToEditor(coords[i][0],coords[i][1],e.room.floor.editorHpos)
+            xy2 = coordsToEditor(coords[i+1][0],coords[i+1][1],e.room.floor.editorHpos)
+
+            p.moveTo(xy)
+            p.lineTo(xy2)
+        }
+
+
+        mainGroup.addChild(p)
+        typeLayers["elevators"].push(p);
+
+
+    })
+
+
+    staircases.forEach(function (s) {
+        aa = s.direction/180*Math.PI
+        coords = [[0,s.width/2],[s.height,s.width/2],[s.height,-s.width/2],[0,-s.width/2]]
+        coords.push(coords[0])
+
+        for (i=0;i<5;i+=1)
+        {
+            coords.push([i/5*s.height,-s.width/2])
+            coords.push([i/5*s.height,s.width/2])
+            coords.push([(i+0.5)/5*s.height,s.width/2])
+            coords.push([(i+0.5)/5*s.height,-s.width/2])
+        }
+
+
+        for (i=0;i<coords.length;i+=1)
+        {
+            coords[i] = [s.x+coords[i][0]*Math.cos(aa)-coords[i][1]*Math.sin(aa),s.y+coords[i][0]*Math.sin(aa)+coords[i][1]*Math.cos(aa)];
+        }
+
+
+
+
+
+
+
+        var p = new Path();
+
+        p.strokeColor = 'green';
+
+        for (i=0;i<coords.length-1;i+=1)
+        {
+            xy = coordsToEditor(coords[i][0],coords[i][1],s.room.floor.editorHpos)
+            xy2 = coordsToEditor(coords[i+1][0],coords[i+1][1],s.room.floor.editorHpos)
+
+            p.moveTo(xy)
+            p.lineTo(xy2)
+        }
+
+
+        mainGroup.addChild(p)
+        typeLayers["staircases"].push(p);
+
+    })
 
 
     for (var dd=0;dd<doors.length;dd++)
@@ -383,6 +484,7 @@ function onMouseDrag(event) {
 
 
 drawJS.drawInit = drawInit;
+drawJS.setVisibleLayer = setVisibleLayer;
 
 
 
