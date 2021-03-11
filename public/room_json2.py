@@ -820,20 +820,20 @@ def build34():
     y = 6.0
     new_room(0,0,'Диван','',True,None,[[x-1,y],[x+1,y],[x+1,y-ww],[x-1,y-ww]])
     new_qr(0,0,x,y,90,0,0)
-    new_qr_node(0,0,x,y-0.05,0,90)
+    new_qr_node(0,0,x,y-0.1,0,90)
     
 
     x = 2.95
     y = 3.44
     new_room(0,1,'Стол','',True,None,[[x-1,y],[x+1,y],[x+1,y+ww],[x-1,y+ww]])
     new_qr(0,1,x,y,270,1,0)
-    new_qr_node(0,1,x,y+0.05,1,270)
+    new_qr_node(0,1,x,y+0.1,1,270)
 
     x = 7.88
     y = 5.3
     new_room(0,2,'Картина','',True,None,[[x-ww,y+1],[x,y+1],[x,y-1],[x-ww,y-1]])
     new_qr(0,2,x,y,0,2,0)
-    new_qr_node(0,2,x-0.05,y,2,0)
+    new_qr_node(0,2,x-0.1,y,2,0)
 
 
     
