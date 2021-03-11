@@ -156,6 +156,176 @@ function createGraph() {
     edges = []
 
 
+    n_id = 0;
+    e_id = 0;
+    rooms.forEach(function (r) {
+        let xx =0;
+        let yy =0;
+
+        r.walls.forEach(function (w) {
+            xx+=w.x1;
+            yy+=w.y1;
+        })
+
+        xx = xx/r.walls.length;
+        yy = yy/r.walls.length;
+
+        nodes.push({
+            "id":n_id,
+            "floor":r.floor,
+            "x":xx,
+            "y":yy,
+            "obj_type":"in_room",
+            "obj_id":r.id,
+        });
+        n_id+=1;
+    })
+
+
+    doors.forEach(function (d) {
+
+
+
+
+        xx = (d.x1+d.x2)/2
+        yy = (d.y1+d.y2)/2
+        n = {
+            "id":n_id,
+            "floor":d.floor,
+            "x":xx,
+            "y":yy,
+            "obj_type":"door",
+            "obj_id":d.id,
+            "obj":d
+        }
+        nodes.push(n);
+        n_id+=1
+
+
+        var r1_node = null
+        var r2_node = null
+        nodes.forEach(function (n) {
+            if (n.obj_type==="in_room" && d.room1 && n.obj_id ===d.room1.id)
+                r1_node = n;
+            if (n.obj_type==="in_room" && d.room2 && n.obj_id ===d.room2.id)
+                r2_node = n;
+        })
+
+
+        if (r1_node)
+        {
+            dist = Math.sqrt(Math.pow(r1_node.x-xx,2)+Math.pow(r1_node.y-yy,2))
+
+            edges.push({
+                "id":e_id,
+                "node1":n,
+                "node2":r1_node,
+                "weight":dist
+            })
+            e_id+=1
+
+        }
+
+        if (r2_node)
+        {
+            dist = Math.sqrt(Math.pow(r2_node.x-xx,2)+Math.pow(r2_node.y-yy,2))
+
+            edges.push({
+                "id":e_id,
+                "node1":n,
+                "node2":r2_node,
+                "weight":dist
+            })
+            e_id+=1
+
+        }
+
+
+
+    })
+
+
+    qrs.forEach(function (q) {
+        aa = q.direction/180*Math.PI;
+        xx = q.x -Math.cos(aa)*0.1;
+        yy = q.y -Math.sin(aa)*0.1;
+        new_node = {
+            "id":n_id,
+            "floor":q.room.floor,
+            "x":xx,
+            "y":yy,
+            "obj_type":"qr",
+            "obj_id":q.id,
+            "obj":q
+        }
+        nodes.push(new_node);
+        n_id+1;
+
+
+
+        nds = []
+        nodes.forEach(function (n) {
+
+            if (n.floor.id===new_node.floor.id)
+            {
+
+                ok = false;
+                if (n.obj_type==="in_room" && n.obj_id===q.room.id)
+                    ok = true;
+
+                if (n.obj_type==="door" && (n.obj.room1 && n.obj.room1.id===q.room.id))
+                    ok = true;
+
+                if (n.obj_type==="door" && (n.obj.room2 && n.obj.room2.id===q.room.id))
+                    ok = true;
+
+                if (n.obj_type==="qr" && n.obj.room.id === q.room.id)
+                    ok = true;
+
+                if (ok)
+                    nds.push({
+                        "node":n,
+                        "dist":Math.sqrt(Math.pow(n.x-xx,2)+Math.pow(n.y-yy,2))
+                    })
+            }
+
+        })
+
+
+
+        nds.sort(function (a, b) {
+            if (a.dist > b.dist) {
+                return 1;
+            }
+            if (a.dist < b.dist) {
+                return -1;
+            }
+            return 0;
+        });
+
+
+        console.log(nds)
+
+        for (let i=1;i<Math.min(3,nds.length);i++)
+        {
+            console.log(i)
+            edges.push({
+                "id":e_id,
+                "node1":new_node,
+                "node2":nds[i].node,
+                "weight":nds[i].dist
+            })
+            e_id+=1
+        }
+
+
+
+
+
+
+
+    })
+
 
 
     drawJS.drawInit();
