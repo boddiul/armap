@@ -881,12 +881,14 @@ def build35():
 
 
 
-    new_room_node(0,    4,  3.3,      5.5,     1)
-    new_room_node(0,    5,  6.44,      5.5,     2)
-    new_room_node(0,    6,  4.8,      4.3,     0)
-    new_room_node(0,    7,  6.17,      4.5,     2)
+    new_room_node(0,    4,  3.1,      5.5-1.7,     1)
+    new_room_node(0,    5,  6.44+1,      5.5,     2)
+    #new_room_node(0,    6,  4.8,      4.3,     0)
+    #new_room_node(0,    7,  6.17,      4.5,     2)
 
-    new_room_node(0,    8,  1.5,      2.0,     3)
+    new_room_node(0,    7,  4.5,      5.7,     0)
+
+    new_room_node(0,    8,  1.5,      1.5,     3)
 
 
     new_door_node(0, 9,1.97,6.98-1.5,0,1,0)
@@ -919,23 +921,24 @@ def build35():
 
 
 
-    new_edge(0,4)
-    new_edge(0,5)
-
+    new_edge(0,7)
     new_edge(1,4)
-    new_edge(1,6)
-
     new_edge(2,5)
-    new_edge(2,7)
+    new_edge(3,8)    
 
-    new_edge(3,8)
 
-    new_edge(8,9)
+    new_edge(4,7)
+    #new_edge(4,6)
+    new_edge(4,9)
+    
+    new_edge(5,7)
+    #new_edge(5,6)
+
+    new_edge(9,8)
     new_edge(9,4)
 
-    new_edge(6,4)
-    new_edge(6,5)
-    new_edge(6,7)
+    new_edge(9,7)  
+    
 
 
 reset()

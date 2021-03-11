@@ -260,8 +260,8 @@
         "floor_id": 0,
         "obj_id": 1,
         "obj_type": "in_room",
-        "x": 3.3,
-        "y": 5.5,
+        "x": 3.1,
+        "y": 3.8,
         "z": 0
       },
       {
@@ -269,26 +269,17 @@
         "floor_id": 0,
         "obj_id": 2,
         "obj_type": "in_room",
-        "x": 6.44,
+        "x": 7.44,
         "y": 5.5,
-        "z": 0
-      },
-      {
-        "id": 6,
-        "floor_id": 0,
-        "obj_id": 0,
-        "obj_type": "in_room",
-        "x": 4.8,
-        "y": 4.3,
         "z": 0
       },
       {
         "id": 7,
         "floor_id": 0,
-        "obj_id": 2,
+        "obj_id": 0,
         "obj_type": "in_room",
-        "x": 6.17,
-        "y": 4.5,
+        "x": 4.5,
+        "y": 5.7,
         "z": 0
       },
       {
@@ -297,7 +288,7 @@
         "obj_id": 3,
         "obj_type": "in_room",
         "x": 1.5,
-        "y": 2.0,
+        "y": 1.5,
         "z": 0
       },
       {
@@ -354,74 +345,62 @@
       {
         "id": 0,
         "node1_id": 0,
-        "node2_id": 4,
-        "weight": 2.0800000000000005
+        "node2_id": 7,
+        "weight": 0.6248199740725329
       },
       {
         "id": 1,
-        "node1_id": 0,
-        "node2_id": 5,
-        "weight": 4.432786933747212
+        "node1_id": 1,
+        "node2_id": 4,
+        "weight": 0.6003332407921449
       },
       {
         "id": 2,
-        "node1_id": 1,
-        "node2_id": 4,
-        "weight": 3.9820095429318094
+        "node1_id": 2,
+        "node2_id": 5,
+        "weight": 0.7889233169326407
       },
       {
         "id": 3,
-        "node1_id": 1,
-        "node2_id": 6,
-        "weight": 4.000049999687503
+        "node1_id": 3,
+        "node2_id": 8,
+        "weight": 0.8030566605165539
       },
       {
         "id": 4,
-        "node1_id": 2,
-        "node2_id": 5,
-        "weight": 2.7096863287103914
+        "node1_id": 4,
+        "node2_id": 7,
+        "weight": 4.720169488482379
       },
       {
         "id": 5,
-        "node1_id": 2,
-        "node2_id": 7,
-        "weight": 3.5956084325187585
+        "node1_id": 4,
+        "node2_id": 9,
+        "weight": 4.049345626147515
       },
       {
         "id": 6,
-        "node1_id": 3,
-        "node2_id": 8,
-        "weight": 1.8013605968822566
+        "node1_id": 5,
+        "node2_id": 7,
+        "weight": 5.893589738011971
       },
       {
         "id": 7,
-        "node1_id": 8,
-        "node2_id": 9,
-        "weight": 7.02319015832549
+        "node1_id": 9,
+        "node2_id": 8,
+        "weight": 8.015310349574744
       },
       {
         "id": 8,
         "node1_id": 9,
         "node2_id": 4,
-        "weight": 2.660300734879423
+        "weight": 4.049345626147515
       },
       {
         "id": 9,
-        "node1_id": 6,
-        "node2_id": 4,
-        "weight": 3.8418745424597094
-      },
-      {
-        "id": 10,
-        "node1_id": 6,
-        "node2_id": 5,
-        "weight": 4.064283454681773
-      },
-      {
-        "id": 11,
-        "node1_id": 6,
+        "node1_id": 9,
         "node2_id": 7,
-        "weight": 2.76904315603784
+        "weight": 5.079094407470686
       }
     ]
   }
