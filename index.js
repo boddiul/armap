@@ -24,6 +24,8 @@ mapData[220] = JSON.parse(fs.readFileSync('public/map220.json'));
 mapData[22] = JSON.parse(fs.readFileSync('public/map22.json'));
 mapData[33] = JSON.parse(fs.readFileSync('public/map33.json'));
 mapData[34] = JSON.parse(fs.readFileSync('public/map34.json'));
+mapData[35] = JSON.parse(fs.readFileSync('public/map35.json'));
+
 
 
 
@@ -155,7 +157,7 @@ app.get('/scheme/:schemeId/qrImageDocument', async (req, res) =>  {
         rr = await fetch(url,{encoding: null });
         imageBuffer = await rr.buffer();
         img = Buffer.from(imageBuffer, 'base64');
-        pdfDoc.image(img, {width: 250, height: 250});
+        pdfDoc.image(img, {width: 150, height: 150});
     }
 
 

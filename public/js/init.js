@@ -109,7 +109,7 @@ function loadLevel(id)
             if (floors[i].id===n.floor_id)
                 f = floors[i]
         }
-        nodes.push({id:n.id,floor:f,x:n.x,y:n.y,obj_type:n.obj_type})
+        nodes.push({id:n.id,floor:f,x:n.x,y:n.y,obj_id:n.obj_id,obj_type:n.obj_type})
     })
 
 

@@ -16,10 +16,10 @@ function setVisibleLayer(layer,visible)
 }
 
 
-
+k = 60;
 
 function coordsToEditor(x,y,floor) {
-    var k = 60
+
     var hy = 15;
 
     var hOffset = floor*14*k;
@@ -52,10 +52,33 @@ function drawInit()
     mainGroupStartOffset = null;
 
 
+    for (var l=-50;l<50;l++)
+    {
+        line = new Path();
+        line.moveTo([l*k,-5000]);
+        line.lineTo([l*k,5000]);
+
+
+        col = '#d8effa'
+        line.strokeColor = col;
+
+        mainGroup.addChild(line);
+
+        line = new Path();
+        line.moveTo([-5000,l*k]);
+        line.lineTo([5000,l*k]);
+
+        line.strokeColor = col;
+
+        mainGroup.addChild(line);
+
+    }
+
+
 
     floors.forEach(function (f) {
 
-        txy = coordsToEditor(1,1,f.editorHpos)
+        txy = coordsToEditor(0.5,0.5,f.editorHpos)
 
         t = new PointText({
             point: new Point(txy[0],txy[1]),
@@ -346,21 +369,6 @@ function drawInit()
     })
 
 
-    /*
-
-    for (var ii=0;ii<rooms.length;ii++)
-    {
-        r = rooms[ii];
-        console.log(r)
-        for (var jj=0;jj<r.qrs.length;jj++)
-        {
-            q = r.qrs[jj];
-            var triangle = new Path.RegularPolygon(coordsToEditor(q.x,q.y,r.floor.editorHpos), 3, 4);
-            triangle.fillColor = 'blue'
-
-        }
-    }
-    */
 
 
     for (var ii=0;ii<edges.length;ii++)
@@ -378,7 +386,7 @@ function drawInit()
         {
 
 
-            p.strokeColor = '#aceeca';
+            p.strokeColor = '#ff7ada';
 
         }
 
@@ -442,7 +450,7 @@ function drawInit()
 
         t = new PointText({
             point: new Point(xy)+new Point(4,-3),
-            content: n.id,
+            content: n.id+(n.obj_type==="in_room" ? " {"+n.obj_id+"}" : ""),
             fontSize: 15,
             justification: 'left',
             fillColor:'red'

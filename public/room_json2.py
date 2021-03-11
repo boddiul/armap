@@ -365,6 +365,9 @@ def qrnodes():
                             if (map_id==33 and (n1_id == 6 or n2_id == 6)):
                                 continue
 
+                            if (map_id==220 and (n1_id == 24 or n2_id == 24) and q["direction"]<math.pi):
+                                continue
+
                             no_id = -1
                             if n1_id == n["id"]:
                                 no_id = n2_id
@@ -591,7 +594,9 @@ def build220():
 
 
     new_room(2,8,'Склад','Главный склад',True,[1,15,6,2],None)
-    new_room(2,9,'Холл на третьем этаже','Холл',True,[6,15,12,8],None)
+
+    zz = 0.05
+    new_room(2,9,'Холл на третьем этаже','Холл',True,None,[[6+zz+2,15-zz],[12-zz,15-zz],[12-zz,8+zz],[6+zz,8+zz],[6+zz,15-zz-2]])
     new_room(2,10,'Лестничная площадка','',False,[6,8,12,2],None)
 
     new_door_node(2,    25, 6,      12,8,9,0)
@@ -638,8 +643,8 @@ def build220():
 
     new_edge(5,18)
     new_edge(18,27)
-    new_edge(14,23)
-    new_edge(23,31)
+    new_edge(14,24)
+    new_edge(24,31)
 
 
 
@@ -765,7 +770,7 @@ def build33():
     new_room_node(0,    2,  4.8,      4.3,     1)
     new_room_node(0,    3,  6.17,      4.5,     1)
 
-    new_room_node(0,    4,  1.5,      4.0,     0)
+    new_room_node(0,    4,  1.5,      2.0,     0)
 
     #new_door_node(0,    5,  5.7,      3.4,     1,2,270)
     #new_door_node(0,    6,  1.97,      2.2,     0,2,0)
@@ -850,9 +855,87 @@ def build34():
     new_edge(0,1)
     new_edge(2,1)
     new_edge(0,2)
+
+
+
+
+def build35():
+    global mapp,map_id
+    map_id = 35
+
+    mapp = {"name":"Квартира Тимура 2",
+            "id":map_id,
+            "description":"Квартира для тестирования приложения 1",
+            "address":"Москва, Россия",            
+            "floors":[],
+            "graph":{"nodes":[],"edges":[]}
+            
+            }
+
+    new_floor(0,'Этаж 0')
+
+    new_room(0,3,'Балкон','Место для отдыха',True,None,[[1,6.98],[1.93,6.98],[1.93,1],[1,1]])
+    new_room(0,2,'Картина','Главная комната для тестирования',True,None,[[6.18,6.98],[7.88,6.98],[7.88,4.38],[6.18,4.38]])
+    new_room(0,1,'Стол','Главная комната для тестирования',True,None,[[2.02,6.98],[3.95,6.98],[3.95,3.44],[2.02,3.44]])
+    new_room(0,0,'Диван','Главная комната для тестирования',True,None,[[4,6.98],[6,6.98],[6,3.44],[4,3.44]])
+
+
+
+    new_room_node(0,    4,  3.3,      5.5,     1)
+    new_room_node(0,    5,  6.44,      5.5,     2)
+    new_room_node(0,    6,  4.8,      4.3,     0)
+    new_room_node(0,    7,  6.17,      4.5,     2)
+
+    new_room_node(0,    8,  1.5,      2.0,     3)
+
+
+    new_door_node(0, 9,1.97,6.98-1.5,0,1,0)
+
+
+
+
+
+
+    x = 4.76-0.5
+    y = 6.0
+    new_qr(0,0,x,y,90,0,0)
+    new_qr_node(0,0,x,y-0.1,0,90*math.pi/180)
     
 
+    x = 2.95
+    y = 3.44
+    new_qr(0,1,x,y,270,1,0)
+    new_qr_node(0,1,x,y+0.1,1,270*math.pi/180)
 
+    x = 7.88
+    y = 5.3
+    new_qr(0,2,x,y,0,2,0)
+    new_qr_node(0,2,x-0.1,y,2,0)
+
+    x = 1+0.93/2
+    y = 1
+    new_qr(0,           3,  x,      y,   270,    3,0)
+    new_qr_node(0,3,x,y+0.1,3,0) 
+
+
+
+    new_edge(0,4)
+    new_edge(0,5)
+
+    new_edge(1,4)
+    new_edge(1,6)
+
+    new_edge(2,5)
+    new_edge(2,7)
+
+    new_edge(3,8)
+
+    new_edge(8,9)
+    new_edge(9,4)
+
+    new_edge(6,4)
+    new_edge(6,5)
+    new_edge(6,7)
 
 
 reset()
@@ -864,6 +947,11 @@ saveMap()
 reset()
 build34()
 saveMap()
+
+reset()
+build35()
+saveMap()
+
 
 reset()
 build22()
