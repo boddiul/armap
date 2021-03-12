@@ -259,7 +259,7 @@ function createGraph() {
             "obj":q
         }
         nodes.push(new_node);
-        n_id+1;
+        n_id+=1;
 
 
 
