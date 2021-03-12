@@ -891,7 +891,7 @@ def build35():
     new_room_node(0,    8,  1.5,      1.5,     3)
 
 
-    new_door_node(0, 9,1.97,6.98-1.5,0,1,0)
+    new_door_node(0, 9,1.97,6.98-1.5,3,1,0)
 
 
 

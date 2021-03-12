@@ -329,6 +329,8 @@ function drawInit()
 
 
         var ndoor = new Path.RegularPolygon(coordsToEditor(xx,yy,d.floor.editorHpos), 4, 5);
+        ndoor.scale(1,5);
+        ndoor.rotation = d.direction/Math.PI*180;
         //console.log(ndoor)
         ndoor.fillColor = 'brown'
         mainGroup.addChild(ndoor)
@@ -489,10 +491,32 @@ function onMouseDrag(event) {
     mainGroup.position = mainGroupStartOffset+curr-mouseStartOffset;
 }
 
+function onScroll(event)
+{
+    console.log(event);
 
+
+    hh = 1 - event.deltaY/1000;
+
+    mainGroup.children.forEach(function (c) {
+
+        c.position.x = hh*c.position.x;
+        c.position.y = hh*c.position.y;
+
+
+        types.forEach(function (t) {
+            if (typeLayers[t].indexOf(c)>=0)
+            {
+                c.scale(hh);
+            }
+
+        })
+
+    })
+}
 
 drawJS.drawInit = drawInit;
 drawJS.setVisibleLayer = setVisibleLayer;
 
-
+drawJS.onScroll = onScroll;
 

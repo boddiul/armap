@@ -93,7 +93,7 @@ function loadLevel(id)
                 if (r.id===d.room2_id)
                     room2 = r;
             })
-            newd = {id:d.id,x1:d.x1,y1:d.y1,x2:d.x2,y2:d.y2,width:d.width,room1:room1,room2:room2,floor:new_f}
+            newd = {id:d.id,x1:d.x1,y1:d.y1,x2:d.x2,y2:d.y2,width:d.width,room1:room1,room2:room2,floor:new_f,direction:Math.atan2(d.y2-d.y1,d.x2-d.x1)}
 
             doors.push(newd)
         })
@@ -351,5 +351,8 @@ function onEditorLayerBox(layer,isLabel)
 
 
 
+window.addEventListener('wheel', function (e) {
+    drawJS.onScroll(e);
+});
 
 

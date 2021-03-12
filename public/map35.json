@@ -247,7 +247,7 @@
           "width": 0.9,
           "wall1_id": -1,
           "wall2_id": -1,
-          "room1_id": 0,
+          "room1_id": 3,
           "room2_id": 1
         }
       ]
