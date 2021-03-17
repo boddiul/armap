@@ -25,6 +25,7 @@ mapData[22] = JSON.parse(fs.readFileSync('public/map22.json'));
 mapData[33] = JSON.parse(fs.readFileSync('public/map33.json'));
 mapData[34] = JSON.parse(fs.readFileSync('public/map34.json'));
 mapData[35] = JSON.parse(fs.readFileSync('public/map35.json'));
+mapData[36] = JSON.parse(fs.readFileSync('public/map36.json'));
 
 
 

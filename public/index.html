@@ -39,7 +39,8 @@
 <body onload="loadLevel(CURRENT_SCHEME_ID)">
 <div id="controller">
 
-    id: <input type="text" value=220><br />
+    id: <input type="text" value=36><br />
+    <button onclick="loadLevel(36)">Example 36</button><br />
     <button onclick="loadLevel(220)">Example 220</button><br />
     <button onclick="loadLevel(33)">Example 33</button><br />
     <button onclick="loadLevel(22)">Example 22</button><br />
@@ -104,7 +105,7 @@
 
     <br/>
     REQUEST URLS:<br/>
-    id: <input id="requestIdBox" type="text" value="220"  onchange="onRequestIdBox()"><br />
+    id: <input id="requestIdBox" type="text" value="36"  onchange="onRequestIdBox()"><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
