@@ -35,6 +35,7 @@ mapData[36] = JSON.parse(fs.readFileSync('public/map36.json'));
 // Setting up the public directory
 app.use(Express.static('public'));
 
+app.use(Express.json());
 
 function getScheme(req,res,full)
 {
@@ -62,6 +63,10 @@ function getScheme(req,res,full)
 app.get('/scheme/:schemeId', (req, res) => {
     getScheme(req,res,true)
 
+});
+
+app.post('/scheme/:schemeId', (req, res) => {
+    mapData[req.body.id] = req.body;
 });
 
 app.get('/scheme/:schemeId/info', (req, res) => {

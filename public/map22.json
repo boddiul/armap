@@ -32,7 +32,7 @@
               "y1": 7.95,
               "x2": 7.95,
               "y2": 7.95,
-              "wall_prev_id": -1,
+              "wall_prev_id": 3,
               "wall_next_id": 1
             },
             {
@@ -105,7 +105,7 @@
               "y1": 8.95,
               "x2": 3.95,
               "y2": 8.95,
-              "wall_prev_id": 3,
+              "wall_prev_id": 7,
               "wall_next_id": 5
             },
             {
@@ -170,7 +170,7 @@
               "y1": 14.95,
               "x2": 3.95,
               "y2": 14.95,
-              "wall_prev_id": 7,
+              "wall_prev_id": 11,
               "wall_next_id": 9
             },
             {
@@ -252,7 +252,7 @@
               "y1": 14.95,
               "x2": 11.95,
               "y2": 14.95,
-              "wall_prev_id": 11,
+              "wall_prev_id": 15,
               "wall_next_id": 13
             },
             {
@@ -342,7 +342,7 @@
               "y1": 7.95,
               "x2": 11.95,
               "y2": 7.95,
-              "wall_prev_id": 15,
+              "wall_prev_id": 19,
               "wall_next_id": 17
             },
             {

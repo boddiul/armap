@@ -14,7 +14,7 @@ import json
 
 
 def reset():
-    global wall_ids,furn_id,nd_fl,door_ids,portal_ids,eid,map_id,mapp
+    global wall_ids,furn_id,nd_fl,nd_el,nd_st,door_ids,portal_ids,eid,map_id,mapp
     map_id = -1
 
     mapp = None
@@ -22,6 +22,8 @@ def reset():
     wall_ids = 0
     furn_id = 0
     nd_fl = {}
+    nd_el = {}
+    nd_st = {}
     door_ids = 0
     portal_ids = {"staircase":0,"elevator":0}
     eid = 0
@@ -56,6 +58,7 @@ def new_room(floor,_id,name,descr,can_search,dummy_coords,coords):
             "id":wall_ids,"x1":coords[i][0],"y1":coords[i][1],"x2":coords[i+1][0],"y2":coords[i+1][1],"wall_prev_id":wall_ids-1,"wall_next_id":wall_ids+1})
         wall_ids+=1
     walls[-1]["wall_next_id"]=st_wall_ids
+    walls[0]["wall_prev_id"]=wall_ids-1
 
 
     for f in mapp["floors"]:
@@ -183,6 +186,8 @@ def new_portal(floor,_id,x,y,portal_type,direction,room_id,wh=[]):
             for r in f["rooms"]:
                 if r["id"]==room_id:
                     if portal_type=='staircase':
+
+                        
                         r["staircases"].append({
                             "id":portal_ids[portal_type],
                             "x":x,
@@ -190,6 +195,7 @@ def new_portal(floor,_id,x,y,portal_type,direction,room_id,wh=[]):
                             "direction":aa,
                             "width":wh[0],
                             "height":wh[1]})
+                        nd_st[_id] = r["staircases"][-1]
                     elif portal_type=='elevator':
                         r["elevators"].append({
                             "id":portal_ids[portal_type],
@@ -197,6 +203,7 @@ def new_portal(floor,_id,x,y,portal_type,direction,room_id,wh=[]):
                             "y":y,
                             "direction":aa,
                             "wall_id":-1})
+                        nd_el[_id] = r["elevators"][-1]
                         
                         
                         
@@ -260,11 +267,40 @@ def new_edge(id1,id2):
         
     else:
 
+        
+
         if (o1["obj_type"]=="elevator"):
+
+            print(nd_el)
+
+            el1 = nd_el[o1["id"]] 
+            el2 = nd_el[o2["id"]]
+            
+            if floor1<floor2:
+                el1["elevator_up_id"] = el2["id"]
+                el2["elevator_down_id"] = el1["id"]
+            else:
+                el1["elevator_down_id"] = el2["id"]
+                el2["elevator_up_id"] = el1["id"]
+                
 
             t = 20
             
         else:
+
+            
+            print(nd_st)
+            st1 = nd_st[o1["id"]] 
+            st2 = nd_st[o2["id"]]
+            
+            if floor1<floor2:
+                st1["staircase_up_id"] = st2["id"]
+                st2["staircase_down_id"] = st1["id"]
+            else:
+                st1["staircase_down_id"] = st2["id"]
+                st2["staircase_up_id"] = st1["id"]
+
+            
             t = 15
             
 
@@ -1113,7 +1149,7 @@ def build36():
     new_portal(0,       26, 1.93,      2.2,      'staircase',0,0,[1,2.5])
     new_edge(25,8)
     new_edge(25,7)
-    new_edge(26,41)
+    #new_edge(26,41)
     new_edge(26,4)
 
 

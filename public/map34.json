@@ -23,7 +23,7 @@
               "y1": 6.0,
               "x2": 5.26,
               "y2": 6.0,
-              "wall_prev_id": -1,
+              "wall_prev_id": 3,
               "wall_next_id": 1
             },
             {
@@ -80,7 +80,7 @@
               "y1": 3.44,
               "x2": 3.95,
               "y2": 3.44,
-              "wall_prev_id": 3,
+              "wall_prev_id": 7,
               "wall_next_id": 5
             },
             {
@@ -137,7 +137,7 @@
               "y1": 6.3,
               "x2": 7.88,
               "y2": 6.3,
-              "wall_prev_id": 7,
+              "wall_prev_id": 11,
               "wall_next_id": 9
             },
             {

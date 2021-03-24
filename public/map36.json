@@ -21,7 +21,8 @@
               "y": 2.2,
               "direction": 0.0,
               "width": 1,
-              "height": 2.5
+              "height": 2.5,
+              "staircase_up_id": 1
             }
           ],
           "furniture": [],
@@ -32,7 +33,7 @@
               "y1": 6.98,
               "x2": 1.93,
               "y2": 6.98,
-              "wall_prev_id": -1,
+              "wall_prev_id": 3,
               "wall_next_id": 1
             },
             {
@@ -138,7 +139,7 @@
               "y1": 6.98,
               "x2": 7.88,
               "y2": 6.98,
-              "wall_prev_id": 3,
+              "wall_prev_id": 9,
               "wall_next_id": 5
             },
             {
@@ -225,7 +226,8 @@
               "x": 7,
               "y": 2.5,
               "direction": 4.71238898038469,
-              "wall_id": -1
+              "wall_id": -1,
+              "elevator_up_id": 1
             }
           ],
           "staircases": [],
@@ -237,7 +239,7 @@
               "y1": 4.29,
               "x2": 7.88,
               "y2": 4.29,
-              "wall_prev_id": 9,
+              "wall_prev_id": 13,
               "wall_next_id": 11
             },
             {
@@ -375,7 +377,7 @@
               "y1": 6.98,
               "x2": 7.88,
               "y2": 6.98,
-              "wall_prev_id": 13,
+              "wall_prev_id": 19,
               "wall_next_id": 15
             },
             {
@@ -464,7 +466,8 @@
               "y": 2.2,
               "direction": 3.141592653589793,
               "width": 1,
-              "height": 2.5
+              "height": 2.5,
+              "staircase_down_id": 0
             }
           ],
           "furniture": [],
@@ -475,7 +478,7 @@
               "y1": 3.35,
               "x2": 6.18,
               "y2": 3.35,
-              "wall_prev_id": 19,
+              "wall_prev_id": 23,
               "wall_next_id": 21
             },
             {
@@ -528,7 +531,8 @@
               "x": 7,
               "y": 2.5,
               "direction": 4.71238898038469,
-              "wall_id": -1
+              "wall_id": -1,
+              "elevator_down_id": 0
             }
           ],
           "staircases": [],
@@ -540,7 +544,7 @@
               "y1": 4.29,
               "x2": 7.88,
               "y2": 4.29,
-              "wall_prev_id": 23,
+              "wall_prev_id": 27,
               "wall_next_id": 25
             },
             {
@@ -1016,167 +1020,161 @@
       {
         "id": 19,
         "node1_id": 26,
-        "node2_id": 41,
-        "weight": 15
-      },
-      {
-        "id": 20,
-        "node1_id": 26,
         "node2_id": 4,
         "weight": 1.816480112745526
       },
       {
-        "id": 21,
+        "id": 20,
         "node1_id": 35,
         "node2_id": 17,
         "weight": 2.0
       },
       {
-        "id": 22,
+        "id": 21,
         "node1_id": 35,
         "node2_id": 19,
         "weight": 1.767766952966369
       },
       {
-        "id": 23,
+        "id": 22,
         "node1_id": 36,
         "node2_id": 20,
         "weight": 2.986904752415115
       },
       {
-        "id": 24,
+        "id": 23,
         "node1_id": 36,
         "node2_id": 19,
         "weight": 8.534084602346052
       },
       {
-        "id": 25,
+        "id": 24,
         "node1_id": 36,
         "node2_id": 26,
         "weight": 15
       },
       {
-        "id": 26,
+        "id": 25,
         "node1_id": 35,
         "node2_id": 25,
         "weight": 20
       },
       {
-        "id": 27,
+        "id": 26,
         "node1_id": 41,
         "node2_id": 4,
         "weight": 3.60068049124051
       },
       {
-        "id": 28,
+        "id": 27,
         "node1_id": 41,
         "node2_id": 26,
         "weight": 2.205651831092115
       },
       {
-        "id": 29,
+        "id": 28,
         "node1_id": 42,
         "node2_id": 0,
         "weight": 2.2032702966272653
       },
       {
-        "id": 30,
+        "id": 29,
         "node1_id": 42,
         "node2_id": 1,
         "weight": 4.203046514137099
       },
       {
-        "id": 31,
+        "id": 30,
         "node1_id": 43,
         "node2_id": 0,
         "weight": 3.7852873074576516
       },
       {
-        "id": 32,
+        "id": 31,
         "node1_id": 43,
         "node2_id": 2,
         "weight": 3.9284093473058523
       },
       {
-        "id": 33,
+        "id": 32,
         "node1_id": 44,
         "node2_id": 1,
         "weight": 2.512050954897212
       },
       {
-        "id": 34,
+        "id": 33,
         "node1_id": 44,
         "node2_id": 3,
         "weight": 3.4176600181995864
       },
       {
-        "id": 35,
+        "id": 34,
         "node1_id": 45,
         "node2_id": 7,
         "weight": 1.5467385040788244
       },
       {
-        "id": 36,
+        "id": 35,
         "node1_id": 45,
         "node2_id": 8,
         "weight": 2.575286391840722
       },
       {
-        "id": 37,
+        "id": 36,
         "node1_id": 46,
         "node2_id": 10,
         "weight": 2.2032702966272653
       },
       {
-        "id": 38,
+        "id": 37,
         "node1_id": 46,
         "node2_id": 11,
         "weight": 4.203046514137099
       },
       {
-        "id": 39,
+        "id": 38,
         "node1_id": 47,
         "node2_id": 10,
         "weight": 3.7852873074576516
       },
       {
-        "id": 40,
+        "id": 39,
         "node1_id": 47,
         "node2_id": 12,
         "weight": 3.9284093473058523
       },
       {
-        "id": 41,
+        "id": 40,
         "node1_id": 48,
         "node2_id": 11,
         "weight": 2.512050954897212
       },
       {
-        "id": 42,
+        "id": 41,
         "node1_id": 48,
         "node2_id": 13,
         "weight": 3.4176600181995864
       },
       {
-        "id": 43,
+        "id": 42,
         "node1_id": 49,
         "node2_id": 20,
         "weight": 1.886796226411321
       },
       {
-        "id": 44,
+        "id": 43,
         "node1_id": 49,
         "node2_id": 19,
         "weight": 7.314711204141965
       },
       {
-        "id": 45,
+        "id": 44,
         "node1_id": 50,
         "node2_id": 17,
         "weight": 1.5467385040788244
       },
       {
-        "id": 46,
+        "id": 45,
         "node1_id": 50,
         "node2_id": 18,
         "weight": 2.575286391840722

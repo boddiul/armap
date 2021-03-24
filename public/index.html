@@ -12,20 +12,31 @@
 
     }
 
-    #controller {
+    .controller_main {
         background-color: #e2cccc;
         width: 10%;
         height: 100%;
     }
 
-    /* Scale canvas with resize attribute to full size */
-    canvas[resize] {
-        width: 90%;
+    .controller_params {
+        background-color: #cce2e1;
+        width: 10%;
         height: 100%;
     }
+
+    canvas[resize] {
+        width: 80%;
+        height: 100%;
+    }
+    .hidden {
+        display: none !important;
+    }
+
 </style>
 
+
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>drawJS = {}</script>
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="js/paper-full.js"></script>
@@ -35,89 +46,176 @@
 
 
 
-</head>
-<body onload="loadLevel(CURRENT_SCHEME_ID)">
-<div id="controller">
 
-    id: <input type="text" value=36><br />
-    <button onclick="loadLevel(36)">Example 36</button><br />
-    <button onclick="loadLevel(220)">Example 220</button><br />
-    <button onclick="loadLevel(33)">Example 33</button><br />
-    <button onclick="loadLevel(22)">Example 22</button><br />
-    <button onclick="loadLevel(34)">Example 34</button><br />
-    <button onclick="loadLevel(35)">Example 35</button><br />
+</head>
+<body onload="mainOnLoad()">
+<div class="controller_main">
+
+    SCHEME:<br/>
+    <button onclick="newFile()">NEW FILE</button><br />
+
+    <input type="file" id="file-input"/><br />
+    <button onclick="openFile()">OPEN</button><br />
+    <button onclick="saveFile()">SAVE</button><br />
+
+
     <br/>
     SHOW:<br/>
 
-    <input type="checkbox" id="roomsBox"  onchange="onEditorLayerBox('rooms',false)" checked/>
-    <label for="roomsBox">Rooms</label><br/>
 
-    <input type="checkbox" id="roomsDataBox"  onchange="onEditorLayerBox('rooms',true)" checked/>
-    <label for="roomsDataBox">Rooms Data</label><br/>
+    <input type="checkbox" id="roomBox"  onchange="onEditorLayerBox('room',false);" checked/>
+    <input type="checkbox" id="roomDataBox"  onchange="onEditorLayerBox('room',true);" checked/>
+    <label for="roomBox">Rooms</label><br/>
 
-    <input type="checkbox" id="doorsBox"  onchange="onEditorLayerBox('doors',false)" checked/>
-    <label for="doorsBox">Doors</label><br/>
 
-    <input type="checkbox" id="doorsDataBox"  onchange="onEditorLayerBox('doors',true)" />
-    <label for="doorsDataBox">Doors Data</label><br/>
 
-    <input type="checkbox" id="staircasesBox"  onchange="onEditorLayerBox('staircases',false)" checked/>
-    <label for="staircasesBox">Staircases</label><br/>
 
-    <input type="checkbox" id="staircasesDataBox"  onchange="onEditorLayerBox('staircases',true)" checked/>
-    <label for="staircasesDataBox">Staircases Data</label><br/>
+    <input type="checkbox" id="doorBox"  onchange="onEditorLayerBox('door',false)" checked/>
+    <input type="checkbox" id="doorDataBox"  onchange="onEditorLayerBox('door',true)" />
+    <label for="doorBox">Doors</label><br/>
 
-    <input type="checkbox" id="elevatorsBox"  onchange="onEditorLayerBox('elevators',false)" checked/>
-    <label for="elevatorsBox">Elevators</label><br/>
+    <input type="checkbox" id="staircaseBox"  onchange="onEditorLayerBox('staircase',false)" checked/>
+    <input type="checkbox" id="staircaseDataBox"  onchange="onEditorLayerBox('staircase',true)" checked/>
+    <label for="staircaseBox">Staircases</label><br/>
 
-    <input type="checkbox" id="elevatorsDataBox"  onchange="onEditorLayerBox('elevators',true)" checked/>
-    <label for="elevatorsDataBox">Elevators Data</label><br/>
+
+
+    <input type="checkbox" id="elevatorBox"  onchange="onEditorLayerBox('elevator',false)" checked/>
+    <input type="checkbox" id="elevatorDataBox"  onchange="onEditorLayerBox('elevator',true)" checked/>
+    <label for="elevatorBox">Elevators</label><br/>
+
+
 
     <input type="checkbox" id="furnitureBox"  onchange="onEditorLayerBox('furniture',false)" checked/>
+    <input type="checkbox" id="furnitureDataBox"  onchange="onEditorLayerBox('furniture',true)" />
     <label for="furnitureBox">Furniture</label><br/>
 
-    <input type="checkbox" id="furnitureDataBox"  onchange="onEditorLayerBox('furniture',true)" />
-    <label for="furnitureDataBox">Furniture Data</label><br/>
 
-    <input type="checkbox" id="qrsBox"  onchange="onEditorLayerBox('qrs',false)" checked/>
-    <label for="qrsBox">QRs</label><br/>
-
-    <input type="checkbox" id="qrsDataBox"  onchange="onEditorLayerBox('qrs',true)" checked/>
-    <label for="qrsDataBox">QRs Data</label><br/>
+    <input type="checkbox" id="qrBox"  onchange="onEditorLayerBox('qr',false)" checked/>
+    <input type="checkbox" id="qrDataBox"  onchange="onEditorLayerBox('qr',true)" checked/>
+    <label for="qrBox">QRs</label><br/>
 
 
 
-    <input type="checkbox" id="nodesBox"  onchange="onEditorLayerBox('nodes',false)" checked/>
-    <label for="nodesBox">Nodes</label><br/>
-
-    <input type="checkbox" id="nodesDataBox"  onchange="onEditorLayerBox('nodes',true)" checked/>
-    <label for="nodesDataBox">Nodes Data</label><br/>
 
 
-    <input type="checkbox" id="edgesBox"  onchange="onEditorLayerBox('edges',false)" checked/>
-    <label for="edgesBox">Edges</label><br/>
+    <input type="checkbox" id="nodeBox"  onchange="onEditorLayerBox('node',false)" checked/>
+    <input type="checkbox" id="nodeDataBox"  onchange="onEditorLayerBox('node',true)" checked/>
+    <label for="nodeBox">Nodes</label><br/>
 
-    <input type="checkbox" id="edgesDataBox"  onchange="onEditorLayerBox('edges',true)" />
-    <label for="edgesDataBox">Edges Data</label><br/>
+
+
+
+    <input type="checkbox" id="edgeBox"  onchange="onEditorLayerBox('edge',false)" checked/>
+    <input type="checkbox" id="edgeDataBox"  onchange="onEditorLayerBox('edge',true)" />
+    <label for="edgeBox">Edges</label><br/>
+
+
 
 
 
 
     <br/>
-    REQUEST URLS:<br/>
-    id: <input id="requestIdBox" type="text" value="36"  onchange="onRequestIdBox()"><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
+    CREATE NEW:<br/>
+    <button onclick="newFloor()">FLOOR</button><br />
+    <button onclick="newRoom()">ROOM</button><br />
+    <button onclick="newDoor()">DOOR</button><br />
+    <button onclick="newFurniture()">FURNITURE</button><br />
+    <button onclick="newStaircase()">STAIRCASE</button><br />
+    <button onclick="newElevator()">ELEVATOR</button><br />
+    <button onclick="newQR()">QR</button><br />
 
     <br/>
     GRAPH:<br/>
-    <button onclick="clearGraph()">CLEAR</button><br />
+    <button onclick="clearGraph()">CLEAR</button>
     <button onclick="createGraph()">CREATE</button><br />
+
+    <br/>
+    REQUEST ID:<br/>
+    <input id="requestIdBox" type="text" value="36"  onchange="onRequestIdBox()"><br />
+    <button onclick="loadCurrentScheme();">LOAD SCHEME</button><br />
+    <button onclick="uploadCurrentScheme();">UPLOAD SCHEME</button><br />
+    <br/>
+
+    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
+    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
+    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
 
 
 
 </div>
 <canvas id="myCanvas" resize></canvas>
+<img class="hidden" id="movecanvas" src="/icons/movecanvas.png" width="18" height="18">
+<img class="hidden" id="moveobject" src="/icons/moveobject.png" width="18" height="18">
+<img class="hidden" id="movepoint" src="/icons/movepoint.png" width="18" height="18">
+<img class="hidden" id="select" src="/icons/select.png" width="18" height="18">
+
+
+<div id="scheme_params" class="controller_params">
+
+    SCHEME<br />
+
+    id: <input id="p_scheme_id"type="text" value=0 readonly><br />
+    name: <input id="p_scheme_name" type="text" value=0 onchange="onInputParam('p_scheme_name','name')"><br />
+    description: <input id="p_scheme_description" type="text" value=0 onchange="onInputParam('p_scheme_description','description')"><br />
+    address: <input id="p_scheme_address" type="text" value=0 onchange="onInputParam('p_scheme_address','address')"><br />
+</div>
+
+<div id="floor_params" class="controller_params">
+    FLOOR<br />
+
+    id: <input id="p_floor_id" type="text" value=543 readonly><br />
+    name: <input id="p_floor_name" type="text" value=0 onchange="onInputParam('p_floor_name','name')"><br />
+</div>
+
+<div id="room_params" class="controller_params">
+    ROOM<br />
+
+    id: <input id="p_room_id" type="text" value=54353 readonly><br />
+    name: <input id="p_room_name" type="text" value=0 onchange="onInputParam('p_room_name','name')"><br />
+
+</div>
+
+<div id="wall_params" class="controller_params">
+    WALL<br />
+
+    id: <input type="text" value=54353><br />
+</div>
+
+<div id="door_params" class="controller_params">
+
+    DOOR<br />
+
+    id: <input type="text" value=54353><br />
+</div>
+
+<div id="furniture_params" class="controller_params">
+
+    FURNITURE<br />
+
+    id: <input type="text" value=54353><br />
+</div>
+
+<div id="staircase_params" class="controller_params">
+    STAIRCASE<br />
+
+
+    id: <input type="text" value=54353><br />
+</div>
+
+<div id="elevator_params" class="controller_params">
+
+    ELEVATOR<br />
+
+    id: <input type="text" value=54353><br />
+</div>
+
+<div id="qr_params" class="controller_params">
+    QR<br />
+
+    id: <input type="text" value=54353><br />
+</div>
+
+
 </body>
 </html>

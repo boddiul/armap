@@ -23,7 +23,7 @@
               "y1": 6.98,
               "x2": 1.93,
               "y2": 6.98,
-              "wall_prev_id": -1,
+              "wall_prev_id": 3,
               "wall_next_id": 1
             },
             {
@@ -129,7 +129,7 @@
               "y1": 6.98,
               "x2": 7.88,
               "y2": 6.98,
-              "wall_prev_id": 3,
+              "wall_prev_id": 9,
               "wall_next_id": 5
             },
             {
@@ -220,7 +220,7 @@
               "y1": 3.35,
               "x2": 6.18,
               "y2": 3.35,
-              "wall_prev_id": 9,
+              "wall_prev_id": 13,
               "wall_next_id": 11
             },
             {
@@ -277,7 +277,7 @@
               "y1": 4.29,
               "x2": 7.88,
               "y2": 4.29,
-              "wall_prev_id": 13,
+              "wall_prev_id": 17,
               "wall_next_id": 15
             },
             {
