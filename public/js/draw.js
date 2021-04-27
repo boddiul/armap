@@ -103,7 +103,17 @@ MyTool = function () {
 
         this.inputResult = [];
 
-        this.searching = true;
+
+        if (helpTypes.length===0)
+        {
+            this.searching = false;
+
+            mainCreate(null);
+
+            updateAll();
+        }
+        else
+            this.searching = true;
     }
 
 
@@ -155,20 +165,46 @@ MyTool = function () {
 
 
     }
-    
+
+
+    this.totalDp = new Point(0,0);
+
+
     this.onMouseDrag = function (mouseLayer,delta) {
 
         this.mouseWindowPosition = mouseLayer;
 
 
         var dp = new Point(delta.x/mainScale,-delta.y/mainScale);
+
+
         if (this.targetType==="movecanvas")
         {
             mainOffset+=dp;
         }
         else
         {
-            this.targetElement.onMove(this.targetData.index,dp);
+
+            if (event.altKey)
+            {
+                this.targetElement.onMove(this.targetData.index,dp);
+
+            }
+
+            else
+            {
+                this.totalDp+=dp;
+
+                var kka = 0.1;
+
+                if (Math.abs(this.totalDp.x)>=kka || (Math.abs(this.totalDp.y)>=kka))
+                {
+                    this.targetElement.onMove(this.targetData.index,new Point(Math.round(this.totalDp.x*10)/10,Math.round(this.totalDp.y*10)/10));
+                    this.totalDp.x = 0;
+                    this.totalDp.y = 0;
+                }
+            }
+
         }
 
         this.targetPosition+=delta;
@@ -325,6 +361,10 @@ PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updateP
 
     updateAll();
 }
+
+
+
+
 
 LineElement = function (obj,mainType,layerType,x1,y1,x2,y2,color,textColor,width,updatePosition,getToolData) {
 
@@ -764,7 +804,12 @@ function addFurnitureElement(furniture) {
             this.y2 = this.obj.room.floor.y+this.obj.y2;
 
             this.drawText.content = this.obj.name;
-        },null)
+        },function () {
+            return [
+                {type:"moveobject",index:0,search:"furniture",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
+                {type:"movepoint",index:1,search:null,x:this.x1,y:this.y1},
+                {type:"movepoint",index:2,search:null,x:this.x2,y:this.y2}]
+        })
 
     elements.push(e);
     return e;
@@ -1023,6 +1068,38 @@ function askInput(types,helpIntro,helpTypes)
     //    mainCreate([scheme.floors[0]])
 
 }
+
+
+
+trDebug = [];
+function debugTriangle(points)
+{
+    var drawElement = new Path();
+    drawElement.strokeColor = '#c7dee0';
+
+    for (var i=0;i<points.length-1;i+=1)
+    {
+        drawElement.moveTo(pointToWindow(new Point(points[i].x,points[i].y)))
+        drawElement.lineTo(pointToWindow(new Point(points[i+1].x,points[i+1].y)))
+    }
+
+    trDebug.push(drawElement);
+}
+
+function removeDebugTriangles()
+{
+    trDebug.forEach(function (t) {
+        t.remove();
+    });
+
+    trDebug = [];
+}
+
+
+
+drawJS.debugTriangle = debugTriangle;
+drawJS.removeDebugTriangles = removeDebugTriangles;
+
 
 drawJS.init = init;
 drawJS.setVisibleLayer = setVisibleLayer;

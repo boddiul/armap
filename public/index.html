@@ -19,9 +19,17 @@
     }
 
     .controller_params {
+        position: relative;
         background-color: #cce2e1;
-        width: 10%;
-        height: 100%;
+
+        height: 60%;
+    }
+
+    .controller_new {
+        position: relative;
+        background-color: #e2d6cc;
+
+        height: 40%;
     }
 
     canvas[resize] {
@@ -36,12 +44,22 @@
 
 
 <head>
+
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="js/poly2tri.js"></script>
+
+
+
     <script>drawJS = {}</script>
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="js/paper-full.js"></script>
     <!-- Define inlined PaperScript associate it with myCanvas -->
     <script type="text/paperscript" src="js/draw.js" canvas="myCanvas"> </script>
+    <script type="text/javascript" src="js/scheme.js"></script>
     <script type="text/javascript" src="js/init.js"></script>
 
 
@@ -115,31 +133,21 @@
 
 
 
-    <br/>
-    CREATE NEW:<br/>
-    <button onclick="newFloor()">FLOOR</button><br />
-    <button onclick="newRoom()">ROOM</button><br />
-    <button onclick="newDoor()">DOOR</button><br />
-    <button onclick="newFurniture()">FURNITURE</button><br />
-    <button onclick="newStaircase()">STAIRCASE</button><br />
-    <button onclick="newElevator()">ELEVATOR</button><br />
-    <button onclick="newQR()">QR</button><br />
 
-    <br/>
-    GRAPH:<br/>
-    <button onclick="clearGraph()">CLEAR</button>
-    <button onclick="createGraph()">CREATE</button><br />
 
-    <br/>
+
+
     REQUEST ID:<br/>
     <input id="requestIdBox" type="text" value="36"  onchange="onRequestIdBox()"><br />
     <button onclick="loadCurrentScheme();">LOAD SCHEME</button><br />
+    <br />
     <button onclick="uploadCurrentScheme();">UPLOAD SCHEME</button><br />
     <br/>
 
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
     <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
+    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrHelpDocument', '_blank')">GET HELP PDF</button><br />
 
 
 
@@ -151,6 +159,39 @@
 <img class="hidden" id="select" src="/icons/select.png" width="18" height="18">
 
 
+<div id="right_container" style="display: block; width:10%">
+
+
+
+    <div class="controller_new">
+        CREATE NEW:<br/>
+        <button onclick="newFloor()">FLOOR</button><br />
+        <button onclick="newRoom()">ROOM</button><br />
+        <button onclick="newWall()">WALL</button><br />
+        <button onclick="newDoor()">DOOR</button><br />
+        <button onclick="newFurniture()">FURNITURE</button><br />
+        <button onclick="newStaircase()">STAIRCASE</button><br />
+        <button onclick="newElevator()">ELEVATOR</button><br />
+        <button onclick="newQR()">QR</button><br />
+
+
+
+        <br/>
+        GRAPH:<br/>
+        <button onclick="clearGraph()">CLEAR</button>
+        <button onclick="createGraph()">CREATE</button><br />
+
+        <button onclick="drawJS.removeDebugTriangles()">HIDE TR [STEP 2]</button><br />
+
+
+
+        <button onclick="fixGraph()">CREATE [STEP 3]</button><br />
+
+
+        <br/>
+
+    </div>
+
 <div id="scheme_params" class="controller_params">
 
     SCHEME<br />
@@ -159,6 +200,15 @@
     name: <input id="p_scheme_name" type="text" value=0 onchange="onInputParam('p_scheme_name','name')"><br />
     description: <input id="p_scheme_description" type="text" value=0 onchange="onInputParam('p_scheme_description','description')"><br />
     address: <input id="p_scheme_address" type="text" value=0 onchange="onInputParam('p_scheme_address','address')"><br />
+    <br />
+
+    <canvas id="p_scheme_photo" style="height: 100px; width:100px"></canvas>
+
+    <br />
+    <input type="file" id="photo-input"/><br />
+    <button onclick="openPhoto()">SET PHOTO</button><br />
+
+
 </div>
 
 <div id="floor_params" class="controller_params">
@@ -216,6 +266,9 @@
     id: <input type="text" value=54353><br />
 </div>
 
+
+
+</div>
 
 </body>
 </html>
