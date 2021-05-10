@@ -57,6 +57,8 @@
           "qrs": [
             {
               "id": 3,
+              "name": "",
+              "can_search": false,
               "x": 1.465,
               "y": 1.0,
               "z": 0,
@@ -114,6 +116,8 @@
           "qrs": [
             {
               "id": 2,
+              "name": "",
+              "can_search": false,
               "x": 7.88,
               "y": 5.3,
               "z": 0,
@@ -171,6 +175,8 @@
           "qrs": [
             {
               "id": 1,
+              "name": "",
+              "can_search": false,
               "x": 2.95,
               "y": 3.44,
               "z": 0,
@@ -228,6 +234,8 @@
           "qrs": [
             {
               "id": 0,
+              "name": "",
+              "can_search": false,
               "x": 4.26,
               "y": 6.0,
               "z": 0,
@@ -245,8 +253,8 @@
           "y1": 5.48,
           "y2": 5.48,
           "width": 0.9,
-          "wall1_id": -1,
-          "wall2_id": -1,
+          "wall1_id": 1,
+          "wall2_id": 11,
           "room1_id": 3,
           "room2_id": 1
         }

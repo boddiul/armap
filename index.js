@@ -1,5 +1,6 @@
 
 
+
 const Express = require('express');
 const app = Express();
 const port = 3000;
@@ -20,7 +21,8 @@ const paper = require('paper-jsdom-canvas');
 const fs = require('fs');
 
 
-drawJS = null;
+
+DrawJS = null;
 
 eval(fs.readFileSync('public/js/scheme.js')+'');
 
@@ -159,7 +161,6 @@ app.get('/scheme/:schemeId/qrImageDocument', async (req, res) =>  {
 
     schemeId = req.params.schemeId
 
-    schemeId = req.params.schemeId
     if (isNumeric(schemeId))
     {
         if (schemeId in mapData)
@@ -194,7 +195,14 @@ app.get('/scheme/:schemeId/qrImageDocument', async (req, res) =>  {
         let filename = "qr"+schemeId
         filename = encodeURIComponent(filename) + '.pdf'
 
+
+        pdfDoc.font('DejaVuSans.ttf');
+
         pdfDoc.text("SCHEME ID="+schemeId);
+        pdfDoc.text("Название: "+mapp['name']);
+        pdfDoc.text("Адрес: "+mapp['address']);
+        pdfDoc.text("Описание: "+mapp['description']);
+
 
         pdfDoc.text('\n')
 
@@ -203,22 +211,39 @@ app.get('/scheme/:schemeId/qrImageDocument', async (req, res) =>  {
         for (const f of mapp["floors"]) {
             for (const r of f["rooms"]) {
                 for (const q of r["qrs"]) {
-                    ids.push(parseInt(q.id))
+                    ids.push({id:parseInt(q.id),room:r.name,floor:f.name})
                 }
             }
         }
 
-        ids.sort((a, b) => a - b);
+        ids.sort((a, b) => a["id"] - b["id"]);
 
-        for (const i of ids)
+        let s = 0;
+        for (const code of ids)
         {
-            pdfDoc.text('\n\n\n\n QR ID='+i)
+            let i = code["id"]
+
+            pdfDoc.text('QR ID='+i)
+            pdfDoc.text('Этаж: '+code['floor'])
+            pdfDoc.text('Комната: '+code['room'])
 
             url = 'http://'+hostname+':'+port+'/scheme/'+schemeId+'/qrImage/'+i
             rr = await fetch(url,{encoding: null });
             imageBuffer = await rr.buffer();
             img = Buffer.from(imageBuffer, 'base64');
-            pdfDoc.image(img, {width: 150, height: 150});
+            pdfDoc.image(img, {width: 250, height: 250});
+
+            s+=1;
+            if (s>1 && code!==ids[ids.length-1])
+            {
+                s=0;
+                pdfDoc.addPage();
+            }
+            else
+            {
+                pdfDoc.text('\n');
+            }
+
         }
         qrPDFData[schemeId] = new StreamCache();
         pdfDoc.pipe(qrPDFData[schemeId]);

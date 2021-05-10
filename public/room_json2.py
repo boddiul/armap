@@ -129,8 +129,34 @@ def new_door_node(floor,_id,x,y,r1,r2,direction):
     k=0.05
     aa = direction*math.pi/180
 
+    w1 = -1
+    w2 = -1
     for f in mapp["floors"]:
         if f["id"]==floor:
+            
+            for r in f["rooms"]:
+                if r["id"]==r1:
+                    bestWid = -1
+                    minDist = -1
+                    for w in r["walls"]:
+                        dist = math.sqrt( (((w["x1"]+w["x2"])/2-x)**2)+(((w["y1"]+w["y2"])/2-y)**2))
+                        if (dist<minDist or bestWid==-1):
+                            minDist = dist
+                            bestWid = w["id"]
+                    
+                    w1 = bestWid
+                if r["id"]==r2:
+                    bestWid = -1
+                    minDist = -1
+                    for w in r["walls"]:
+                        dist = math.sqrt( (((w["x1"]+w["x2"])/2-x)**2)+(((w["y1"]+w["y2"])/2-y)**2))
+                        if (dist<minDist or bestWid==-1):
+                            minDist = dist
+                            bestWid = w["id"]
+                    
+                    w2 = bestWid
+                    
+                    
             f["doors"].append({
                 "id":door_ids,
                 "x1":x-k*math.cos(aa),
@@ -138,11 +164,14 @@ def new_door_node(floor,_id,x,y,r1,r2,direction):
                 "y1":y-k*math.sin(aa),
                 "y2":y+k*math.sin(aa),
                 "width":0.9,
-                "wall1_id":-1,
-                "wall2_id":-1,
+                "wall1_id":w1,
+                "wall2_id":w2,
                 "room1_id":r1,
                 "room2_id":r2
                 })
+
+
+        
 
     mapp["graph"]["nodes"].append({
         "id":_id,
@@ -222,6 +251,7 @@ def new_qr_node(floor,_id,x,y,qr_id,direction):
         "obj_id":qr_id,
         "obj_type":"qr",
         "direction":direction,
+        
         "x":x,
         "y":y,
         "z":0
@@ -339,6 +369,8 @@ def new_qr(floor,_id,x,y,direction,room,off = 0.05):
             if r["id"]==room:
                 r["qrs"].append( {
                     "id":_id,
+                    "name":"",
+                    "can_search":False,
                     "x":xx,
                     "y":yy,
                     "z":0,
@@ -481,7 +513,7 @@ def qrnodes():
 
 def saveMap():
     global mapp,map_id
-    with open("map"+str(map_id)+".json", "w",encoding='utf8') as data_file:
+    with open("init/map"+str(map_id)+".json", "w",encoding='utf8') as data_file:
         json.dump(mapp, data_file, indent=2, sort_keys=False,ensure_ascii=False)
 
 

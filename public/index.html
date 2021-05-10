@@ -22,14 +22,14 @@
         position: relative;
         background-color: #cce2e1;
 
-        height: 60%;
+        height: 50%;
     }
 
     .controller_new {
         position: relative;
         background-color: #e2d6cc;
 
-        height: 40%;
+        height: 50%;
     }
 
     canvas[resize] {
@@ -54,78 +54,102 @@
 
 
 
-    <script>drawJS = {}</script>
+    <script>DrawJS = {}</script>
     <!-- Load the Paper.js library -->
     <script type="text/javascript" src="js/paper-full.js"></script>
     <!-- Define inlined PaperScript associate it with myCanvas -->
     <script type="text/paperscript" src="js/draw.js" canvas="myCanvas"> </script>
-    <script type="text/javascript" src="js/scheme.js"></script>
-    <script type="text/javascript" src="js/init.js"></script>
 
+
+    <script type="text/javascript" src="js/scheme.js"></script>
+
+    <script type="text/javascript" src="js/backend.js"></script>
+
+    <script type="text/javascript" src="js/editor.js"></script>
+    <script type="text/javascript" src="js/interface.js"></script>
+
+    <script>
+        BackendJS = new BackendController();
+        EditorJS = new EditorController();
+        InterfaceJS = new InterfaceController();
+
+
+        window.addEventListener('wheel', function (e) {
+            DrawJS.OnScroll(e);
+        });
+
+
+        window.addEventListener('load',function (e)
+        {
+            EditorJS.NewFile();
+        });
+
+
+    </script>
 
 
 
 </head>
-<body onload="mainOnLoad()">
+<body onload="EditorJS.OnLoad()">
 <div class="controller_main">
 
     SCHEME:<br/>
-    <button onclick="newFile()">NEW FILE</button><br />
+    <button onclick="InterfaceJS.ClickNewFile()">NEW FILE</button><br />
 
     <input type="file" id="file-input"/><br />
-    <button onclick="openFile()">OPEN</button><br />
-    <button onclick="saveFile()">SAVE</button><br />
+    <button onclick="InterfaceJS.ClickOpenFile()">OPEN</button><br />
+    <button onclick="InterfaceJS.ClickSaveFile()">SAVE</button><br />
 
 
     <br/>
     SHOW:<br/>
 
 
-    <input type="checkbox" id="roomBox"  onchange="onEditorLayerBox('room',false);" checked/>
-    <input type="checkbox" id="roomDataBox"  onchange="onEditorLayerBox('room',true);" checked/>
+    <input type="checkbox" id="roomBox"  onchange="InterfaceJS.OnEditorLayerBox('room',false);" checked/>
+    <input type="checkbox" id="roomDataBox"  onchange="InterfaceJS.OnEditorLayerBox('room',true);" checked/>
     <label for="roomBox">Rooms</label><br/>
 
 
 
 
-    <input type="checkbox" id="doorBox"  onchange="onEditorLayerBox('door',false)" checked/>
-    <input type="checkbox" id="doorDataBox"  onchange="onEditorLayerBox('door',true)" />
+    <input type="checkbox" id="doorBox"  onchange="InterfaceJS.OnEditorLayerBox('door',false)" checked/>
+    <input type="checkbox" id="doorDataBox"  onchange="InterfaceJS.OnEditorLayerBox('door',true)" />
     <label for="doorBox">Doors</label><br/>
 
-    <input type="checkbox" id="staircaseBox"  onchange="onEditorLayerBox('staircase',false)" checked/>
-    <input type="checkbox" id="staircaseDataBox"  onchange="onEditorLayerBox('staircase',true)" checked/>
+    <input type="checkbox" id="staircaseBox"  onchange="InterfaceJS.OnEditorLayerBox('staircase',false)" checked/>
+    <input type="checkbox" id="staircaseDataBox"  onchange="InterfaceJS.OnEditorLayerBox('staircase',true)" checked/>
     <label for="staircaseBox">Staircases</label><br/>
 
 
 
-    <input type="checkbox" id="elevatorBox"  onchange="onEditorLayerBox('elevator',false)" checked/>
-    <input type="checkbox" id="elevatorDataBox"  onchange="onEditorLayerBox('elevator',true)" checked/>
+    <input type="checkbox" id="elevatorBox"  onchange="InterfaceJS.OnEditorLayerBox('elevator',false)" checked/>
+    <input type="checkbox" id="elevatorDataBox"  onchange="InterfaceJS.OnEditorLayerBox('elevator',true)" checked/>
     <label for="elevatorBox">Elevators</label><br/>
 
 
 
-    <input type="checkbox" id="furnitureBox"  onchange="onEditorLayerBox('furniture',false)" checked/>
-    <input type="checkbox" id="furnitureDataBox"  onchange="onEditorLayerBox('furniture',true)" />
+    <input type="checkbox" id="furnitureBox"  onchange="InterfaceJS.OnEditorLayerBox('furniture',false)" checked/>
+    <input type="checkbox" id="furnitureDataBox"  onchange="InterfaceJS.OnEditorLayerBox('furniture',true)" />
     <label for="furnitureBox">Furniture</label><br/>
 
 
-    <input type="checkbox" id="qrBox"  onchange="onEditorLayerBox('qr',false)" checked/>
-    <input type="checkbox" id="qrDataBox"  onchange="onEditorLayerBox('qr',true)" checked/>
+    <input type="checkbox" id="qrBox"  onchange="InterfaceJS.OnEditorLayerBox('qr',false)" checked/>
+    <input type="checkbox" id="qrDataBox"  onchange="InterfaceJS.OnEditorLayerBox('qr',true)" checked/>
     <label for="qrBox">QRs</label><br/>
 
 
 
 
 
-    <input type="checkbox" id="nodeBox"  onchange="onEditorLayerBox('node',false)" checked/>
-    <input type="checkbox" id="nodeDataBox"  onchange="onEditorLayerBox('node',true)" checked/>
+    <input type="checkbox" id="nodeBox"  onchange="InterfaceJS.OnEditorLayerBox('node',false)" checked/>
+    <input type="checkbox" id="nodeDataBox"  onchange="InterfaceJS.OnEditorLayerBox('node',true)" checked/>
     <label for="nodeBox">Nodes</label><br/>
 
 
 
 
-    <input type="checkbox" id="edgeBox"  onchange="onEditorLayerBox('edge',false)" checked/>
-    <input type="checkbox" id="edgeDataBox"  onchange="onEditorLayerBox('edge',true)" />
+    <input type="checkbox" id="edgeBox"  onchange="InterfaceJS.OnEditorLayerBox('edge',false)" checked/>
+    <input type="checkbox" id="edgeDataBox"  onchange="InterfaceJS.OnEditorLayerBox('edge',true)" />
     <label for="edgeBox">Edges</label><br/>
 
 
@@ -138,16 +162,16 @@
 
 
     REQUEST ID:<br/>
-    <input id="requestIdBox" type="text" value="36"  onchange="onRequestIdBox()"><br />
-    <button onclick="loadCurrentScheme();">LOAD SCHEME</button><br />
+    <input id="requestIdBox" type="text" value="36"  onchange="InterfaceJS.OnRequestIdBox()"><br />
+    <button onclick="InterfaceJS.ClickLoadScheme();">LOAD SCHEME</button><br />
     <br />
-    <button onclick="uploadCurrentScheme();">UPLOAD SCHEME</button><br />
+    <button onclick="InterfaceJS.ClickUploadScheme();">UPLOAD SCHEME</button><br />
     <br/>
 
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID, '_blank')">GET SCHEME</button><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/info', '_blank')">GET SCHEME INFO</button><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrImageDocument', '_blank')">GET QR PDF</button><br />
-    <button onclick="window.open(window.location.origin+'/scheme/'+SEARCH_SCHEME_ID+'/qrHelpDocument', '_blank')">GET HELP PDF</button><br />
+    <button onclick="InterfaceJS.ClickGetScheme()">GET SCHEME</button><br />
+    <button onclick="InterfaceJS.ClickGetSchemeInfo()">GET SCHEME INFO</button><br />
+    <button onclick="InterfaceJS.ClickGetQRPDF()">GET QR PDF</button><br />
+    <button onclick="InterfaceJS.ClickGetHelpPDF()">GET HELP PDF</button><br />
 
 
 
@@ -165,27 +189,31 @@
 
     <div class="controller_new">
         CREATE NEW:<br/>
-        <button onclick="newFloor()">FLOOR</button><br />
-        <button onclick="newRoom()">ROOM</button><br />
-        <button onclick="newWall()">WALL</button><br />
-        <button onclick="newDoor()">DOOR</button><br />
-        <button onclick="newFurniture()">FURNITURE</button><br />
-        <button onclick="newStaircase()">STAIRCASE</button><br />
-        <button onclick="newElevator()">ELEVATOR</button><br />
-        <button onclick="newQR()">QR</button><br />
+        <button onclick="InterfaceJS.ClickNewFloor()">FLOOR</button><br />
+        <button onclick="InterfaceJS.ClickNewRoom()">ROOM</button><br />
+        <button onclick="InterfaceJS.ClickNewWall()">WALL</button><br />
+        <button onclick="InterfaceJS.ClickNewDoor()">DOOR</button><br />
+        <button onclick="InterfaceJS.ClickNewFurniture()">FURNITURE</button><br />
+        <button onclick="InterfaceJS.ClickNewStaircase()">STAIRCASE</button><br />
+        <button onclick="InterfaceJS.ClickNewElevator()">ELEVATOR</button><br />
+        <button onclick="InterfaceJS.ClickNewQR()">QR</button><br />
 
 
 
         <br/>
         GRAPH:<br/>
-        <button onclick="clearGraph()">CLEAR</button>
-        <button onclick="createGraph()">CREATE</button><br />
+        <button onclick="InterfaceJS.ClickClearGraph();">0.CLEAR</button><br />
+        <button onclick="InterfaceJS.ClickCreateGraph(0)">1.GRAPH(CENTER)</button><br />
+        <button onclick="InterfaceJS.ClickCreateGraph(1)">1.GRAPH(ADJ CENTER)</button><br />
+        <button onclick="InterfaceJS.ClickCreateGraph(2)">1.GRAPH(ADJ MEDIAN)</button><br />
 
-        <button onclick="drawJS.removeDebugTriangles()">HIDE TR [STEP 2]</button><br />
+
+
+        <button onclick="InterfaceJS.ClickRemoveDebugTriangle();">2.HIDE debug tr</button><br />
 
 
 
-        <button onclick="fixGraph()">CREATE [STEP 3]</button><br />
+        <button onclick="InterfaceJS.ClickFixGraph()">3.FIX redundant</button><br />
 
 
         <br/>
@@ -197,32 +225,29 @@
     SCHEME<br />
 
     id: <input id="p_scheme_id"type="text" value=0 readonly><br />
-    name: <input id="p_scheme_name" type="text" value=0 onchange="onInputParam('p_scheme_name','name')"><br />
-    description: <input id="p_scheme_description" type="text" value=0 onchange="onInputParam('p_scheme_description','description')"><br />
-    address: <input id="p_scheme_address" type="text" value=0 onchange="onInputParam('p_scheme_address','address')"><br />
+    name: <input id="p_scheme_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_scheme_name','name')"><br />
+    description: <input id="p_scheme_description" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_scheme_description','description')"><br />
+    address: <input id="p_scheme_address" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_scheme_address','address')"><br />
     <br />
-
-    <canvas id="p_scheme_photo" style="height: 100px; width:100px"></canvas>
-
-    <br />
-    <input type="file" id="photo-input"/><br />
-    <button onclick="openPhoto()">SET PHOTO</button><br />
 
 
 </div>
+
+
+
 
 <div id="floor_params" class="controller_params">
     FLOOR<br />
 
     id: <input id="p_floor_id" type="text" value=543 readonly><br />
-    name: <input id="p_floor_name" type="text" value=0 onchange="onInputParam('p_floor_name','name')"><br />
+    name: <input id="p_floor_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_floor_name','name')"><br />
 </div>
 
 <div id="room_params" class="controller_params">
     ROOM<br />
 
     id: <input id="p_room_id" type="text" value=54353 readonly><br />
-    name: <input id="p_room_name" type="text" value=0 onchange="onInputParam('p_room_name','name')"><br />
+    name: <input id="p_room_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_room_name','name')"><br />
 
 </div>
 
@@ -263,7 +288,12 @@
 <div id="qr_params" class="controller_params">
     QR<br />
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_qr_id" type="text" value=54353 readonly><br />
+    name: <input id="p_qr_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_qr_name','qr')"><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">DESTROY</button><br />
+
 </div>
 
 

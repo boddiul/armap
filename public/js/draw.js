@@ -66,7 +66,7 @@ MyTool = function () {
                 {
                     this.searching = false;
 
-                    mainCreate(this.inputResult);
+                    EditorJS.MainCreate(this.inputResult);
 
                     updateAll();
 
@@ -83,11 +83,11 @@ MyTool = function () {
 
             if (this.targetType === "movecanvas")
             {
-                showParams("scheme",scheme);
+                EditorJS.ShowParams("scheme");
             }
             else
             {
-                showParams(this.targetElement.mainType,this.targetElement.obj);
+                EditorJS.ShowParams(this.targetElement.mainType,this.targetElement.obj);
             }
 
         }
@@ -108,7 +108,7 @@ MyTool = function () {
         {
             this.searching = false;
 
-            mainCreate(null);
+            EditorJS.MainCreate(null);
 
             updateAll();
         }
@@ -263,14 +263,14 @@ function setVisibleLayer(layer,isText,visible)
 
 
 
-PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updatePosition,getToolData) {
+PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosition,getToolData) {
 
     this.obj = obj;
     this.mainType=  mainType;
     this.layerType = layerType;
 
-    console.log(this.layerType);
-    console.log(typeLayers);
+    //console.log(this.layerType);
+   // console.log(typeLayers);
 
     typeLayers[this.layerType].push( this);
 
@@ -285,9 +285,10 @@ PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updateP
     }
     this.visible = true;
 
-    this.x =x;
-    this.y =y;
+    this.x =0;
+    this.y =0;
 
+    this.direction = 0;
 
     this.onMove = function (index,delta) {
         this.obj.move(index,delta.x,delta.y);
@@ -301,6 +302,12 @@ PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updateP
             center: [0,0],
             radius: 6
         });
+    else if (type==="triangle")
+        this.drawElement = new Path.RegularPolygon(new Point(0,0),3,10);
+
+
+    this.type = type;
+
     this.drawElement.strokeColor = color;
     this.drawElement.fillColor = color;
 
@@ -323,6 +330,32 @@ PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updateP
             this.drawText.position = new Point(p.x,p.y)+new Point(10,14);
 
 
+
+        if (this.type==="triangle")
+        {
+
+            var aa = this.direction/180*Math.PI;
+            var pathData = [[
+                this.x,
+                this.y],
+                [
+                    this.x-0.2*Math.cos(aa-0.5),
+                    this.y-0.2*Math.sin(aa-0.5)],
+                [
+                    this.x-0.2*Math.cos(aa+0.5),
+                    this.y-0.2*Math.sin(aa+0.5)]];
+
+
+            for (var i=0;i<pathData.length;i++)
+            {
+                var p = pathData[i];
+                var np = pointToWindow(new Point(p[0],p[1]));
+
+                this.drawElement.segments[i].point.x = np.x;
+                this.drawElement.segments[i].point.y = np.y;
+
+            }
+        }
 
 
 
@@ -359,14 +392,14 @@ PointElement = function (obj,mainType,layerType,x,y,color,textColor,type,updateP
 
 
 
-    updateAll();
+    //updateAll();
 }
 
 
 
 
 
-LineElement = function (obj,mainType,layerType,x1,y1,x2,y2,color,textColor,width,updatePosition,getToolData) {
+LineElement = function (obj,mainType,layerType,color,textColor,width,updatePosition,getToolData) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -388,10 +421,17 @@ LineElement = function (obj,mainType,layerType,x1,y1,x2,y2,color,textColor,width
     this.visible = true;
 
 
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
+    this.x1 = 0;
+    this.y1 = 0;
+    this.x2 = 1;
+    this.y2 = 1;
+
+    this.setCoords = function (x1,y1,x2,y2) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
 
 
     this.onMove = function (index,delta) {
@@ -442,10 +482,115 @@ LineElement = function (obj,mainType,layerType,x1,y1,x2,y2,color,textColor,width
 
 
 
-    updateAll();
+    //updateAll();
 }
 
-RectElement = function(obj,mainType,layerType,x1,y1,x2,y2,color,textColor,updatePosition,getToolData) {
+
+DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,getToolData) {
+
+    this.obj = obj;
+    this.mainType=  mainType;
+    this.layerType = layerType;
+
+
+    if (this.layerType in typeLayers)
+        typeLayers[this.layerType].push( this);
+
+    this.textColor = textColor;
+    this.setVisible = function (isText,visible) {
+        if (!isText)
+            this.drawElement.visible = visible;
+        if (isText && this.textColor!=null)
+            this.drawText.visible = visible;
+        if (!isText)
+            this.visible = visible;
+    }
+    this.visible = true;
+
+
+    this.x1 = 0;
+    this.y1 = 0;
+    this.x2 = 1;
+    this.y2 = 1;
+    this.direction1 = 0;
+    this.direction2 = 0;
+    this.width = 1;
+
+    this.onMove = function (index,delta) {
+        this.obj.move(index,delta.x,delta.y);
+    }
+
+
+    this.drawElement = new Path([new Point(0,0),new Point(0,1),new Point(1,1),new Point(1,0),new Point(0,0)]);
+    //this.drawElement.strokeColor = color;
+
+    //this.drawElement.strokeWidth = 1;
+    this.drawElement.fillColor = color;
+
+
+
+    if (this.textColor!=null)
+        this.drawText = new PointText({
+            point: new Point(0,0),
+            content: '',
+            fontSize: 12,
+            justification: 'left',
+            fillColor : this.textColor
+        });
+
+
+
+    this.updatePath = function () {
+
+
+
+        var points = [
+            [this.x1 +Math.cos((this.direction1-90)/180*Math.PI)*this.width/3,
+                this.y1 +Math.sin((this.direction1-90)/180*Math.PI)*this.width/3],
+            [this.x1 +Math.cos((this.direction1+90)/180*Math.PI)*this.width/3,
+                this.y1 +Math.sin((this.direction1+90)/180*Math.PI)*this.width/3],
+
+            [this.x2 +Math.cos((this.direction2-90)/180*Math.PI)*this.width/3,
+                this.y2 +Math.sin((this.direction2-90)/180*Math.PI)*this.width/3],
+            [this.x2 +Math.cos((this.direction2+90)/180*Math.PI)*this.width/3,
+                this.y2 +Math.sin((this.direction2+90)/180*Math.PI)*this.width/3],
+
+        ]
+        points.push(points[0])
+
+
+        var newPoints = []
+
+        for (var i=0;i<5;i++)
+        {
+            var p = pointToWindow(new Point(points[i][0],points[i][1]));
+            newPoints.push(p);
+            this.drawElement.segments[i].point.x = p.x;
+            this.drawElement.segments[i].point.y = p.y;
+        }
+
+
+
+
+
+
+
+        if (this.textColor!=null)
+            this.drawText.position = new Point((newPoints[0].x+newPoints[2].x)/2,(newPoints[0].y+newPoints[2].y-60)/2)+new Point(14,14);
+
+    }
+
+    this.getToolData = getToolData;
+
+    this.updatePosition = updatePosition;
+
+
+
+    //updateAll();
+
+}
+
+RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,getToolData) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -464,11 +609,6 @@ RectElement = function(obj,mainType,layerType,x1,y1,x2,y2,color,textColor,update
     }
     this.visible = true;
 
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-
 
     if (this.textColor!=null)
         this.drawText = new PointText({
@@ -486,11 +626,15 @@ RectElement = function(obj,mainType,layerType,x1,y1,x2,y2,color,textColor,update
     }
 
 
-    this.drawElement = new Path.Rectangle(new Point(x1,y1), new Point(x2,y2))
+    this.drawElement = new Path.Rectangle(new Point(0,0), new Point(1,1))
     this.drawElement.strokeColor = color;
 
 
 
+    this.x1 = 0;
+    this.y1 = 0;
+    this.x2 = 1;
+    this.y2 = 1;
 
 
 /*
@@ -504,23 +648,23 @@ RectElement = function(obj,mainType,layerType,x1,y1,x2,y2,color,textColor,update
     this.updatePath = function () {
 
 
-        this.pathData = [[
-            this.obj.room.floor.x+this.obj.x1,
-            this.obj.room.floor.y+this.obj.y1],
+        var pathData = [[
+            this.x1,
+            this.y1],
             [
-            this.obj.room.floor.x+this.obj.x2,
-            this.obj.room.floor.y+this.obj.y1],
+            this.x2,
+            this.y1],
             [
-            this.obj.room.floor.x+this.obj.x2,
-            this.obj.room.floor.y+this.obj.y2],
+            this.x2,
+            this.y2],
 
-            [this.obj.room.floor.x+this.obj.x1,
-            this.obj.room.floor.y+this.obj.y2]];
+            [this.x1,
+            this.y2]];
 
 
-        for (var i=0;i<this.pathData.length;i++)
+        for (var i=0;i<pathData.length;i++)
         {
-            var p = this.pathData[i];
+            var p = pathData[i];
             var np = pointToWindow(new Point(p[0],p[1]));
 
 
@@ -535,7 +679,7 @@ RectElement = function(obj,mainType,layerType,x1,y1,x2,y2,color,textColor,update
     this.getToolData = getToolData;
     this.updatePosition = updatePosition;
 
-    updateAll();
+    //updateAll();
 
 
 }
@@ -623,13 +767,6 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
     }
 
 
-    /*
-        this.pathData = [];
-        this.drawElement.segments.forEach(function (s) {
-            this.pathData.push([s.point.x,s.point.y]);
-        }.bind(this));
-    */
-    //console.log(this.pathData);
 
     this.updatePath = function () {
 
@@ -661,7 +798,7 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
     this.getToolData = getToolData;
     this.updatePosition = updatePosition;
 
-    updateAll();
+   // updateAll();
 
 
 }
@@ -714,8 +851,6 @@ function addStaircaseElement(staircase)
 
 function addFloorElement(floor) {
     e = new PointElement(floor,"floor","floor",
-        floor.x,
-        floor.y,
         "#c10037",
         "#c10037",
         "rect",
@@ -736,8 +871,6 @@ function addFloorElement(floor) {
 function addRoomElement(room) {
 
     e = new PointElement(room,"room","room",
-        room.floor.x+room.x,
-        room.floor.y+room.y,
         "#02c100",
         "#02c100",
         "rect",
@@ -762,10 +895,6 @@ function addWallElement(wall) {
 
 
     e = new LineElement(wall,"wall","room",
-        wall.room.floor.x+wall.x1,
-        wall.room.floor.y+wall.y1,
-        wall.room.floor.x+wall.x2,
-        wall.room.floor.y+wall.y2,
         '#074444',
         null,
         2,
@@ -791,10 +920,6 @@ function addFurnitureElement(furniture) {
 
 
     e = new RectElement(furniture,"furniture","furniture",
-        furniture.room.floor.x+furniture.x1,
-        furniture.room.floor.y+furniture.y1,
-        furniture.room.floor.x+furniture.x2,
-        furniture.room.floor.y+furniture.y2,
         '#939191',
         '#939191',
         function () {
@@ -822,8 +947,6 @@ function addNodeElement(node) {
 
 
     e = new PointElement(node,"node","node",
-        node.floor.x+node.x,
-        node.floor.y+node.y,
         "#a400c1",
         "#a400c1",
         "circle",
@@ -840,14 +963,9 @@ function addNodeElement(node) {
 
 function addDoorElement(door) {
 
-    e = new LineElement(door,"door","door",
-        door.floor.x+door.x1,
-        door.floor.y+door.y1,
-        door.floor.x+door.x2,
-        door.floor.y+door.y2,
+    e = new DoorElement(door,"door","door",
         '#c16149',
-        '#c16149',
-        30,
+        '#000000',
         function () {
             this.x1 = this.obj.floor.x+this.obj.x1;
             this.y1 = this.obj.floor.y+this.obj.y1;
@@ -855,6 +973,25 @@ function addDoorElement(door) {
             this.y2 = this.obj.floor.y+this.obj.y2;
 
             this.drawText.content = this.obj.id+' {'+(this.obj.room1 ? this.obj.room1.id:'_') +','+this.obj.room2.id+'}';
+
+            this.width = this.obj.width;
+
+            this.direction1 = null;
+            this.direction2 = null;
+
+            if (this.obj.wall1)
+                this.direction1 = Math.atan2(this.obj.wall1.y2-this.obj.wall1.y1,this.obj.wall1.x2-this.obj.wall1.x1)/Math.PI*180-90;
+
+            if (this.obj.wall2)
+                this.direction2 = Math.atan2(this.obj.wall2.y2-this.obj.wall2.y1,this.obj.wall2.x2-this.obj.wall2.x1)/Math.PI*180-90;
+
+            if (!this.obj.wall1)
+                this.direction1 = this.direction2-180;
+
+            if (!this.obj.wall2)
+                this.direction2 = this.direction1-180;
+
+
         },function () {
             return [
                 {type:"moveobject",index:0,search:"door",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
@@ -870,10 +1007,6 @@ function addEdgeElement(edge) {
 
 
     e = new LineElement(edge,"edge","edge",
-        edge.node1.floor.x+edge.node1.x,
-        edge.node1.floor.y+edge.node1.y,
-        edge.node2.floor.x+edge.node2.x,
-        edge.node2.floor.y+edge.node2.y,
         '#bd68cd',
         '#bd68cd',
         1,
@@ -893,14 +1026,14 @@ function addEdgeElement(edge) {
 
 function addQRElement(qr) {
     e = new PointElement(qr,"qr","qr",
-        qr.room.floor.x+qr.x,
-        qr.room.floor.y+qr.y,
-        "#3efffa",
+        "#3ba2f1",
         "#3765c2",
-        "rect",
+        "triangle",
         function () {
             this.x = this.obj.room.floor.x+this.obj.x;
             this.y = this.obj.room.floor.y+this.obj.y;
+
+            this.direction = this.obj.direction;
 
             this.drawText.content = this.obj.id+' ('+this.obj.direction+'*)'
         },
@@ -968,9 +1101,16 @@ function init()
     for (var l=-50;l<50;l++)
     {
 
-        elements.push(new LineElement(null,"grid","grid",l,-5000,l,5000,'#d8effa',null,1,null,null))
 
-        elements.push(new LineElement(null,"grid","grid",-5000,l,5000,l,'#d8effa',null,1,null,null))
+        var line = new LineElement(null,"grid","grid",'#d8effa',null,1,null,null);
+        line.setCoords(l,-5000,l,5000)
+        elements.push(line)
+
+
+        line = new LineElement(null,"grid","grid",'#d8effa',null,1,null,null);
+        line.setCoords(-5000,l,5000,l)
+
+        elements.push(line)
 
 
     }
@@ -978,7 +1118,7 @@ function init()
 
 
 
-    updateAll();
+   // updateAll();
 }
 
 
@@ -1032,7 +1172,7 @@ function onMouseMove(event) {
         myTool.onMouseMove(new Point(event.event.layerX,event.event.layerY));
 
 
-    //updateAll();
+    updateAll();
 }
 
 function onScroll(event)
@@ -1097,31 +1237,33 @@ function removeDebugTriangles()
 
 
 
-drawJS.debugTriangle = debugTriangle;
-drawJS.removeDebugTriangles = removeDebugTriangles;
+DrawJS.DebugTriangle = debugTriangle;
+DrawJS.RemoveDebugTriangles = removeDebugTriangles;
 
 
-drawJS.init = init;
-drawJS.setVisibleLayer = setVisibleLayer;
+DrawJS.Init = init;
+DrawJS.SetVisibleLayer = setVisibleLayer;
 
-drawJS.onScroll = onScroll;
+DrawJS.OnScroll = onScroll;
 
-drawJS.addFloorElement = addFloorElement;
-drawJS.addRoomElement = addRoomElement;
-drawJS.addWallElement = addWallElement;
-drawJS.addFurnitureElement = addFurnitureElement;
+DrawJS.AddFloorElement = addFloorElement;
+DrawJS.AddRoomElement = addRoomElement;
+DrawJS.AddWallElement = addWallElement;
+DrawJS.AddFurnitureElement = addFurnitureElement;
 
-drawJS.addEdgeElement = addEdgeElement;
-drawJS.addNodeElement = addNodeElement;
+DrawJS.AddEdgeElement = addEdgeElement;
+DrawJS.AddNodeElement = addNodeElement;
 
-drawJS.addDoorElement = addDoorElement;
-drawJS.addQRElement = addQRElement;
+DrawJS.AddDoorElement = addDoorElement;
+DrawJS.AddQRElement = addQRElement;
 
-drawJS.addElevatorElement = addElevatorElement;
-drawJS.addStaircaseElement = addStaircaseElement;
+DrawJS.AddElevatorElement = addElevatorElement;
+DrawJS.AddStaircaseElement = addStaircaseElement;
 
-drawJS.askInput = askInput;
+DrawJS.AskInput = askInput;
 
-drawJS.mainOnLoad = mainOnLoad;
+DrawJS.OnLoad = mainOnLoad;
 
-drawJS.destroyElement = destroyElement;
+DrawJS.DestroyElement = destroyElement;
+
+DrawJS.UpdateCanvas = updateAll;

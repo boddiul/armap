@@ -15,15 +15,22 @@ QR = function(room,jsonDataQR)
     if (this.id>maxQRId)
         maxQRId = this.id;
 
+
+
     this.x = jsonDataQR.x;
     this.y = jsonDataQR.y;
+
+    this.name = jsonDataQR.name;
+    this.canSearch = jsonDataQR.can_search;
+
+
     this.initWallId = jsonDataQR.wall_id;
 
     this.direction = jsonDataQR.direction / Math.PI * 180;
 
     this.SetLinks = function () {
-        if (drawJS)
-            this.drawElement = drawJS.addQRElement(this);
+        if (DrawJS)
+            this.drawElement = DrawJS.AddQRElement(this);
     }
 
 
@@ -32,6 +39,8 @@ QR = function(room,jsonDataQR)
             id:this.id,
             x:this.x,
             y:this.y,
+            name:this.name,
+            can_search: this.canSearch,
             wall_id:this.initWallId,
             direction:this.direction * Math.PI / 180
         }
@@ -45,6 +54,35 @@ QR = function(room,jsonDataQR)
         this.y += dy;
     }
 
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep)
+        {
+            let index = $.inArray(this, this.room.qrs);
+            if (index !== -1) {
+                this.room.qrs.splice(index, 1);
+            }
+
+
+            index = -1;
+            let nodes = this.room.floor.scheme.graph.nodes;
+            for (let i=0;i<nodes.length;i++)
+                if (nodes[i].obj === this)
+                    index = i;
+
+            if (index!==-1)
+            {
+                nodes[index].destroy(true);
+                nodes.splice(index,1);
+            }
+
+
+        }
+
+
+
+    }
 
 }
 
@@ -103,8 +141,8 @@ Staircase = function(room,jsonDataStaircase)
        // console.log(this)
 
 
-        if (drawJS)
-            this.drawElement = drawJS.addStaircaseElement(this);
+        if (DrawJS)
+            this.drawElement = DrawJS.AddStaircaseElement(this);
     }
 
     this.ToJSON = function () {
@@ -184,8 +222,8 @@ Elevator = function(room,jsonDataElevator)
 
 
 
-        if (drawJS)
-            this.drawElement = drawJS.addElevatorElement(this);
+        if (DrawJS)
+            this.drawElement = DrawJS.AddElevatorElement(this);
     }
 
     this.ToJSON = function () {
@@ -243,8 +281,8 @@ Furniture = function(room,jsonDataFurniture)
         return j;
     }
 
-    if (drawJS)
-        this.drawElement = drawJS.addFurnitureElement(this);
+    if (DrawJS)
+        this.drawElement = DrawJS.AddFurnitureElement(this);
 
 
     this.move = function (index,dx,dy) {
@@ -299,6 +337,8 @@ Graph = function(scheme,jsonDataGraph)
         return j;
     }
 
+
+
 }
 
 Edge = function(graph,jsonDataEdge)
@@ -316,16 +356,18 @@ Edge = function(graph,jsonDataEdge)
     this.initNode2Id = jsonDataEdge.node2_id;
 
     this.SetLinks = function () {
-        this.graph.nodes.forEach(function (n) {
-            if (n.id === this.initNode1Id)
-                this.node1 = n;
-            if (n.id === this.initNode2Id)
-                this.node2 = n;
 
-        }.bind(this));
 
-        if (drawJS)
-            this.drawElement = drawJS.addEdgeElement(this);
+            this.graph.nodes.forEach(function (n) {
+                if (n.id === this.initNode1Id)
+                    this.node1 = n;
+                if (n.id === this.initNode2Id)
+                    this.node2 = n;
+
+            }.bind(this));
+
+        if (DrawJS)
+            this.drawElement = DrawJS.AddEdgeElement(this);
     }
 
 
@@ -345,8 +387,23 @@ Edge = function(graph,jsonDataEdge)
 
 
 
-    this.destroy = function() {
-        drawJS.destroyElement(this);
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep)
+        {
+            index = -1;
+            let edges = this.graph.edges;
+            for (let i=0;i<edges.length;i++)
+                if (edges[i].obj === this)
+                    index = i;
+
+            if (index!==-1)
+            {
+                edges[index].destroy(true);
+                edges.splice(index,1);
+            }
+        }
 
     }
 }
@@ -420,8 +477,8 @@ Node = function(graph,jsonDataNode) {
 
 
 
-        if (drawJS)
-            this.drawElement = drawJS.addNodeElement(this);
+        if (DrawJS)
+            this.drawElement = DrawJS.AddNodeElement(this);
     }
 
 
@@ -454,8 +511,31 @@ Node = function(graph,jsonDataNode) {
     }
 
 
-    this.destroy = function() {
-        drawJS.destroyElement(this);
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+
+        if (deep)
+        {
+            let edgesToDestroy = [];
+
+
+            for (let i =0;i<this.graph.edges.length;i++)
+            {
+                if (this.graph.edges[i].node1===this || this.graph.edges[i].node2===this)
+                    edgesToDestroy.push(this.graph.edges[i]);
+            }
+
+            edgesToDestroy.forEach(function (e) {
+
+                e.destroy(true);
+
+
+
+            })
+        }
+
+
 
     }
 
@@ -512,8 +592,8 @@ Door = function(floor,jsonDataDoor)
         }.bind(this));
 
 
-        if (drawJS)
-            drawJS.addDoorElement(this);
+        if (DrawJS)
+            DrawJS.AddDoorElement(this);
 
     }
 
@@ -631,8 +711,8 @@ Wall = function(room,jsonDataWall)
 
     }
 
-    if (drawJS)
-        this.drawElement = drawJS.addWallElement(this);
+    if (DrawJS)
+        this.drawElement = DrawJS.AddWallElement(this);
 
 
 
@@ -748,8 +828,8 @@ Room = function(floor,jsonDataRoom)
     }
 
 
-    if (drawJS)
-        this.drawElement = drawJS.addRoomElement(this);
+    if (DrawJS)
+        this.drawElement = DrawJS.AddRoomElement(this);
 
     this.move = function (index,dx,dy) {
         this.x+=dx;
@@ -894,8 +974,8 @@ Floor = function(scheme,jsonDataFloor)
         this.y+=dy;
     }
 
-    if (drawJS)
-        this.drawElement = drawJS.addFloorElement(this);
+    if (DrawJS)
+        this.drawElement = DrawJS.AddFloorElement(this);
 
 }
 
@@ -909,10 +989,6 @@ Scheme = function(jsonDataScheme)
     this.name = jsonDataScheme.name;
     this.address = jsonDataScheme.address;
     this.description = jsonDataScheme.description;
-
-    this.photo = "data:image/png;base64,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";
-    if (typeof jsonDataScheme.photo !== "undefined")
-        this.photo = jsonDataScheme.photo;
 
 
 
@@ -944,7 +1020,6 @@ Scheme = function(jsonDataScheme)
             name:this.name,
             address:this.address,
             description:this.description,
-            photo:this.photo,
             graph:this.graph.ToJSON(),
             floors:this.floors.map(function (f) {
                 return f.ToJSON();
