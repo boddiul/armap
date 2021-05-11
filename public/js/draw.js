@@ -48,18 +48,30 @@ MyTool = function () {
     
 
 
-    this.onMouseDown = function (mouseLayer) {
+    this.onMouseDown = function (mouseLayer,mouseRight) {
 
 
         if (this.searching)
         {
+            var itemAdded = false;
+
             if (this.targetType==="select")
             {
 
 
                 this.inputResult.push(this.targetElement.obj);
+                itemAdded = true;
 
-                console.log(this.inputResult);
+
+            }
+            else if (mouseRight)
+            {
+                this.inputResult.push(null);
+                itemAdded = true;
+            }
+
+            if (itemAdded)
+            {
                 this.inputI+=1;
 
                 if (this.inputI>=this.inputTypes.length)
@@ -74,6 +86,7 @@ MyTool = function () {
                 this.findItem();
                 this.update();
             }
+
         }
         else
         {
@@ -252,12 +265,22 @@ MyTool = function () {
 
 myTool = null;
 
+layerVisible = {'grid':true,'floor':true};
 
 function setVisibleLayer(layer,isText,visible)
 {
+
+    layerVisible[layer+(isText ?'_text':'')] = visible;
+
+    console.log(layerVisible);
+
     typeLayers[layer].forEach(function (o) {
         o.setVisible(isText,visible);
     })
+
+
+
+
 }
 
 
@@ -284,6 +307,7 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
             this.visible = visible;
     }
     this.visible = true;
+
 
     this.x =0;
     this.y =0;
@@ -364,32 +388,14 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
     this.getToolData = getToolData;
 
 
-    /*
-    this.drawElement.onMouseDown = function (event) {
-
-        //this.drawElement.selected = true;
-
-    }.bind(this)
-
-
-    this.drawElement.onMouseDrag = function (event) {
-
-
-        this.obj.move(
-            event.delta.x/mainScale,
-            -event.delta.y/mainScale);
-
-
-        updateAll();
-
-
-    }.bind(this);
-*/
 
     this.updatePosition = updatePosition;
 
     this.updatePath();
 
+    console.log(mainType,layerType,layerVisible[layerType]);
+    this.setVisible(false,layerVisible[layerType]);
+    this.setVisible(true,layerVisible[layerType+'_text']);
 
 
     //updateAll();
@@ -480,7 +486,8 @@ LineElement = function (obj,mainType,layerType,color,textColor,width,updatePosit
 
     this.updatePosition = updatePosition;
 
-
+    this.setVisible(false,layerVisible[layerType]);
+    this.setVisible(true,layerVisible[layerType+'_text']);
 
     //updateAll();
 }
@@ -584,7 +591,8 @@ DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,ge
 
     this.updatePosition = updatePosition;
 
-
+    this.setVisible(false,layerVisible[layerType]);
+    this.setVisible(true,layerVisible[layerType+'_text']);
 
     //updateAll();
 
@@ -679,6 +687,8 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
     this.getToolData = getToolData;
     this.updatePosition = updatePosition;
 
+    this.setVisible(false,layerVisible[layerType]);
+    this.setVisible(true,layerVisible[layerType+'_text']);
     //updateAll();
 
 
@@ -707,8 +717,8 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
         this.drawText = new PointText({
             point: new Point(0,0),
             content: '',
-            fontSize: 14,
-            justification: 'left',
+            fontSize: 12,
+            justification: 'center',
             fillColor : textColor
         });
 
@@ -773,6 +783,8 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
 
 
 
+        var tx = 0;
+        var ty = 0;
         for (i=0;i<this.coords.length;i+=1)
         {
             var aa = this.direction/180*Math.PI
@@ -785,11 +797,16 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
 
             this.drawElement.segments[i].point.x = np.x;
             this.drawElement.segments[i].point.y = np.y;
+
+            tx+=np.x;
+            ty+=np.y;
         }
 
+        tx/=this.coords.length;
+        ty/=this.coords.length;
 
         if (this.textColor!=null)
-            this.drawText.position = new Point(np.x,np.y)+new Point(10,14);
+            this.drawText.position = new Point(tx,ty);//new Point(np.x,np.y)+new Point(20,25);
 
 
 
@@ -798,6 +815,11 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
     this.getToolData = getToolData;
     this.updatePosition = updatePosition;
 
+
+
+    console.log(mainType,layerType,layerVisible[layerType]);
+    this.setVisible(false,layerVisible[layerType]);
+    this.setVisible(true,layerVisible[layerType+'_text']);
    // updateAll();
 
 
@@ -810,7 +832,7 @@ function addElevatorElement(elevator)
 
     e = new PortalElement(elevator,"elevator","elevator",
         "#3f8b92",
-        "#3f8b92",
+        "#204a4e",
         "elevator",
         function () {
             this.x = this.obj.room.floor.x+this.obj.x;
@@ -818,8 +840,25 @@ function addElevatorElement(elevator)
             this.direction = this.obj.direction;
 
 
-            this.drawText.content = this.obj.id;
-        },null
+
+            var t = '{'+this.obj.id+'}';
+            if (this.obj.elevatorDown)
+                t+=' {DOWN_ID:'+this.obj.elevatorDown.id+'}';
+            if (this.obj.elevatorUp)
+                t+=' {UP_ID:'+this.obj.elevatorUp.id+'}';
+
+            this.drawText.content = t;
+
+
+
+        },function () {
+            return [{type:"moveobject",
+                search:"elevator",
+                index:0,
+                x:this.x+0.5*Math.cos(this.direction/180*Math.PI),
+                y:this.y+0.5*Math.sin(this.direction/180*Math.PI)}
+                ]
+        }
     )
     elements.push(e);
     return e;
@@ -831,7 +870,7 @@ function addStaircaseElement(staircase)
 
     e = new PortalElement(staircase,"staircase","staircase",
         "#9c4e0f",
-        "#9c4e0f",
+        "#7b3f0f",
         "staircase",
         function () {
             this.x = this.obj.room.floor.x+this.obj.x;
@@ -839,9 +878,22 @@ function addStaircaseElement(staircase)
             this.direction = this.obj.direction;
 
 
-            this.drawText.content = this.obj.id;
+            var t = '{'+this.obj.id+'}';
+            if (this.obj.staircaseDown)
+                t+=' {DOWN_ID:'+this.obj.staircaseDown.id+'}';
+            if (this.obj.staircaseUp)
+                t+=' {UP_ID:'+this.obj.staircaseUp.id+'}';
 
-        },null
+            this.drawText.content = t;
+
+        },function () {
+            return [{type:"moveobject",
+                search:"staircase",
+                index:0,
+                x:this.x+0.5*Math.cos(this.direction/180*Math.PI),
+                y:this.y+0.5*Math.sin(this.direction/180*Math.PI)}
+            ]
+        }
     )
 
     elements.push(e);
@@ -911,6 +963,8 @@ function addWallElement(wall) {
                 {type:"movepoint",index:1,search:null,x:this.x1,y:this.y1},
                 {type:"movepoint",index:2,search:null,x:this.x2,y:this.y2}]
         })
+
+
 
     elements.push(e);
     return e;
@@ -1035,7 +1089,7 @@ function addQRElement(qr) {
 
             this.direction = this.obj.direction;
 
-            this.drawText.content = this.obj.id+' ('+this.obj.direction+'*)'
+            this.drawText.content = this.obj.id+' ('+Math.round(this.obj.direction)+'*)'
         },
         function () {
             return [{type:"moveobject",search:"qr",index:0,x:this.x,y:this.y}]
@@ -1059,10 +1113,16 @@ function destroyElement(obj) {
 
     }
 
-    elements.splice(i,1);
-    e.drawElement.remove();
-    if (typeof  e.drawElement != "undefined")
-        e.drawText.remove();
+
+    if (e)
+    {
+        console.log(e);
+        elements.splice(eI,1);
+        e.drawElement.remove();
+        if (typeof  e.drawText != "undefined")
+            e.drawText.remove();
+    }
+
 }
 
 function mainOnLoad() {
@@ -1137,7 +1197,10 @@ function updateAll()
 function onMouseDown(event) {
 
     if (myTool)
-        myTool.onMouseDown(new Point(event.event.layerX,event.event.layerY));
+    {
+        myTool.onMouseDown(new Point(event.event.layerX,event.event.layerY),event.event.button===2);
+
+    }
 
 }
 /*

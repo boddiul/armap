@@ -4,7 +4,8 @@ maxWallId = 0;
 maxDoorId = 0;
 maxQRId = 0;
 maxFurnitureId = 0;
-
+maxElevatorId = 0;
+maxStaircaseId = 0;
 
 QR = function(room,jsonDataQR)
 {
@@ -95,6 +96,10 @@ Staircase = function(room,jsonDataStaircase)
 
     this.id = jsonDataStaircase.id;
 
+    if (this.id>maxStaircaseId)
+        maxStaircaseId = this.id;
+
+
     this.x = jsonDataStaircase.x;
     this.y = jsonDataStaircase.y;
 
@@ -128,11 +133,19 @@ Staircase = function(room,jsonDataStaircase)
 
                     if (typeof this.initStaircaseUpId != "undefined")
                         if (s.id === this.initStaircaseUpId)
+                        {
                             this.staircaseUp = s;
+                            //s.staircaseDown = s;
+                        }
+
 
                     if (typeof this.initStaircaseDownId != "undefined")
                         if (s.id === this.initStaircaseDownId)
+                        {
                             this.staircaseDown = s;
+                            //s.staircaseUp = s;
+                        }
+
                 }.bind(this))
             }.bind(this))
         }.bind(this))
@@ -163,6 +176,52 @@ Staircase = function(room,jsonDataStaircase)
 
         return j;
     }
+
+    this.move = function (index,dx,dy) {
+
+        if (index === 0) {
+            this.x += dx;
+            this.y += dy;
+        }
+    }
+
+
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep)
+        {
+
+            if (this.staircaseDown)
+                this.staircaseDown.staircaseUp = null;
+
+            if (this.staircaseUp)
+                this.staircaseUp.staircaseDown = null;
+
+            let index = $.inArray(this, this.room.staircases);
+            if (index !== -1) {
+                this.room.staircases.splice(index, 1);
+            }
+
+
+            index = -1;
+            let nodes = this.room.floor.scheme.graph.nodes;
+            for (let i=0;i<nodes.length;i++)
+                if (nodes[i].obj === this)
+                    index = i;
+
+            if (index!==-1)
+            {
+                nodes[index].destroy(true);
+                nodes.splice(index,1);
+            }
+
+
+        }
+
+    }
+
+
 }
 
 Elevator = function(room,jsonDataElevator)
@@ -171,6 +230,11 @@ Elevator = function(room,jsonDataElevator)
 
     this.room = room;
     this.id = jsonDataElevator.id;
+
+
+    if (this.id>maxElevatorId)
+        maxElevatorId = this.id;
+
 
     this.x = jsonDataElevator.x;
     this.y = jsonDataElevator.y;
@@ -196,10 +260,24 @@ Elevator = function(room,jsonDataElevator)
 
     this.SetLinks = function () {
 
+        //TODO
+        let minDist = -1;
+        let bWall = null;
         this.room.walls.forEach(function (w) {
-            if (w.id ===this.initWallId)
-                this.wall = w;
+            //if (w.id ===this.initWallId)
+            //    this.wall = w;
+
+            let dist = Math.sqrt(Math.pow((w.x1+w.x2)/2-this.x,2)+Math.pow((w.y1+w.y2)/2-this.y,2));
+
+            if (bWall===null || dist<minDist)
+            {
+                bWall = w;
+                minDist = dist;
+            }
         }.bind(this))
+
+        if (minDist!==-1)
+            this.wall = bWall;
 
 
         this.room.floor.scheme.floors.forEach(function (f) {
@@ -232,6 +310,7 @@ Elevator = function(room,jsonDataElevator)
             x:this.x,
             y:this.y,
             direction:this.direction * Math.PI / 180,
+            wall_id : this.wall.id
 
         }
 
@@ -241,7 +320,47 @@ Elevator = function(room,jsonDataElevator)
             j["elevator_up_id"] = this.elevatorUp.id
         return j;
     }
+    this.move = function (index,dx,dy) {
 
+        if (index === 0) {
+            this.x += dx;
+            this.y += dy;
+        }
+    }
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep)
+        {
+
+            if (this.elevatorDown)
+                this.elevatorDown.elevatorUp = null;
+
+            if (this.elevatorUp)
+                this.elevatorUp.elevatorDown = null;
+
+            let index = $.inArray(this, this.room.elevators);
+            if (index !== -1) {
+                this.room.elevators.splice(index, 1);
+            }
+
+
+            index = -1;
+            let nodes = this.room.floor.scheme.graph.nodes;
+            for (let i=0;i<nodes.length;i++)
+                if (nodes[i].obj === this)
+                    index = i;
+
+            if (index!==-1)
+            {
+                nodes[index].destroy(true);
+                nodes.splice(index,1);
+            }
+
+
+        }
+
+    }
 }
 
 
@@ -300,6 +419,18 @@ Furniture = function(room,jsonDataFurniture)
 
 
 
+    }
+
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep) {
+
+            let index = $.inArray(this, this.room.furniture);
+            if (index !== -1) {
+                this.room.furniture.splice(index, 1);
+            }
+        }
     }
 }
 
@@ -634,6 +765,33 @@ Door = function(floor,jsonDataDoor)
         };
         return j;
     }
+
+
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep) {
+
+            let index = $.inArray(this, this.floor.doors);
+            if (index !== -1) {
+                this.floor.doors.splice(index, 1);
+            }
+
+            index = -1;
+            let nodes = this.floor.scheme.graph.nodes;
+            for (let i=0;i<nodes.length;i++)
+                if (nodes[i].obj === this)
+                    index = i;
+
+            if (index!==-1)
+            {
+                nodes[index].destroy(true);
+                nodes.splice(index,1);
+            }
+        }
+
+
+    }
 }
 
 Wall = function(room,jsonDataWall)
@@ -715,6 +873,9 @@ Wall = function(room,jsonDataWall)
         this.drawElement = DrawJS.AddWallElement(this);
 
 
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+    }
 
 }
 
@@ -909,6 +1070,79 @@ Room = function(floor,jsonDataRoom)
         }.bind(this))
     }
 
+    this.destroy = function(deep) {
+        DrawJS.DestroyElement(this);
+
+        if (deep) {
+
+
+
+            let index = $.inArray(this, this.floor.rooms);
+            if (index !== -1) {
+                this.floor.rooms.splice(index, 1);
+            }
+
+
+            console.log('!!!!');
+            this.furniture.forEach(function (f) {
+
+                console.log(f);
+                f.destroy(false);
+            })
+            this.qrs.forEach(function (q) {
+                q.destroy(false);
+            })
+            this.walls.forEach(function (w) {
+                w.destroy(false);
+            })
+
+            this.elevators.forEach(function (e) {
+                e.destroy(false);
+            })
+
+
+            this.staircases.forEach(function (s) {
+                s.destroy(false);
+            });
+
+            let doorsToDestroy = [];
+
+
+
+            for (let i =0;i<this.floor.doors.length;i++) {
+                if (this.floor.doors[i].room1 === this || this.floor.doors[i].room2 === this)
+                    doorsToDestroy.push(this.floor.doors[i]);
+            }
+            doorsToDestroy.forEach(function (d) {
+                d.destroy(true);
+            })
+
+
+
+
+            let nodesToDestroy = [];
+
+
+            for (let i =0;i<this.floor.scheme.graph.nodes.length;i++)
+            {
+                if (this.floor.scheme.graph.nodes[i].obj===this)
+                    nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
+
+
+                if (typeof  this.floor.scheme.graph.nodes[i].obj.room!='undefined')
+                    if (this.floor.scheme.graph.nodes[i].obj.room===this)
+                        nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
+            }
+
+            nodesToDestroy.forEach(function (n) {
+                n.destroy(true);
+            })
+        }
+
+
+    }
+
+
 
 }
 
@@ -977,6 +1211,27 @@ Floor = function(scheme,jsonDataFloor)
     if (DrawJS)
         this.drawElement = DrawJS.AddFloorElement(this);
 
+
+
+
+    this.destroy = function(deep) {
+
+        DrawJS.DestroyElement(this);
+        if (deep) {
+            let rooms = [];
+
+            this.rooms.forEach(function (r) {
+                rooms.push(r);
+            })
+
+            rooms.forEach(function (r) {
+                r.destroy(true);
+            })
+
+
+
+        }
+    }
 }
 
 Scheme = function(jsonDataScheme)

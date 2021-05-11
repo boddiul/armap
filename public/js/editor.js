@@ -205,6 +205,7 @@ function EditorController() {
         maxDoorId = 0;
         maxQRId = 0;
         maxFurnitureId = 0;
+        maxElevatorId = 0;
 
         DrawJS.Init();
 
@@ -301,131 +302,151 @@ function EditorController() {
         }
         else if (this.waitingToCreate==="room")
         {
-            maxRoomId+=1;
-            maxWallId+=4;
+            // 0 - floor
+            if (data[0]!==null)
+            {
+                maxRoomId+=1;
+                maxWallId+=4;
+                let cx = -1;
+                let cy = 7;
+                r = new Room(data[0],{
+                    id:maxRoomId,
+                    name:"new room",
+                    description:"",
+                    can_search: true,
+                    elevators:[],
+                    staircases:[],
+                    furniture:[],
+                    qrs:[],
+                    walls:[
+                        {"id":maxWallId-3,"x1":cx+2,"y1":cy-4,"x2":cx+5,"y2":cy-4,    "wall_prev_id":maxWallId,"wall_next_id":maxWallId-2},
+                        {"id":maxWallId-2,"x1":cx+5,"y1":cy-4,"x2":cx+5,"y2":cy-7,     "wall_prev_id":maxWallId-3,"wall_next_id":maxWallId-1},
+                        {"id":maxWallId-1,"x1":cx+5,"y1":cy-7,"x2":cx+2,"y2":cy-7,     "wall_prev_id":maxWallId-2,"wall_next_id":maxWallId},
+                        {"id":maxWallId,"x1":cx+2,"y1":cy-7,"x2":cx+2,"y2":cy-4,      "wall_prev_id":maxWallId-1,"wall_next_id":maxWallId-3}
 
+                    ]
+                })
+                data[0].rooms.push(r);
+            }
 
-
-            let cx = -1;
-            let cy = 7;
-            r = new Room(data[0],{
-                id:maxRoomId,
-                name:"new room",
-                description:"",
-                can_search: true,
-                elevators:[],
-                staircases:[],
-                furniture:[],
-                qrs:[],
-                walls:[
-                    {"id":maxWallId-3,"x1":cx+2,"y1":cy-4,"x2":cx+5,"y2":cy-4,    "wall_prev_id":maxWallId,"wall_next_id":maxWallId-2},
-                    {"id":maxWallId-2,"x1":cx+5,"y1":cy-4,"x2":cx+5,"y2":cy-7,     "wall_prev_id":maxWallId-3,"wall_next_id":maxWallId-1},
-                    {"id":maxWallId-1,"x1":cx+5,"y1":cy-7,"x2":cx+2,"y2":cy-7,     "wall_prev_id":maxWallId-2,"wall_next_id":maxWallId},
-                    {"id":maxWallId,"x1":cx+2,"y1":cy-7,"x2":cx+2,"y2":cy-4,      "wall_prev_id":maxWallId-1,"wall_next_id":maxWallId-3}
-
-                ]
-
-
-
-            })
-            data[0].rooms.push(r);
         }
         else if (this.waitingToCreate==="door")
         {
-            maxDoorId+=1;
+            // 0 - room1
+            // 1 - room2
+            if (data[0]!==null && data[1]!==null)
+            {
+                if (data[0].floor!== data[1].floor)
+                    return;
 
-            var f = data[0].floor;
-            var r1 = data[0];
-            var r2 = data[1];
+                maxDoorId+=1;
 
-
-
-            var w1 = r1.walls.reduce(function(prev, curr) {
-                return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r2.x,2)+Math.pow((curr.y1+curr.y2)/2-r2.y,2))
-                < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r2.x,2)+Math.pow((prev.y1+prev.y2)/2-r2.y,2))
-                    ? curr : prev);
-            });
-
-            var w2 = r2.walls.reduce(function(prev, curr) {
-                return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r1.x,2)+Math.pow((curr.y1+curr.y2)/2-r1.y,2))
-                < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r1.x,2)+Math.pow((prev.y1+prev.y2)/2-r1.y,2))
-                    ? curr : prev);
-            });
+                var f = data[0].floor;
+                var r1 = data[0];
+                var r2 = data[1];
 
 
-            d = new Door(f,{
-                id:maxDoorId,
-                x1:(w1.x1+w1.x2)/2,
-                y1:(w1.y1+w1.y2)/2,
-                x2:(w2.x1+w2.x2)/2,
-                y2:(w2.y1+w2.y2)/2,
-                room1_id: r1.id,
-                room2_id: r2.id,
-                wall1_id: w1.id,
-                wall2_id: w2.id,
-                width:0.9
-            })
 
-            f.doors.push(d);
+                var w1 = r1.walls.reduce(function(prev, curr) {
+                    return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r2.x,2)+Math.pow((curr.y1+curr.y2)/2-r2.y,2))
+                    < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r2.x,2)+Math.pow((prev.y1+prev.y2)/2-r2.y,2))
+                        ? curr : prev);
+                });
 
-            d.SetLinks();
+                var w2 = r2.walls.reduce(function(prev, curr) {
+                    return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r1.x,2)+Math.pow((curr.y1+curr.y2)/2-r1.y,2))
+                    < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r1.x,2)+Math.pow((prev.y1+prev.y2)/2-r1.y,2))
+                        ? curr : prev);
+                });
+
+
+                d = new Door(f,{
+                    id:maxDoorId,
+                    x1:(w1.x1+w1.x2)/2,
+                    y1:(w1.y1+w1.y2)/2,
+                    x2:(w2.x1+w2.x2)/2,
+                    y2:(w2.y1+w2.y2)/2,
+                    room1_id: r1.id,
+                    room2_id: r2.id,
+                    wall1_id: w1.id,
+                    wall2_id: w2.id,
+                    width:0.9
+                })
+
+                f.doors.push(d);
+
+                d.SetLinks();
+            }
+
         }
         else if (this.waitingToCreate==="qr")
         {
-            maxQRId+=1;
+            // 0 - wall
 
-            var r = data[0].room;
-            var w = data[0];
+            if (data[0]!==null)
+            {
+                maxQRId+=1;
 
-
-            let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
-
-            if (dir<0)
-                dir +=Math.PI*2;
-
-            if (dir>Math.PI*2)
-                dir -= Math.PI*2;
+                var r = data[0].room;
+                var w = data[0];
 
 
-            var q = new QR(r,{
-                id:maxQRId,
-                x : w.x1+(w.x2-w.x1)*0.3,
-                y : w.y1+(w.y2-w.y1)*0.3,
-                direction:dir,
-                wall_id:w.id
-            })
+                let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
 
-            r.qrs.push(q)
+                if (dir<0)
+                    dir +=Math.PI*2;
 
-            q.SetLinks();
+                if (dir>Math.PI*2)
+                    dir -= Math.PI*2;
+
+
+                var q = new QR(r,{
+                    id:maxQRId,
+                    x : w.x1+(w.x2-w.x1)*0.3,
+                    y : w.y1+(w.y2-w.y1)*0.3,
+                    direction:dir,
+                    wall_id:w.id
+                })
+
+                r.qrs.push(q)
+
+                q.SetLinks();
+            }
+
         }
         else if (this.waitingToCreate==="wall")
         {
-            maxWallId+=1;
 
-            let r = data[0].room;
-            let selectedWall = data[0];
-            let nextWall = data[0].nextWall;
+            // 0 - wall
+            if (data[0]!==null)
+            {
+                maxWallId+=1;
 
-            let newWall = new Wall(r,{
-                id:maxWallId,
-                x1 : (selectedWall.x1+selectedWall.x2)/2,
-                y1 : (selectedWall.y1+selectedWall.y2)/2,
-                x2 : selectedWall.x2,
-                y2 : selectedWall.y2,
-                wall_prev_id : selectedWall.id,
-                wall_next_id : nextWall.id
-            });
+                let r = data[0].room;
+                let selectedWall = data[0];
+                let nextWall = data[0].nextWall;
 
-            selectedWall.x2 = (selectedWall.x1+selectedWall.x2)/2;
-            selectedWall.y2 = (selectedWall.y1+selectedWall.y2)/2;
-            selectedWall.nextWall = newWall;
-            nextWall.prevWall = newWall;
+                let newWall = new Wall(r,{
+                    id:maxWallId,
+                    x1 : (selectedWall.x1+selectedWall.x2)/2,
+                    y1 : (selectedWall.y1+selectedWall.y2)/2,
+                    x2 : selectedWall.x2,
+                    y2 : selectedWall.y2,
+                    wall_prev_id : selectedWall.id,
+                    wall_next_id : nextWall.id
+                });
+
+                selectedWall.x2 = (selectedWall.x1+selectedWall.x2)/2;
+                selectedWall.y2 = (selectedWall.y1+selectedWall.y2)/2;
+                selectedWall.nextWall = newWall;
+                nextWall.prevWall = newWall;
 
 
-            r.walls.push(newWall);
+                r.walls.push(newWall);
 
-            newWall.SetLinks();
+                newWall.SetLinks();
+
+            }
 
 
 
@@ -433,36 +454,176 @@ function EditorController() {
         }
         else if (this.waitingToCreate==="furniture")
         {
-            maxFurnitureId+=1;
+            // 0 - room
+            if (data[0]!==null)
+            {
+                maxFurnitureId+=1;
 
-            let r = data[0];
+                let r = data[0];
 
-            let xx =0;
-            let yy=0;
-            r.walls.forEach(function (w) {
+                let xx =0;
+                let yy=0;
+                r.walls.forEach(function (w) {
 
-                xx+=w.x1;
-                yy+=w.y1;
-            })
-            xx/=r.walls.length+Math.round(Math.random())
-            yy/=r.walls.length+Math.round(Math.random());
-
-
-
-            let ff = new Furniture(r,{
-                id:maxFurnitureId,
-                name:"",
-                x1:xx-0.5,
-                y1:yy-0.5,
-                x2:xx+0.5,
-                y2:yy+0.5
-            });
+                    xx+=w.x1;
+                    yy+=w.y1;
+                })
+                xx/=r.walls.length+Math.round(Math.random())
+                yy/=r.walls.length+Math.round(Math.random());
 
 
 
-            r.furniture.push(ff);
+                let ff = new Furniture(r,{
+                    id:maxFurnitureId,
+                    name:"",
+                    x1:xx-0.5,
+                    y1:yy-0.5,
+                    x2:xx+0.5,
+                    y2:yy+0.5
+                });
 
 
+
+                r.furniture.push(ff);
+            }
+
+
+
+        }
+        else if (this.waitingToCreate==="elevator")
+        {
+            // 0 - wall
+            // 1 - elevator low
+            // 2 - elevator up
+
+            if (data[0]!==null)
+            {
+                maxElevatorId+=1
+
+                let r = data[0].room;
+                let w = data[0];
+
+
+                let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
+
+                if (dir<0)
+                    dir +=Math.PI*2;
+
+                if (dir>Math.PI*2)
+                    dir -= Math.PI*2;
+
+
+                let jData = {
+                    id:maxElevatorId,
+                    x : w.x1+(w.x2-w.x1)*0.7,
+                    y : w.y1+(w.y2-w.y1)*0.7,
+                    direction:dir,
+                    wall_id:w.id
+                }
+
+
+
+
+
+                if (data[1]!==null)
+                {
+                    jData['elevator_down_id'] = data[1].id;
+
+                }
+
+
+                if (data[2]!==null)
+                {
+                    jData['elevator_up_id'] = data[2].id;
+
+                }
+
+                let e = new Elevator(r,jData)
+
+
+                if (data[1]!==null)
+                {
+                    data[1].elevatorUp = e;
+                }
+
+
+                if (data[2]!==null)
+                {
+                    data[2].elevatorDown = e;
+
+                }
+
+                r.elevators.push(e)
+
+                e.SetLinks();
+            }
+        }
+        else if (this.waitingToCreate==="staircase")
+        {
+            // 0 - room
+            // 1 - staircase low
+            // 2 - staircase up
+
+            if (data[0]!==null)
+            {
+                maxStaircaseId+=1
+
+                let r = data[0];
+
+                let sLow = data[1];
+                let sUp = data[2];
+
+                if (sLow.room.floor === r.floor)
+                    sLow = null;
+
+                if (sUp.room.floor === r.floor)
+                    sUp = null;
+
+
+                let jData = {
+                    id:maxStaircaseId,
+                    x : r.x+1,
+                    y : r.y+1,
+                    width : 1,
+                    height : 2,
+                    direction:0
+                }
+
+
+
+
+                if (sLow!==null)
+                {
+                    jData['staircase_down_id'] = sLow.id;
+
+                }
+
+
+                if (sUp[2]!==null)
+                {
+                    jData['staircase_up_id'] = sUp.id;
+
+                }
+
+                let s = new Staircase(r,jData)
+
+
+                if (sLow!==null)
+                {
+                    sLow.staircaseUp = s;
+                }
+
+
+                if (sUp!==null)
+                {
+                    sUp.staircaseDown = s;
+
+                }
+
+                r.staircases.push(s)
+
+                s.SetLinks();
+            }
         }
 
         DrawJS.UpdateCanvas();
@@ -506,7 +667,7 @@ function EditorController() {
 
     this.NewStaircase = function () {
         this.waitingToCreate = "staircase";
-        DrawJS.AskInput(["wall","staircase","staircase"],"Adding new staircase. Please select:",["Wall","Lower Staircase","Upper Staircase"])
+        DrawJS.AskInput(["room","staircase","staircase"],"Adding new staircase. Please select:",["Room","Lower Staircase","Upper Staircase"])
 
     }
 

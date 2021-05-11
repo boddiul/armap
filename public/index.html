@@ -22,14 +22,14 @@
         position: relative;
         background-color: #cce2e1;
 
-        height: 50%;
+        height: 40%;
     }
 
     .controller_new {
         position: relative;
         background-color: #e2d6cc;
 
-        height: 50%;
+        height: 60%;
     }
 
     canvas[resize] {
@@ -142,7 +142,7 @@
 
 
     <input type="checkbox" id="nodeBox"  onchange="InterfaceJS.OnEditorLayerBox('node',false)" checked/>
-    <input type="checkbox" id="nodeDataBox"  onchange="InterfaceJS.OnEditorLayerBox('node',true)" checked/>
+    <input type="checkbox" id="nodeDataBox"  onchange="InterfaceJS.OnEditorLayerBox('node',true)"/>
     <label for="nodeBox">Nodes</label><br/>
 
 
@@ -241,6 +241,10 @@
 
     id: <input id="p_floor_id" type="text" value=543 readonly><br />
     name: <input id="p_floor_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_floor_name','name')"><br />
+
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="room_params" class="controller_params">
@@ -249,40 +253,58 @@
     id: <input id="p_room_id" type="text" value=54353 readonly><br />
     name: <input id="p_room_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_room_name','name')"><br />
 
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="wall_params" class="controller_params">
     WALL<br />
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_wall_id" type="text" value=54353 readonly><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="door_params" class="controller_params">
 
     DOOR<br />
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_door_id" type="text" value=54353 readonly><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="furniture_params" class="controller_params">
 
     FURNITURE<br />
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_ffurniture_id" type="text" value=54353 readonly><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="staircase_params" class="controller_params">
     STAIRCASE<br />
 
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_staircase_id" type="text" value=54353 readonly><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="elevator_params" class="controller_params">
 
     ELEVATOR<br />
 
-    id: <input type="text" value=54353><br />
+    id: <input id="p_elevator_id" type="text" value=54353 readonly><br />
+
+
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 </div>
 
 <div id="qr_params" class="controller_params">
@@ -292,7 +314,7 @@
     name: <input id="p_qr_name" type="text" value=0 onchange="InterfaceJS.OnInputParam('p_qr_name','qr')"><br />
 
 
-    <button onclick="InterfaceJS.ClickDestroy()">DESTROY</button><br />
+    <button onclick="InterfaceJS.ClickDestroy()">REMOVE</button><br />
 
 </div>
 

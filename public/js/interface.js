@@ -254,7 +254,21 @@ function InterfaceController() {
     }
 
     this.OnLoad = function () {
+
+        document.getElementById("myCanvas").oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+
+
         this.OnRequestIdBox();
+
+        ["room","elevator","node","edge","door","qr","furniture","staircase"].forEach(function (l) {
+            console.log(l)
+            this.OnEditorLayerBox(l,true);
+            this.OnEditorLayerBox(l,false);
+        }.bind(this))
+
+        console.log("changed");
+
+
     }
 }
 
