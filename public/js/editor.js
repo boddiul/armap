@@ -10,7 +10,7 @@ SearchGraph = (function (undefined) {
 
     var sorter = function (a, b) {
         return parseFloat (a) - parseFloat (b);
-    }
+    };
 
     var findPaths = function (map, start, end, infinity) {
         infinity = infinity || Infinity;
@@ -199,17 +199,18 @@ function EditorController() {
 
     this.SetScheme = function (jsonMap) {
 
-        maxFloorId = 0;
-        maxRoomId = 0;
-        maxWallId = 0;
-        maxDoorId = 0;
-        maxQRId = 0;
-        maxFurnitureId = 0;
-        maxElevatorId = 0;
+        this.maxFloorId = 0;
+        this.maxRoomId = 0;
+        this.maxWallId = 0;
+        this.maxDoorId = 0;
+        this.maxQRId = 0;
+        this.maxFurnitureId = 0;
+        this.maxElevatorId = 0;
+        this.maxStaircaseId = 0;
 
         DrawJS.Init();
 
-        this.scheme = new Scheme(jsonMap);
+        this.scheme = new Scheme(jsonMap,this);
 
         console.log(this);
         this.ShowParams("scheme",this.scheme);
@@ -218,6 +219,8 @@ function EditorController() {
 
 
         DrawJS.UpdateCanvas();
+
+        InterfaceJS.UpdateFloorList(this.scheme.floors);
     }
 
     this.LoadScheme = function(id) {
@@ -230,13 +233,19 @@ function EditorController() {
     }
 
 
+    this.CheckScheme = function () {
+
+    }
+
     this.UploadScheme = function () {
         BackendJS.UploadScheme(this.scheme.ToJSON(),function (id) {
 
-            InterfaceJS.SetSearchSchemeId(id)
+            //InterfaceJS.SetSearchSchemeId(id)
 
-            InterfaceJS.UpdateParams("scheme",this.scheme);
+            //InterfaceJS.UpdateParams("scheme",this.scheme);
             this.scheme.id = id;
+
+            InterfaceJS.OpenWindow('scheme_uploaded');
 
 
 
@@ -250,6 +259,13 @@ function EditorController() {
     this.SetSelectedObjectParam = function (param,value) {
 
         this.currentParamObject[param] = value;
+
+
+        if (this.currentParamObject instanceof Floor)
+            InterfaceJS.UpdateFloorList(this.scheme.floors);
+
+
+        DrawJS.UpdateCanvas();
     }
     this.DestroySelectedObject = function () {
 
@@ -260,7 +276,37 @@ function EditorController() {
 
             this.currentParamObject.destroy(true);
             this.currentParamObject = null;
+
+
+            InterfaceJS.ShowParams("scheme",null);
         }
+
+
+    }
+
+    this.RemovePortalLink = function (type,dir) {
+
+
+        let tDir = type+(dir==="up"? "Up":"Down");
+        let oDir = type+(dir==="up"? "Down":"Up");
+
+        if (this.currentParamObject[tDir])
+            {
+                this.currentParamObject[tDir][oDir] = null;
+                this.currentParamObject[tDir] = null;
+            }
+
+
+        DrawJS.UpdateCanvas();
+    }
+
+    this.ChangePortalLink = function (type,dir) {
+        this.RemovePortalLink(type,dir);
+
+
+        this.waitingToCreate = type+"_"+dir+"_link";
+        DrawJS.AskInput([type],"Adding "+type+" link. Select:",[type+" "+dir]);
+
 
 
     }
@@ -279,38 +325,41 @@ function EditorController() {
         BackendJS.OpenSchemeInfoData(id);
     }
 
-    this.OpenSchemeQRPDF = function(id) {
-        BackendJS.OpenSchemeQRPDF(id);
+    this.OpenSchemeQRPDF = function() {
+        BackendJS.OpenSchemeQRPDF(this.scheme.id);
     }
 
-    this.OpenSchemeHelpPDF = function(id) {
-        BackendJS.OpenSchemeHelpPDF(id);
+    this.OpenSchemeHelpPDF = function() {
+        BackendJS.OpenSchemeHelpPDF(this.scheme.id);
     }
 
     this.MainCreate = function (data) {
         if (this.waitingToCreate==="floor")
         {
-            maxFloorId+=1;
+            this.maxFloorId+=1;
             let f = new Floor(this.scheme,{
-                id:maxFloorId,
+                id:this.maxFloorId,
                 name:"new floor",
                 rooms:[],
                 doors:[]
-            })
+            },this)
 
             this.scheme.floors.push(f);
+
+
+            InterfaceJS.UpdateFloorList(this.scheme.floors);
         }
         else if (this.waitingToCreate==="room")
         {
             // 0 - floor
             if (data[0]!==null)
             {
-                maxRoomId+=1;
-                maxWallId+=4;
-                let cx = -1;
-                let cy = 7;
+                this.maxRoomId+=1;
+                this.maxWallId+=4;
+                let cx = -2+Math.round(Math.random()*6);
+                let cy = 5+Math.round(Math.random()*6);
                 r = new Room(data[0],{
-                    id:maxRoomId,
+                    id:this.maxRoomId,
                     name:"new room",
                     description:"",
                     can_search: true,
@@ -319,34 +368,38 @@ function EditorController() {
                     furniture:[],
                     qrs:[],
                     walls:[
-                        {"id":maxWallId-3,"x1":cx+2,"y1":cy-4,"x2":cx+5,"y2":cy-4,    "wall_prev_id":maxWallId,"wall_next_id":maxWallId-2},
-                        {"id":maxWallId-2,"x1":cx+5,"y1":cy-4,"x2":cx+5,"y2":cy-7,     "wall_prev_id":maxWallId-3,"wall_next_id":maxWallId-1},
-                        {"id":maxWallId-1,"x1":cx+5,"y1":cy-7,"x2":cx+2,"y2":cy-7,     "wall_prev_id":maxWallId-2,"wall_next_id":maxWallId},
-                        {"id":maxWallId,"x1":cx+2,"y1":cy-7,"x2":cx+2,"y2":cy-4,      "wall_prev_id":maxWallId-1,"wall_next_id":maxWallId-3}
+                        {"id":this.maxWallId-3,"x1":cx+2,"y1":cy-4,"x2":cx+5,"y2":cy-4,    "wall_prev_id":this.maxWallId,"wall_next_id":this.maxWallId-2},
+                        {"id":this.maxWallId-2,"x1":cx+5,"y1":cy-4,"x2":cx+5,"y2":cy-7,     "wall_prev_id":this.maxWallId-3,"wall_next_id":this.maxWallId-1},
+                        {"id":this.maxWallId-1,"x1":cx+5,"y1":cy-7,"x2":cx+2,"y2":cy-7,     "wall_prev_id":this.maxWallId-2,"wall_next_id":this.maxWallId},
+                        {"id":this.maxWallId,"x1":cx+2,"y1":cy-7,"x2":cx+2,"y2":cy-4,      "wall_prev_id":this.maxWallId-1,"wall_next_id":this.maxWallId-3}
 
                     ]
-                })
+                },this)
                 data[0].rooms.push(r);
             }
 
         }
         else if (this.waitingToCreate==="door")
         {
-            // 0 - room1
-            // 1 - room2
+            // 0 - wall1
+            // 1 - wall2
             if (data[0]!==null && data[1]!==null)
             {
-                if (data[0].floor!== data[1].floor)
+                if (data[0].room.floor!== data[1].room.floor)
                     return;
 
-                maxDoorId+=1;
+                if (data[0].room === data[1].room)
+                    return;
 
-                var f = data[0].floor;
-                var r1 = data[0];
-                var r2 = data[1];
+                this.maxDoorId+=1;
+
+                var f = data[0].room.floor;
+                var w1 = data[0];
+                var w2 = data[1];
 
 
 
+                /*
                 var w1 = r1.walls.reduce(function(prev, curr) {
                     return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r2.x,2)+Math.pow((curr.y1+curr.y2)/2-r2.y,2))
                     < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r2.x,2)+Math.pow((prev.y1+prev.y2)/2-r2.y,2))
@@ -357,21 +410,22 @@ function EditorController() {
                     return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r1.x,2)+Math.pow((curr.y1+curr.y2)/2-r1.y,2))
                     < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r1.x,2)+Math.pow((prev.y1+prev.y2)/2-r1.y,2))
                         ? curr : prev);
-                });
+                });*/
+
 
 
                 d = new Door(f,{
-                    id:maxDoorId,
+                    id:this.maxDoorId,
                     x1:(w1.x1+w1.x2)/2,
                     y1:(w1.y1+w1.y2)/2,
                     x2:(w2.x1+w2.x2)/2,
                     y2:(w2.y1+w2.y2)/2,
-                    room1_id: r1.id,
-                    room2_id: r2.id,
+                    room1_id: w1.room.id,
+                    room2_id: w2.room.id,
                     wall1_id: w1.id,
                     wall2_id: w2.id,
                     width:0.9
-                })
+                },this)
 
                 f.doors.push(d);
 
@@ -385,7 +439,7 @@ function EditorController() {
 
             if (data[0]!==null)
             {
-                maxQRId+=1;
+                this.maxQRId+=1;
 
                 var r = data[0].room;
                 var w = data[0];
@@ -401,12 +455,12 @@ function EditorController() {
 
 
                 var q = new QR(r,{
-                    id:maxQRId,
+                    id:this.maxQRId,
                     x : w.x1+(w.x2-w.x1)*0.3,
                     y : w.y1+(w.y2-w.y1)*0.3,
                     direction:dir,
                     wall_id:w.id
-                })
+                },this)
 
                 r.qrs.push(q)
 
@@ -420,21 +474,21 @@ function EditorController() {
             // 0 - wall
             if (data[0]!==null)
             {
-                maxWallId+=1;
+                this.maxWallId+=1;
 
                 let r = data[0].room;
                 let selectedWall = data[0];
                 let nextWall = data[0].nextWall;
 
                 let newWall = new Wall(r,{
-                    id:maxWallId,
+                    id:this.maxWallId,
                     x1 : (selectedWall.x1+selectedWall.x2)/2,
                     y1 : (selectedWall.y1+selectedWall.y2)/2,
                     x2 : selectedWall.x2,
                     y2 : selectedWall.y2,
                     wall_prev_id : selectedWall.id,
                     wall_next_id : nextWall.id
-                });
+                },this);
 
                 selectedWall.x2 = (selectedWall.x1+selectedWall.x2)/2;
                 selectedWall.y2 = (selectedWall.y1+selectedWall.y2)/2;
@@ -445,6 +499,15 @@ function EditorController() {
                 r.walls.push(newWall);
 
                 newWall.SetLinks();
+
+
+                r.qrs.forEach(function (q){q.move(0,0,0,false)});
+                r.elevators.forEach(function (e){e.move(0,0,0,false)});
+                r.floor.doors.forEach(function (d) {
+                    if (d.wall1===selectedWall || d.wall2===selectedWall)
+                        d.move(0,0,0,false);
+                })
+
 
             }
 
@@ -457,7 +520,7 @@ function EditorController() {
             // 0 - room
             if (data[0]!==null)
             {
-                maxFurnitureId+=1;
+                this.maxFurnitureId+=1;
 
                 let r = data[0];
 
@@ -474,13 +537,13 @@ function EditorController() {
 
 
                 let ff = new Furniture(r,{
-                    id:maxFurnitureId,
+                    id:this.maxFurnitureId,
                     name:"",
                     x1:xx-0.5,
-                    y1:yy-0.5,
+                    y1:yy+0.5,
                     x2:xx+0.5,
-                    y2:yy+0.5
-                });
+                    y2:yy-0.5
+                },this);
 
 
 
@@ -498,7 +561,7 @@ function EditorController() {
 
             if (data[0]!==null)
             {
-                maxElevatorId+=1
+                this.maxElevatorId+=1
 
                 let r = data[0].room;
                 let w = data[0];
@@ -514,7 +577,7 @@ function EditorController() {
 
 
                 let jData = {
-                    id:maxElevatorId,
+                    id:this.maxElevatorId,
                     x : w.x1+(w.x2-w.x1)*0.7,
                     y : w.y1+(w.y2-w.y1)*0.7,
                     direction:dir,
@@ -538,7 +601,7 @@ function EditorController() {
 
                 }
 
-                let e = new Elevator(r,jData)
+                let e = new Elevator(r,jData,this)
 
 
                 if (data[1]!==null)
@@ -566,22 +629,26 @@ function EditorController() {
 
             if (data[0]!==null)
             {
-                maxStaircaseId+=1
+                this.maxStaircaseId+=1
 
                 let r = data[0];
 
                 let sLow = data[1];
                 let sUp = data[2];
 
-                if (sLow.room.floor === r.floor)
+                if (sLow && sLow.room.floor === r.floor)
                     sLow = null;
 
-                if (sUp.room.floor === r.floor)
+                if (sUp && sUp.room.floor === r.floor)
+                    sUp = null;
+
+                if (sLow && sUp && sLow.room.floor === sUp.room.floor)
                     sUp = null;
 
 
+
                 let jData = {
-                    id:maxStaircaseId,
+                    id:this.maxStaircaseId,
                     x : r.x+1,
                     y : r.y+1,
                     width : 1,
@@ -599,13 +666,13 @@ function EditorController() {
                 }
 
 
-                if (sUp[2]!==null)
+                if (sUp!==null)
                 {
                     jData['staircase_up_id'] = sUp.id;
 
                 }
 
-                let s = new Staircase(r,jData)
+                let s = new Staircase(r,jData,this)
 
 
                 if (sLow!==null)
@@ -625,10 +692,256 @@ function EditorController() {
                 s.SetLinks();
             }
         }
+        else if (this.waitingToCreate==="staircase_up_link")
+        {
+            if (data[0]!==null && data[0]!==this.currentParamObject)
+            {
+                let os = data[0];
+                let s = this.currentParamObject;
+
+                if (os.staircaseDown)
+                    os.staircaseDown.staircaseUp = null;
+                os.staircaseDown = s;
+                s.staircaseUp = os;
+            }
+        }
+        else if (this.waitingToCreate==="staircase_down_link")
+        {
+            if (data[0]!==null && data[0]!==this.currentParamObject)
+            {
+                let os = data[0];
+                let s = this.currentParamObject;
+
+                if (os.staircaseUp)
+                    os.staircaseUp.staircaseDown = null;
+                os.staircaseUp = s;
+                s.staircaseDown = os;
+            }
+        }
+        else if (this.waitingToCreate==="elevator_up_link")
+        {
+            if (data[0]!==null && data[0]!==this.currentParamObject)
+            {
+                let oe = data[0];
+                let e = this.currentParamObject;
+
+                if (oe.elevatorDown)
+                    oe.elevatorDown.elevatorUp = null;
+                oe.elevatorDown = e;
+                e.elevatorUp = oe;
+            }
+        }
+        else if (this.waitingToCreate==="elevator_down_link")
+        {
+            if (data[0]!==null && data[0]!==this.currentParamObject)
+            {
+                let oe = data[0];
+                let e = this.currentParamObject;
+
+                if (oe.elevatorUp)
+                    oe.elevatorUp.elevatorDown = null;
+                oe.elevatorUp = e;
+                e.elevatorDown = oe;
+            }
+        }
 
         DrawJS.UpdateCanvas();
 
     }
+
+
+    this.ClearQR = function (floorId) {
+
+        this.scheme.floors.forEach(function (f) {
+            if (floorId===f.id || floorId===-1)
+                f.rooms.forEach(function (r) {
+
+                    let qc = [...r.qrs];
+
+                    qc.forEach(function (q) {
+                        q.destroy(true);
+                    })
+                    //r.qrs = [];
+                })
+        })
+    }
+
+    this.GenerateQR = function (floorId) {
+
+        this.ClearQR(floorId);
+
+
+
+
+
+
+        this.scheme.floors.forEach(function (f) {
+
+
+
+
+            if (f.id === floorId || floorId===-1)
+            {
+
+
+                let walls = {};
+                let wallToExitPosition = {};
+                let qrToCreate = [];
+
+                let addExit = function(wall,x,y,width) {
+                    if (! (wall.id in wallToExitPosition))
+                        wallToExitPosition[wall.id] = [];
+
+
+
+                    let wPos = MyMath.pointOnSegment({x:x,y:y},{x:wall.x1,y:wall.y1}, {x:wall.x2,y:wall.y2})
+
+
+
+                    wallToExitPosition[wall.id].push(
+                        {
+                            x : wPos.x,
+                            y:  wPos.y,
+                            k : MyMath.pointDistance({x:wall.x1,y:wall.y1},wPos)
+                                / MyMath.pointDistance({x:wall.x1,y:wall.y1},{x:wall.x2,y:wall.y2}),
+                            width : width
+                        })
+
+                    walls[wall.id] = wall;
+                }
+
+                f.doors.forEach(function (d) {
+
+
+                    if (d.wall1)
+                    {
+
+                        addExit(d.wall1,d.x1,d.y1,d.width);
+
+
+                    }
+
+                    if (d.wall2)
+                    {
+
+                        addExit(d.wall2,d.x2,d.y2,d.width);
+
+                    }
+
+
+
+                }.bind(this));
+
+                f.rooms.forEach(function (r) {
+                    r.elevators.forEach(function (e) {
+
+
+                        addExit(e.wall,e.x,e.y,1);
+                    })
+                }.bind(this));
+
+
+
+                for (var key in wallToExitPosition)
+                {
+                    let w = walls[key];
+
+                    let exits = wallToExitPosition[key]
+
+                    exits.forEach(function (exit) {
+
+
+                        let wall = w;
+                        let posStart = exit.k+exit.width/wall.GetLength()/2;
+                        let posEnd = 1;
+
+                        let rightExit = null;
+
+                        exits.forEach(function (otherExit) {
+                            if (otherExit.k>exit.k && (rightExit===null || rightExit.k>otherExit.k)) rightExit = otherExit});
+
+
+                        if (rightExit!==null)
+                        {
+
+                            posEnd = rightExit.k-rightExit.width/wall.GetLength()/2;
+                        }
+                        else
+                        {
+                            if ((posEnd-posStart)*wall.GetLength()<0.5)
+                            {
+                                wall = wall.nextWall;
+                                posStart = 0;
+                                rightExit = null;
+
+                                if (wall.id in walls)
+                                    wallToExitPosition[wall.id].forEach(function (otherExit)
+                                    {if ((rightExit===null || rightExit.k>otherExit.k))
+                                        rightExit = otherExit});
+                                else
+                                {
+                                    posEnd = 0.2;
+                                }
+
+
+                                if (rightExit!==null)
+                                {
+                                    posEnd = rightExit.k-rightExit.width/wall.GetLength()/2;
+
+
+                                    if (posEnd*2*wall.GetLength()<0.5)
+                                        wall = null;
+                                }
+
+
+
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+
+
+                        if (wall!==null)
+                        {
+                            this.maxQRId+=1;
+
+                            let dir = Math.atan2(wall.y2-wall.y1,wall.x2-wall.x1) + Math.PI/2;
+                            if (dir<0)
+                                dir +=Math.PI*2;
+                            if (dir>Math.PI*2)
+                                dir -= Math.PI*2;
+
+                            var q = new QR(wall.room,{
+                                id:this.maxQRId,
+                                x : wall.x1+(wall.x2-wall.x1)*(posStart+posEnd)/2,
+                                y : wall.y1+(wall.y2-wall.y1)*(posStart+posEnd)/2,
+                                direction:dir,
+                                wall_id:wall.id
+                            },this)
+
+                            wall.room.qrs.push(q)
+                            q.SetLinks();
+                        }
+
+                    }.bind(this))
+
+                }
+            }
+        }.bind(this))
+
+
+
+        DrawJS.UpdateCanvas();
+
+    }
+
 
 
 
@@ -654,7 +967,7 @@ function EditorController() {
 
     this.NewDoor = function () {
         this.waitingToCreate = "door";
-        DrawJS.AskInput(["room","room"],"Adding new door. Please select:",["Room 1","Room 2"])
+        DrawJS.AskInput(["wall","wall"],"Adding new door. Please select:",["Wall 1","Wall 2"])
 
     }
 
@@ -706,10 +1019,12 @@ function EditorController() {
 
     }
 
-    this.CreateGraph = function (trType) {
+    this.CreateGraph = function (trType,full) {
 
 
 
+        if (full)
+            this.ClearGraph();
 
         var startTime = (new Date().getTime() / 1000);
 
@@ -748,13 +1063,16 @@ function EditorController() {
                     let w = startWall;
 
                     console.log('START MOVE');
+
+                    consoleWithNoSource(r.id,r.name)
                     while (w.nextWall!==startWall)
                     {
-                        console.log(w.x1, w.y1);
+                        consoleWithNoSource(w.x1, w.y1);
                         contour.push(new poly2tri.Point(w.x1, w.y1));
 
                         w = w.nextWall;
                     }
+                    consoleWithNoSource(w.x1, w.y1);
                     contour.push(new poly2tri.Point(w.x1, w.y1));
 
 
@@ -764,12 +1082,64 @@ function EditorController() {
                     //yy = yy/r.walls.length;
 
 
+
+                    let usedPoints = [];
+
+                    let fixHolePoint = function(x,y,dx,dy) {
+                        let v = {x:x,y:y};
+
+                        let used = true;
+                        while (used)
+                        {
+
+                            let usedX = false;
+                            let usedY = false;
+
+                            for (let i=0;i<usedPoints.length;i++)
+                            {
+                                if (usedPoints[i].x===v.x)
+                                    usedX = true;
+                                if (usedPoints[i].y===v.y)
+                                    usedY = true;
+
+                            }
+
+                            used = usedX || usedY;
+
+                            if (usedX)
+                                v.x+=0.000001*dx;
+                            if (usedY)
+                                v.y+=0.000001*dy;
+                        }
+
+
+                        usedPoints.push(v);
+
+                        return v;
+                    }
+
                     r.furniture.forEach(function (f) {
+                        consoleWithNoSource(' ');
+                        consoleWithNoSource(f.x1, f.y1);
+                        consoleWithNoSource(f.x2, f.y1);
+                        consoleWithNoSource(f.x2, f.y2);
+                        consoleWithNoSource(f.x1, f.y2);
+
+
+                        let dxx = (f.x1<f.x2) ? 1 : -1;
+                        let dyy = (f.y1<f.y2) ? 1 : -1;
+
+
+                        let p1 = fixHolePoint(f.x1, f.y1,dxx,dyy);
+                        let p2 = fixHolePoint(f.x2, f.y1,-dxx,dyy);
+                        let p3 = fixHolePoint(f.x2, f.y2,-dxx,-dyy);
+                        let p4 = fixHolePoint(f.x1, f.y2,dxx,-dyy);
                         let hole = [
-                            new poly2tri.Point(f.x1, f.y1),
-                            new poly2tri.Point(f.x2, f.y1),
-                            new poly2tri.Point(f.x2, f.y2),
-                            new poly2tri.Point(f.x1, f.y2),
+
+                            new poly2tri.Point(p1.x,p1.y),
+                            new poly2tri.Point(p2.x,p2.y),
+                            new poly2tri.Point(p3.x,p3.y),
+                            new poly2tri.Point(p4.x,p4.y),
                         ];
 
 
@@ -798,6 +1168,10 @@ function EditorController() {
                     var triangles = swctx.getTriangles();
 
 
+
+
+
+
                     triangles.forEach(function(t) {
 
 
@@ -807,55 +1181,64 @@ function EditorController() {
 
 
 
-                        let points = []
-
                         t.getPoints().forEach(function (p) {
-                            //console.log(p.x, p.y);
-
-                            points.push({x: p.x + f.x, y: p.y + f.y});
                             xx += p.x;
                             yy += p.y;
                         });
-                        points.push(points[0]);
-
-                        DrawJS.DebugTriangle(points);
-
                         xx /= 3;
                         yy /= 3;
 
 
+                        if (!full)
+                            DrawJS.DebugTriangle(f.x,f.y,t.getPoints());
 
 
 
-                        if (trType===1) {
+
+                        t.canPass = true;
+
+                        console.log(t);
+                        let ePoints = [
+                            [t.points_[0],t.points_[1],MyMath.pointDistance(t.points_[0],t.points_[1])],
+                            [t.points_[1],t.points_[2],MyMath.pointDistance(t.points_[1],t.points_[2])],
+                            [t.points_[2],t.points_[0],MyMath.pointDistance(t.points_[2],t.points_[0])]
+                        ]
+                        let ePointsUsed = [false,false,false];
+                        t.neighbors_.forEach(function (ot){
+                            if (ot !== null && ot.interior_) {
+                                ot.points_.forEach(function (p) {
+                                    for (let i=0;i<3;i++)
+                                        if (p===ePoints[i][0])
+                                            for (let j=0;j<3;j++)
+                                                if (p!==ot.points_[j] && ot.points_[j]===ePoints[i][1])
+                                                    ePointsUsed[i] = true;
+                                });
+                            }
 
 
-                            let s = 1;
-                            t.neighbors_.forEach(function (ot) {
-                                if (ot !== null && ot.interior_) {
 
-                                    let tx = 0;
-                                    let ty = 0;
-                                    ot.getPoints().forEach(function (p) {
-                                        tx += p.x;
-                                        ty += p.y;
-                                    });
-                                    ty /= 3;
-                                    tx /= 3;
+                            //if (ot!==null || ot.interior_)
+                            //{
+                            //
+                            //}
 
+                        });
 
-                                    xx += tx;
-                                    yy += ty;
+                        let pp = 1/2*(ePoints[0][2]+ePoints[1][2]+ePoints[2][2]);
+                        let ha = 2*Math.sqrt(pp*(pp-ePoints[0][2])*(pp-ePoints[1][2])*(pp-ePoints[2][2]));
 
-                                    s += 1;
-
+                        for (let i=0;i<3;i++)
+                            if (!ePointsUsed[i])
+                            {
+                                let height = ha/ePoints[i][2];
+                                if (height<0.3)
+                                {
+                                    t.canPass = false;
+                                    if (!full)
+                                        DrawJS.DebugRedLine(f.x,f.y,ePoints[i]);
                                 }
-                            });
 
-                            xx /= s;
-                            yy /= s
-
-                        }
+                            }
 
 
 
@@ -863,85 +1246,125 @@ function EditorController() {
 
 
 
-
-                        if (trType===2)
+                        if (t.canPass)
                         {
-                            let s =0;
-                            xx = 0;
-                            yy =0;
-
-                            let gp = t.getPoints();
-                            let myPoints = [gp[0],gp[1],gp[2],gp[0]];
-
-                            t.neighbors_.forEach(function (ot) {
-                                if (ot !== null && ot.interior_) {
-
-                                    //let tx =0;
-                                    //let ty =0;
-
-                                    let ogp = ot.getPoints();
-                                    let otherPoints = [ogp[0],ogp[1],ogp[2],ogp[0]];
+                            if (trType===1) {
 
 
+                                let s = 1;
+                                t.neighbors_.forEach(function (ot) {
+                                    if (ot !== null && ot.interior_) {
+
+                                        let tx = 0;
+                                        let ty = 0;
+                                        ot.getPoints().forEach(function (p) {
+                                            tx += p.x;
+                                            ty += p.y;
+                                        });
+                                        ty /= 3;
+                                        tx /= 3;
 
 
-                                    let best_i = null;
-                                    let min_dist = -1;
-                                    for (let ti=0;ti<3;ti++)
-                                    {
-                                        let pp1x = (myPoints[ti].x+myPoints[ti+1].x)/2;
-                                        let pp1y = (myPoints[ti].y+myPoints[ti+1].y)/2;
+                                        xx += tx;
+                                        yy += ty;
 
-                                        for (let oti=0;oti<3;oti++)
-                                        {
-                                            let pp2x = (otherPoints[oti].x+otherPoints[oti+1].x)/2;
-                                            let pp2y = (otherPoints[oti].y+otherPoints[oti+1].y)/2;
+                                        s += 1;
 
-
-                                            let dist = Math.sqrt(Math.pow(pp1x-pp2x,2)+Math.pow(pp1y-pp2y,2));
-
-                                            if (best_i===null || dist<min_dist)
-                                            {
-                                                best_i = ti;
-                                                min_dist = dist;
-                                            }
-
-                                        }
                                     }
+                                });
+
+                                xx /= s;
+                                yy /= s
+
+                            }
 
 
 
 
 
 
-                                    xx+=(myPoints[best_i].x+myPoints[best_i+1].x)/2;
-                                    yy+=(myPoints[best_i].y+myPoints[best_i+1].y)/2;
 
-                                    s+=1;
 
-                                }
-                            });
+                            if (trType===2)
+                            {
+                                let s =0;
+                                xx = 0;
+                                yy =0;
 
-                            xx/=s;
-                            yy/=s
+                                let gp = t.getPoints();
+                                let myPoints = [gp[0],gp[1],gp[2],gp[0]];
+
+                                t.neighbors_.forEach(function (ot) {
+                                    if (ot !== null && ot.interior_) {
+
+                                        //let tx =0;
+                                        //let ty =0;
+
+                                        let ogp = ot.getPoints();
+                                        let otherPoints = [ogp[0],ogp[1],ogp[2],ogp[0]];
+
+
+
+
+                                        let best_i = null;
+                                        let min_dist = -1;
+                                        for (let ti=0;ti<3;ti++)
+                                        {
+                                            let pp1x = (myPoints[ti].x+myPoints[ti+1].x)/2;
+                                            let pp1y = (myPoints[ti].y+myPoints[ti+1].y)/2;
+
+                                            for (let oti=0;oti<3;oti++)
+                                            {
+                                                let pp2x = (otherPoints[oti].x+otherPoints[oti+1].x)/2;
+                                                let pp2y = (otherPoints[oti].y+otherPoints[oti+1].y)/2;
+
+
+                                                let dist = Math.sqrt(Math.pow(pp1x-pp2x,2)+Math.pow(pp1y-pp2y,2));
+
+                                                if (best_i===null || dist<min_dist)
+                                                {
+                                                    best_i = ti;
+                                                    min_dist = dist;
+                                                }
+
+                                            }
+                                        }
+
+
+
+
+
+
+                                        xx+=(myPoints[best_i].x+myPoints[best_i+1].x)/2;
+                                        yy+=(myPoints[best_i].y+myPoints[best_i+1].y)/2;
+
+                                        s+=1;
+
+                                    }
+                                });
+
+                                xx/=s;
+                                yy/=s
+                            }
+
+
+
+                            let p = new Node(scheme.graph,{
+                                id:maxNodeId++,
+                                x:xx,
+                                y:yy,
+                                obj_type:"in_room",
+                                obj_id:r.id,
+                                floor_id:f.id
+                            })
+                            scheme.graph.nodes.push(p);
+                            p.SetLinks();
+
+
+                            t.node = p;
                         }
 
 
-
-                        let p = new Node(scheme.graph,{
-                            id:maxNodeId++,
-                            x:xx,
-                            y:yy,
-                            obj_type:"in_room",
-                            obj_id:r.id,
-                            floor_id:f.id
-                        })
-                        scheme.graph.nodes.push(p);
-                        p.SetLinks();
-
-
-                        t.node = p;
-                        // or t.getPoint(0), t.getPoint(1), t.getPoint(2)
                     }.bind(this));
 
 
@@ -955,7 +1378,7 @@ function EditorController() {
 
                                 // console.log(ot);
 
-                                if (t.node.id<ot.node.id)
+                                if (t.canPass && ot.canPass && t.node.id<ot.node.id)
                                 {
                                     let e = new Edge(scheme.graph,{
                                         id:maxEdgeId++,
@@ -1342,6 +1765,8 @@ function EditorController() {
             })
 
 
+            if (full)
+                this.FixGraph();
             DrawJS.UpdateCanvas();
         }
         catch (e) {
@@ -1390,6 +1815,7 @@ function EditorController() {
                 scheme.graph.nodes.forEach(function (n) {
 
                     let add = false;
+                    let isInit = false;
                     if (n.objType === "in_room") {
                         if (n.obj.id === r.id)
                             add = true;
@@ -1397,11 +1823,13 @@ function EditorController() {
                     } else if (n.objType === "door") {
                         if (n.obj.room1 === r || n.obj.room2 === r) {
                             add = true;
+                            isInit = true;
                             initNodes.push(n);
                         }
                     } else {
                         if (n.obj.room.id === r.id) {
                             add = true;
+                            isInit = true;
                             initNodes.push(n);
                         }
                     }
@@ -1412,7 +1840,7 @@ function EditorController() {
                         roomNodes.push(n);
                         idToNode[n.id.toString()] = n;
                         roomGraph[n.id.toString()] = {};
-                        usedId[n.id.toString()] = false;
+                        usedId[n.id.toString()] = isInit;
                     }
 
 
@@ -1448,11 +1876,12 @@ function EditorController() {
                     for (let j = i + 1; j < initNodes.length; j++) {
 
                         let res = sg.findShortestPath(initNodes[i].id.toString(), initNodes[j].id.toString());
-                        console.log(initNodes[i].id.toString(), initNodes[j].id.toString());
-                        console.log(res);
-                        res.forEach(function (r) {
-                            usedId[r] = true;
-                        })
+                        //console.log(initNodes[i].id.toString(), initNodes[j].id.toString());
+                        //console.log(res);
+                        if (res)
+                            res.forEach(function (r) {
+                                usedId[r] = true;
+                            })
 
 
                     }

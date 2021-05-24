@@ -1,9 +1,11 @@
 
 
-
 const Express = require('express');
+
 const app = Express();
+
 const port = 3000;
+
 const hostname = '127.0.0.1';
 
 const fetch = require('node-fetch');
@@ -130,7 +132,7 @@ app.post('/scheme/', (req, res) => {
 });
 
 app.get('/scheme/:schemeId/info', (req, res) => {
-    getScheme(req,res,false)
+    getScheme(req.params.schemeId,false,res)
 
 });
 
@@ -264,7 +266,7 @@ app.get('/scheme/:schemeId/qrHelp/:qrId', (req, res) => {
     else
     {
         let j = mapData[schemeId];
-        scheme = new Scheme(j);
+        scheme = new Scheme(j,null);
         structureData[schemeId] = scheme;
     }
 

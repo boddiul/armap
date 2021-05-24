@@ -163,7 +163,7 @@ def new_door_node(floor,_id,x,y,r1,r2,direction):
                 "x2":x+k*math.cos(aa),
                 "y1":y-k*math.sin(aa),
                 "y2":y+k*math.sin(aa),
-                "width":0.9,
+                "width":0.6,
                 "wall1_id":w1,
                 "wall2_id":w2,
                 "room1_id":r1,
@@ -352,7 +352,28 @@ def new_edge(id1,id2):
 
 
 
+def distPointSegment(x1, y1, x2, y2, x3, y3): # x3,y3 is the point
+    px = x2-x1
+    py = y2-y1
 
+    norm = px*px + py*py
+
+    u =  ((x3 - x1) * px + (y3 - y1) * py) / float(norm)
+
+    if u > 1:
+        u = 1
+    elif u < 0:
+        u = 0
+
+    x = x1 + u * px
+    y = y1 + u * py
+
+    dx = x - x3
+    dy = y - y3
+
+    dist = (dx*dx + dy*dy)**.5
+
+    return dist
 
 def new_qr(floor,_id,x,y,direction,room,off = 0.05):
 
@@ -364,9 +385,21 @@ def new_qr(floor,_id,x,y,direction,room,off = 0.05):
     yy = y-off*(math.sin(aa))
 
 
+                    
+
+
     for f in mapp["floors"]:
         for r in f["rooms"]:
             if r["id"]==room:
+                bestWid = -1
+                minDist = -1
+                for w in r["walls"]:
+                    dist = distPointSegment(w["x1"],w["y1"],w["x2"],w["y2"],xx,yy)
+                    if (dist<minDist or bestWid==-1):
+                        minDist = dist
+                        bestWid = w["id"]
+
+            
                 r["qrs"].append( {
                     "id":_id,
                     "name":"",
@@ -375,7 +408,7 @@ def new_qr(floor,_id,x,y,direction,room,off = 0.05):
                     "y":yy,
                     "z":0,
                     "direction":aa,
-                    "wall_id":-1,
+                    "wall_id":bestWid,
 
                     })
 
@@ -900,7 +933,7 @@ def build33():
     new_furniture(0,1,'Диван',[3.5,6.9,5.6,5.9])
     new_furniture(0,1,'Стол',[7.3,6.9,7.8,5.5])
     new_furniture(0,1,'Столик',[4.3,5.7,5,5])
-    new_furniture(0,1,'Стол',[2.1,5,2.8,3.5])
+    new_furniture(0,1,'Стол',[2.1,4.2,2.8,3.5])
     new_furniture(0,1,'Стол',[3.7,3.9,5.2,3.5])
     new_furniture(0,1,'Стул',[7.4,5.2,7.8,4.8])
 
@@ -1109,7 +1142,7 @@ def build36():
     new_furniture(0,1,'Диван',[3.5,6.9,5.6,5.9])
     new_furniture(0,1,'Стол',[7.3,6.9,7.8,5.5])
     new_furniture(0,1,'Столик',[4.3,5.7,5,5])
-    new_furniture(0,1,'Стол',[2.1,5,2.8,3.5])
+    new_furniture(0,1,'Стол',[2.1,4.2,2.8,3.5])
     new_furniture(0,1,'Стол',[3.7,3.9,5.2,3.5])
     new_furniture(0,1,'Стул',[7.4,5.2,7.8,4.8])
 
@@ -1170,7 +1203,7 @@ def build36():
     new_furniture(1,5,'Диван',[3.5,6.9,5.6,5.9])
     new_furniture(1,5,'Стол',[7.3,6.9,7.8,5.5])
     new_furniture(1,5,'Столик',[4.3,5.7,5,5])
-    new_furniture(1,5,'Стол',[2.1,5,2.8,3.5])
+    new_furniture(1,5,'Стол',[2.1,4.2,2.8,3.5])
     new_furniture(1,5,'Стол',[3.7,3.9,5.2,3.5])
     new_furniture(1,5,'Стул',[7.4,5.2,7.8,4.8])
 

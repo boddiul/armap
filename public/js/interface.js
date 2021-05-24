@@ -1,6 +1,6 @@
 function InterfaceController() {
 
-    this.searchSchemeId = -1;
+    //this.searchSchemeId = -1;
 
 
 
@@ -56,6 +56,10 @@ function InterfaceController() {
         //console.log(selection.checked)
     }
 
+
+
+
+    /*
     this.OnRequestIdBox = function () {
         var selection = document.getElementById("requestIdBox" );
         this.searchSchemeId = parseInt(selection.value)
@@ -72,10 +76,6 @@ function InterfaceController() {
         EditorJS.LoadScheme(this.searchSchemeId);
     }
 
-    this.ClickUploadScheme = function () {
-
-        EditorJS.UploadScheme();
-    }
 
 
     this.SetSearchSchemeId = function (id) {
@@ -84,7 +84,7 @@ function InterfaceController() {
         document.getElementById("requestIdBox" ).value = id;
 
 
-    }
+    }*/
 
     this.ClickNewFloor = function () {
 
@@ -127,9 +127,29 @@ function InterfaceController() {
         EditorJS.ClearGraph();
     }
 
-    this.ClickCreateGraph = function (i) {
-        EditorJS.CreateGraph(i);
+
+
+    this.ClickCreateGraph = function (full) {
+
+        let graphType = 0;
+
+
+        let li = document.getElementById("graph_type");
+
+        let tt = li.options[li.selectedIndex].value;
+        console.log(tt);
+        switch(tt)
+        {
+            case "none":graphType =0; break;
+            case "type1":graphType =1; break;
+            case "type2":graphType =2; break;
+        }
+
+        EditorJS.CreateGraph(graphType,full);
     }
+
+
+
 
     this.ClickRemoveDebugTriangle = function () {
         EditorJS.RemoveDebugTriangle();
@@ -145,17 +165,84 @@ function InterfaceController() {
         EditorJS.DestroySelectedObject();
     }
 
-    this.OnInputParam = function (divId,param) {
+
+
+    this.valueToFloorId = {}
+
+    this.UpdateFloorList = function (floors) {
+        this.valueToFloorId = {};
+
+        $("#qr_floor").empty();
+
+
+        let li = document.getElementById("qr_floor");
+
+        let option = document.createElement( 'option' );
+        option.value = 'none';
+        option.text = 'Все';
+        li.add( option );
+
+        this.valueToFloorId['none'] = -1;
+
+        floors.forEach(function (f) {
+
+            this.valueToFloorId['floor'+f.id] = f.id;
+
+            let option = document.createElement( 'option' );
+            option.value = 'floor'+f.id;
+            option.text = f.name;
+            li.add( option );
 
 
 
-        if (param==="name")
+        }.bind(this));
+
+
+
+    }
+
+    this.ClickQRClear = function () {
+
+        let li = document.getElementById("qr_floor");
+
+
+
+        EditorJS.ClearQR(this.valueToFloorId[li.options[li.selectedIndex].value]);
+    }
+
+    this.ClickQRGenerate = function () {
+        let li = document.getElementById("qr_floor");
+
+        EditorJS.GenerateQR(this.valueToFloorId[li.options[li.selectedIndex].value]);
+    }
+
+    this.OnInputParam = function (div,param) {
+
+        d = div;
+
+        if (param==="name" || param==="address" || param==="description")
         {
-            d = document.getElementById(divId);
+
 
             //currParamObject.name = d.value;
 
             EditorJS.SetSelectedObjectParam(param,d.value);
+        }
+        else if (param === "can_search")
+        {
+            EditorJS.SetSelectedObjectParam("canSearch",d.checked);
+        }
+        else if (param==="direction" || param==="width" || param==="height")
+        {
+
+            let val = d.value;
+            if (!isNaN(val)) {
+                EditorJS.SetSelectedObjectParam(param,val);
+                this.UpdateParams(this.currentType,this.currentObj);
+            }
+
+
+
         }
 
 
@@ -163,6 +250,18 @@ function InterfaceController() {
     }
 
 
+    this.ClickRemovePortalLink = function (type,dir) {
+
+        EditorJS.RemovePortalLink(type,dir);
+        this.UpdateParams(this.currentType,this.currentObj)
+    }
+
+    this.ClickChangePortalLink = function (type,dir) {
+
+        EditorJS.ChangePortalLink(type,dir);
+        this.UpdateParams(this.currentType,this.currentObj)
+    }
+    /*
     this.ClickGetScheme = function () {
 
         EditorJS.OpenSchemeData(this.searchSchemeId);
@@ -186,13 +285,10 @@ function InterfaceController() {
 
         EditorJS.OpenSchemeHelpPDF(this.searchSchemeId);
 
-    }
+    }*/
 
     this.paramTypes = ["scheme","floor","room","door","wall","furniture","elevator","staircase","qr"]
 
-    this.UpdateParams = function () {
-
-    }
     this.ShowParams = function (type,obj) {
 
 
@@ -226,49 +322,178 @@ function InterfaceController() {
     }
 
     this.UpdateParams = function (type,obj) {
+
+
+        this.currentType = type;
+        this.currentObj = obj;
+
         switch (type) {
             case "scheme":
-                document.getElementById("p_scheme_id").value = obj.id;
-                document.getElementById("p_scheme_name").value = obj.name;
-                document.getElementById("p_scheme_address").value = obj.address;
-                document.getElementById("p_scheme_description").value = obj.description;
+
 
                 break;
+            case "furniture":
+                document.getElementById("p_furniture_id").value = obj.id;
+                document.getElementById("p_furniture_name").value = obj.name;
             case "floor":
                 document.getElementById("p_floor_id").value = obj.id;
                 document.getElementById("p_floor_name").value = obj.name;
+
+
+
+
                 break;
 
             case "room":
                 document.getElementById("p_room_id").value = obj.id;
                 document.getElementById("p_room_name").value = obj.name;
+                document.getElementById("p_room_can_search").checked = obj.canSearch;
+                break;
+            case "wall":
+                document.getElementById("p_wall_id").value = obj.id;
                 break;
 
             case "qr":
                 document.getElementById("p_qr_id").value = obj.id;
                 document.getElementById("p_qr_name").value = obj.name;
-                break;
+                document.getElementById("p_qr_can_search").checked = obj.canSearch;
 
+                break;
+            case "staircase":
+                document.getElementById("p_staircase_id").value = obj.id;
+
+
+
+                ['direction','height','width'].forEach(function (p) {
+                    document.getElementById("p_staircase_"+p+"_text").value =
+                        document.getElementById("p_staircase_"+p+"_bar").value =
+                            obj[p];
+
+                })
+
+
+
+
+
+                document.getElementById("p_staircase_up_id").value  = obj.staircaseUp===null ? 'Нет' : obj.staircaseUp.id;
+                document.getElementById("p_staircase_down_id").value  = obj.staircaseDown===null ? 'Нет' : obj.staircaseDown.id;
+
+                break;
+            case "elevator":
+                document.getElementById("p_elevator_id").value = obj.id;
+
+
+                document.getElementById("p_elevator_up_id").value  = obj.elevatorUp===null ? 'Нет' : obj.elevatorUp.id;
+                document.getElementById("p_elevator_down_id").value  = obj.elevatorDown===null ? 'Нет' : obj.elevatorDown.id;
+
+                break;
 
         }
     }
 
     this.OnLoad = function () {
 
-        document.getElementById("myCanvas").oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+        document.getElementById("myCanvas").oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); };
 
 
-        this.OnRequestIdBox();
 
         ["room","elevator","node","edge","door","qr","furniture","staircase"].forEach(function (l) {
             console.log(l)
             this.OnEditorLayerBox(l,true);
             this.OnEditorLayerBox(l,false);
-        }.bind(this))
+        }.bind(this));
+
+        let plist = document.getElementById("examples_list");
+        ["33","36","220"].forEach(function (i) {
+
+            let b = document.createElement("button");
+
+            b.textContent  = i;
+            b.setAttribute("onclick", "InterfaceJS.ClickLoadScheme("+i+");");
+            plist.appendChild(b);
+
+        })
 
         console.log("changed");
 
 
+    }
+
+
+    this.ClickOpenWindowExamples = function () {
+        this.OpenWindow('examples');
+    }
+
+    this.ClickOpenWindowUpload = function () {
+        this.OpenWindow('scheme_params');
+    }
+
+
+    this.ClickUploadScheme = function () {
+
+        EditorJS.CheckScheme();
+        EditorJS.UploadScheme();
+
+    }
+
+
+    this.ClickOpenWindowHelp = function () {
+        this.OpenWindow('help');
+    }
+
+
+    this.overlayIds = ['help','scheme_uploaded','scheme_params','examples']
+    this.OpenWindow = function(windowId)
+    {
+        let w;
+
+        this.overlayIds.forEach(function(i){
+            w = document.getElementsByClassName('overlay_'+i)[0];
+
+            w.style.display = i===windowId ? "block" : "none";
+        })
+
+
+        w = document.getElementsByClassName('overlay_window')[0];
+        w.style.display = "block";
+
+
+        switch (windowId) {
+            case "scheme_params":
+                document.getElementById('p_scheme_name').value = EditorJS.scheme.name;
+                document.getElementById('p_scheme_address').value = EditorJS.scheme.address;
+                document.getElementById('p_scheme_description').textContent = EditorJS.scheme.description;
+                break;
+            case "scheme_uploaded":
+                document.getElementById('uploaded_id').textContent = EditorJS.scheme.id;
+                document.getElementById('uploaded_name').textContent = EditorJS.scheme.name;
+                break;
+        }
+
+    }
+
+    this.CloseWindow = function () {
+        let w = document.getElementsByClassName('overlay_window')[0];
+        w.style.display = "none";
+    }
+
+
+
+    this.ClickGetQRPDF = function () {
+
+        EditorJS.OpenSchemeQRPDF();
+
+    }
+
+    this.ClickGetHelpPDF = function () {
+
+        EditorJS.OpenSchemeHelpPDF();
+
+    }
+
+    this.ClickLoadScheme = function (id) {
+        EditorJS.LoadScheme(id);
+        this.CloseWindow();
     }
 }
 

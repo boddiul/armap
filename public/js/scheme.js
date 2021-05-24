@@ -1,20 +1,18 @@
-maxFloorId = 0;
-maxRoomId = 0;
-maxWallId = 0;
-maxDoorId = 0;
-maxQRId = 0;
-maxFurnitureId = 0;
-maxElevatorId = 0;
-maxStaircaseId = 0;
 
-QR = function(room,jsonDataQR)
+
+QR = function(room,jsonDataQR,editorData)
 {
     this.room = room;
 
     this.id = jsonDataQR.id;
 
-    if (this.id>maxQRId)
-        maxQRId = this.id;
+
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxQRId)
+            editorData.maxQRId = this.id;
+    }
+
 
 
 
@@ -28,8 +26,16 @@ QR = function(room,jsonDataQR)
     this.initWallId = jsonDataQR.wall_id;
 
     this.direction = jsonDataQR.direction / Math.PI * 180;
-
+    this.wall = null;
     this.SetLinks = function () {
+
+        this.room.walls.forEach(function (w) {
+            if (w.id===this.initWallId)
+                this.wall = w;
+        }.bind(this))
+
+
+
         if (DrawJS)
             this.drawElement = DrawJS.AddQRElement(this);
     }
@@ -50,9 +56,23 @@ QR = function(room,jsonDataQR)
     }
 
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
+
+
+
+
         this.x += dx;
         this.y += dy;
+
+
+        if (!free)
+        {
+            let np = MyMath.pointOnSegment({x:this.x,y:this.y},{x:this.wall.x1,y:this.wall.y1},{x:this.wall.x2,y:this.wall.y2})
+
+            this.x = np.x;
+            this.y = np.y;
+        }
+
     }
 
     this.destroy = function(deep) {
@@ -89,15 +109,20 @@ QR = function(room,jsonDataQR)
 
 
 
-Staircase = function(room,jsonDataStaircase)
+Staircase = function(room,jsonDataStaircase,editorData)
 {
 
     this.room = room;
 
     this.id = jsonDataStaircase.id;
 
-    if (this.id>maxStaircaseId)
-        maxStaircaseId = this.id;
+
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxStaircaseId)
+            editorData.maxStaircaseId = this.id;
+    }
+
 
 
     this.x = jsonDataStaircase.x;
@@ -177,7 +202,7 @@ Staircase = function(room,jsonDataStaircase)
         return j;
     }
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
 
         if (index === 0) {
             this.x += dx;
@@ -224,7 +249,7 @@ Staircase = function(room,jsonDataStaircase)
 
 }
 
-Elevator = function(room,jsonDataElevator)
+Elevator = function(room,jsonDataElevator,editorData)
 {
 
 
@@ -232,8 +257,12 @@ Elevator = function(room,jsonDataElevator)
     this.id = jsonDataElevator.id;
 
 
-    if (this.id>maxElevatorId)
-        maxElevatorId = this.id;
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxElevatorId)
+            editorData.maxElevatorId = this.id;
+    }
+
 
 
     this.x = jsonDataElevator.x;
@@ -320,11 +349,18 @@ Elevator = function(room,jsonDataElevator)
             j["elevator_up_id"] = this.elevatorUp.id
         return j;
     }
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
 
-        if (index === 0) {
-            this.x += dx;
-            this.y += dy;
+        this.x += dx;
+        this.y += dy;
+
+
+        if (!free)
+        {
+            let np = MyMath.pointOnSegment({x:this.x,y:this.y},{x:this.wall.x1,y:this.wall.y1},{x:this.wall.x2,y:this.wall.y2})
+
+            this.x = np.x;
+            this.y = np.y;
         }
     }
     this.destroy = function(deep) {
@@ -364,14 +400,18 @@ Elevator = function(room,jsonDataElevator)
 }
 
 
-Furniture = function(room,jsonDataFurniture)
+Furniture = function(room,jsonDataFurniture,editorData)
 {
     this.room = room;
 
     this.id = jsonDataFurniture.id;
 
-    if (this.id>maxFurnitureId)
-        maxFurnitureId = this.id;
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxFurnitureId)
+            editorData.maxFurnitureId = this.id;
+    }
+
 
     this.x1 = jsonDataFurniture.x1;
     this.x2 = jsonDataFurniture.x2;
@@ -404,7 +444,7 @@ Furniture = function(room,jsonDataFurniture)
         this.drawElement = DrawJS.AddFurnitureElement(this);
 
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
 
         if (index===0 || index===1)
         {
@@ -434,16 +474,16 @@ Furniture = function(room,jsonDataFurniture)
     }
 }
 
-Graph = function(scheme,jsonDataGraph)
+Graph = function(scheme,jsonDataGraph,editorData)
 {
     this.scheme = scheme;
 
     this.nodes = jsonDataGraph.nodes.map(function (n) {
-        return new Node(this,n);
+        return new Node(this,n,editorData);
     }.bind(this));
 
     this.edges = jsonDataGraph.edges.map(function (e) {
-        return new Edge(this,e);
+        return new Edge(this,e,editorData);
     }.bind(this));
 
     this.nodes.forEach(function (n) {
@@ -472,7 +512,7 @@ Graph = function(scheme,jsonDataGraph)
 
 }
 
-Edge = function(graph,jsonDataEdge)
+Edge = function(graph,jsonDataEdge,editorData)
 {
     this.graph = graph;
 
@@ -539,7 +579,7 @@ Edge = function(graph,jsonDataEdge)
     }
 }
 
-Node = function(graph,jsonDataNode) {
+Node = function(graph,jsonDataNode,editorData) {
 
     this.graph = graph;
 
@@ -630,7 +670,7 @@ Node = function(graph,jsonDataNode) {
     }
 
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
 
 
         this.x+=dx;
@@ -672,15 +712,21 @@ Node = function(graph,jsonDataNode) {
 
 }
 
-Door = function(floor,jsonDataDoor)
+Door = function(floor,jsonDataDoor,editorData)
 {
     this.floor = floor;
 
 
 
     this.id = jsonDataDoor.id;
-    if (this.id>maxDoorId)
-        maxDoorId = this.id;
+
+
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxDoorId)
+            editorData.maxDoorId = this.id;
+    }
+
 
     this.x1 = jsonDataDoor.x1;
     this.x2 = jsonDataDoor.x2;
@@ -730,7 +776,7 @@ Door = function(floor,jsonDataDoor)
 
 
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
 
         if (index===0 || index ===1 )
         {
@@ -743,6 +789,22 @@ Door = function(floor,jsonDataDoor)
         {
             this.x2+=dx;
             this.y2+=dy;
+        }
+
+
+
+        if (!free)
+        {
+            let np = MyMath.pointOnSegment({x:this.x1,y:this.y1},{x:this.wall1.x1,y:this.wall1.y1},{x:this.wall1.x2,y:this.wall1.y2})
+
+            this.x1 = np.x;
+            this.y1 = np.y;
+
+            np = MyMath.pointOnSegment({x:this.x2,y:this.y2},{x:this.wall2.x1,y:this.wall2.y1},{x:this.wall2.x2,y:this.wall2.y2})
+
+            this.x2 = np.x;
+            this.y2 = np.y;
+
         }
 
 
@@ -794,15 +856,21 @@ Door = function(floor,jsonDataDoor)
     }
 }
 
-Wall = function(room,jsonDataWall)
+Wall = function(room,jsonDataWall,editorData)
 {
 
     this.room = room;
 
     this.id = jsonDataWall.id;
 
-    if (this.id>maxWallId)
-        maxWallId = this.id;
+
+
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxWallId)
+            editorData.maxWallId = this.id;
+    }
+
 
     this.x1 = jsonDataWall.x1;
     this.x2 = jsonDataWall.x2;
@@ -845,7 +913,14 @@ Wall = function(room,jsonDataWall)
     }
 
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
+
+        let oldPoint1 = {};
+        let oldPoint2 = {};
+        [this,this.prevWall,this.nextWall].forEach(function (w) {
+            oldPoint1[w.id] = {x:w.x1,y:w.y1};
+            oldPoint2[w.id] = {x:w.x2,y:w.y2};
+        })
 
         if (index===0 || index ===1 )
         {
@@ -865,8 +940,126 @@ Wall = function(room,jsonDataWall)
             this.nextWall.y1+=dy;
         }
 
+        let newPoint1 = {};
+        let newPoint2 = {};
+        [this,this.prevWall,this.nextWall].forEach(function (w) {
+            newPoint1[w.id] = {x:w.x1,y:w.y1};
+            newPoint2[w.id] = {x:w.x2,y:w.y2};
+        });
 
 
+        let getWallPointMove = function (wallId,startX,startY) {
+            let i = wallId;
+            let oldP = MyMath.pointOnSegment({x:startX,y:startY},oldPoint1[i],oldPoint2[i])
+
+            let oldDist = MyMath.pointDistance(oldP,oldPoint1[i]);
+            let oldLength = MyMath.pointDistance(oldPoint1[i],oldPoint2[i]);
+
+            let newLength = MyMath.pointDistance(newPoint1[i],newPoint2[i]);
+
+            let newDist = oldDist*(newLength/oldLength);
+
+            let newP = {
+                x:newPoint1[i].x+(newPoint2[i].x-newPoint1[i].x)*newDist/newLength,
+                y:newPoint1[i].y+(newPoint2[i].y-newPoint1[i].y)*newDist/newLength
+            }
+
+            return {x:newP.x-oldP.x, y:newP.y-oldP.y};
+        };
+
+        [this, this.prevWall, this.nextWall].forEach(function (w) {
+
+            this.room.floor.doors.forEach(function (d) {
+
+                let v =0;
+
+                if (d.wall1 === w)
+                    v = 1;
+                if (d.wall2 === w)
+                    v = 2;
+
+                if (v!==0)
+                {
+                    let i = w.id;
+
+
+                    let cx = d.x1;
+                    let cy = d.y1;
+                    if (v===2)
+                    {
+                        cx = d.x2;
+                        cy = d.y2;
+                    }
+
+                    let dd = getWallPointMove(i,cx,cy);
+
+                    if (v===1)
+                    {
+                        d.x1+=dd.x;
+                        d.y1+=dd.y;
+                    }
+                    else
+                    {
+                        d.x2+=dd.x;
+                        d.y2+=dd.y;
+                    }
+
+                }
+
+            }.bind(this));
+
+
+            let MoveAndRotate = function (q) {
+
+                //console.log(q);
+
+
+
+                if (q.wall===w)
+                {
+                    let i = w.id;
+
+                    let dd = getWallPointMove(i,q.x,q.y);
+                    q.x+=dd.x;
+                    q.y+=dd.y;
+
+
+
+                    let dir = Math.atan2(newPoint2[i].y-newPoint1[i].y,newPoint2[i].x-newPoint1[i].x) + Math.PI/2;
+
+                    if (dir<0)
+                        dir +=Math.PI*2;
+
+                    if (dir>Math.PI*2)
+                        dir -= Math.PI*2;
+
+                    q.direction = dir/Math.PI*180;
+
+                }
+
+            }
+
+            this.room.qrs.forEach(MoveAndRotate.bind(this));
+            this.room.elevators.forEach(MoveAndRotate.bind(this));
+
+
+
+
+        }.bind(this));
+
+
+
+
+
+
+
+
+
+    }
+
+
+    this.GetLength = function () {
+        return MyMath.pointDistance({x:this.x1,y:this.y1},{x:this.x2,y:this.y2});
     }
 
     if (DrawJS)
@@ -874,12 +1067,43 @@ Wall = function(room,jsonDataWall)
 
 
     this.destroy = function(deep) {
+
+
+        if (deep)
+        {
+            if (this.nextWall.nextWall===this.prevWall)
+                return;
+
+            let newX = (this.x1+this.x2)/2;
+            let newY = (this.y1+this.y2)/2;
+
+            this.prevWall.x2 = newX;
+            this.prevWall.y2 = newY;
+            this.prevWall.nextWall = this.nextWall;
+
+            this.nextWall.x1 = newX;
+            this.nextWall.y1 = newY;
+            this.nextWall.prevWall = this.prevWall;
+        }
+
+
+
+
         DrawJS.DestroyElement(this);
+
+        if (deep)
+        {
+            this.nextWall.move(0,0,0,false);
+            this.prevWall.move(0,0,0,false);
+
+            DrawJS.UpdateCanvas();
+        }
+
     }
 
 }
 
-Room = function(floor,jsonDataRoom)
+Room = function(floor,jsonDataRoom,editorData)
 {
 
    // console.log("?")
@@ -889,9 +1113,12 @@ Room = function(floor,jsonDataRoom)
     this.id = jsonDataRoom.id;
 
 
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxRoomId)
+            editorData.maxRoomId = this.id;
+    }
 
-    if (this.id>maxRoomId)
-        maxRoomId = this.id;
 
 
 
@@ -901,7 +1128,7 @@ Room = function(floor,jsonDataRoom)
     this.canSearch = jsonDataRoom.can_search;
 
     this.walls = jsonDataRoom.walls.map(function (w) {
-        return new Wall(this,w);
+        return new Wall(this,w,editorData);
     }.bind(this));
 
 
@@ -909,7 +1136,7 @@ Room = function(floor,jsonDataRoom)
    // console.log(jsonDataRoom.elevators)
 
     this.elevators = jsonDataRoom.elevators.map(function (e) {
-        return new Elevator(this,e);
+        return new Elevator(this,e,editorData);
     }.bind(this));
   //  console.log(this.elevators)
 
@@ -917,16 +1144,16 @@ Room = function(floor,jsonDataRoom)
 
 
     this.staircases = jsonDataRoom.staircases.map(function (s) {
-        return new Staircase(this,s);
+        return new Staircase(this,s,editorData);
     }.bind(this));
 
     this.furniture = jsonDataRoom.furniture.map(function (f) {
-        return new Furniture(this,f);
+        return new Furniture(this,f,editorData);
     }.bind(this));
 
 
     this.qrs = jsonDataRoom.qrs.map(function (q) {
-        return new QR(this,q);
+        return new QR(this,q,editorData);
     }.bind(this));
 
     //console.log(this.walls);
@@ -992,7 +1219,7 @@ Room = function(floor,jsonDataRoom)
     if (DrawJS)
         this.drawElement = DrawJS.AddRoomElement(this);
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
         this.x+=dx;
         this.y+=dy;
 
@@ -1083,7 +1310,6 @@ Room = function(floor,jsonDataRoom)
             }
 
 
-            console.log('!!!!');
             this.furniture.forEach(function (f) {
 
                 console.log(f);
@@ -1096,14 +1322,25 @@ Room = function(floor,jsonDataRoom)
                 w.destroy(false);
             })
 
+
+            let elevatorsToDestroy = [];
             this.elevators.forEach(function (e) {
-                e.destroy(false);
+                elevatorsToDestroy.push(e);
+            })
+
+            elevatorsToDestroy.forEach(function (e) {
+                e.destroy(true);
             })
 
 
+            let staircasesToDestroy = [];
             this.staircases.forEach(function (s) {
-                s.destroy(false);
-            });
+                staircasesToDestroy.push(s);
+            })
+
+            staircasesToDestroy.forEach(function (s) {
+                s.destroy(true);
+            })
 
             let doorsToDestroy = [];
 
@@ -1146,14 +1383,21 @@ Room = function(floor,jsonDataRoom)
 
 }
 
-Floor = function(scheme,jsonDataFloor)
+Floor = function(scheme,jsonDataFloor,editorData)
 {
 
     this.scheme = scheme;
     this.id = jsonDataFloor.id;
 
-    if (this.id>maxFloorId)
-        maxFloorId = this.id;
+
+    console.log(editorData)
+
+    if (editorData!==null)
+    {
+        if (this.id>editorData.maxFloorId)
+            editorData.maxFloorId = this.id;
+    }
+
 
 
 
@@ -1164,11 +1408,11 @@ Floor = function(scheme,jsonDataFloor)
 
 
     this.rooms = jsonDataFloor.rooms.map(function (r) {
-        return new Room(this,r);
+        return new Room(this,r,editorData);
     }.bind(this));
 
     this.doors = jsonDataFloor.doors.map(function (d) {
-        return new Door(this,d);
+        return new Door(this,d,editorData);
     }.bind(this))
 
 
@@ -1203,7 +1447,7 @@ Floor = function(scheme,jsonDataFloor)
         return j;
     }
 
-    this.move = function (index,dx,dy) {
+    this.move = function (index,dx,dy,free) {
         this.x+=dx;
         this.y+=dy;
     }
@@ -1234,7 +1478,7 @@ Floor = function(scheme,jsonDataFloor)
     }
 }
 
-Scheme = function(jsonDataScheme)
+Scheme = function(jsonDataScheme,editorData)
 {
     //cacheMapData = jsonData;
 
@@ -1250,7 +1494,7 @@ Scheme = function(jsonDataScheme)
 
     this.floors = jsonDataScheme.floors.map(function (f) {
 
-        return new Floor(this,f);
+        return new Floor(this,f,editorData);
     }.bind(this));
 
     this.floors.forEach(function (f) {
@@ -1258,7 +1502,7 @@ Scheme = function(jsonDataScheme)
     })
 
 
-    this.graph = new Graph (this,jsonDataScheme.graph);
+    this.graph = new Graph (this,jsonDataScheme.graph,editorData);
 
 
 
