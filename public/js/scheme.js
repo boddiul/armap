@@ -48,7 +48,7 @@ QR = function(room,jsonDataQR,editorData)
             y:this.y,
             name:this.name,
             can_search: this.canSearch,
-            wall_id:this.initWallId,
+            wall_id:this.wall.id,
             direction:this.direction * Math.PI / 180
         }
 
@@ -289,24 +289,10 @@ Elevator = function(room,jsonDataElevator,editorData)
 
     this.SetLinks = function () {
 
-        //TODO
-        let minDist = -1;
-        let bWall = null;
         this.room.walls.forEach(function (w) {
-            //if (w.id ===this.initWallId)
-            //    this.wall = w;
-
-            let dist = Math.sqrt(Math.pow((w.x1+w.x2)/2-this.x,2)+Math.pow((w.y1+w.y2)/2-this.y,2));
-
-            if (bWall===null || dist<minDist)
-            {
-                bWall = w;
-                minDist = dist;
-            }
+            if (w.id === this.initWallId)
+                this.wall  =w;
         }.bind(this))
-
-        if (minDist!==-1)
-            this.wall = bWall;
 
 
         this.room.floor.scheme.floors.forEach(function (f) {

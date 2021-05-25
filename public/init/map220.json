@@ -1,7 +1,7 @@
 {
-  "name": "Тестовое здание",
+  "name": "Тестовое здание (old)",
   "id": 220,
-  "description": "Карта тестового несуществующего строения",
+  "description": "Карта тестового несуществующего строения. Графы составлены вручную при помощи скрипта",
   "address": "Покровский б-р, 11, Москва, Россия",
   "floors": [
     {
@@ -245,7 +245,7 @@
               "x": 12,
               "y": 12,
               "direction": 0.0,
-              "wall_id": -1,
+              "wall_id": 15,
               "elevator_up_id": 1
             }
           ],
@@ -560,7 +560,7 @@
               "x": 12,
               "y": 12,
               "direction": 0.0,
-              "wall_id": -1,
+              "wall_id": 27,
               "elevator_down_id": 0,
               "elevator_up_id": 2
             }
@@ -820,7 +820,7 @@
               "x": 12,
               "y": 12,
               "direction": 0.0,
-              "wall_id": -1,
+              "wall_id": 40,
               "elevator_down_id": 1
             }
           ],
@@ -1857,25 +1857,25 @@
         "id": 49,
         "node1_id": 5,
         "node2_id": 18,
-        "weight": 20
+        "weight": 1
       },
       {
         "id": 50,
         "node1_id": 18,
         "node2_id": 27,
-        "weight": 20
+        "weight": 1
       },
       {
         "id": 51,
         "node1_id": 14,
         "node2_id": 24,
-        "weight": 15
+        "weight": 5.0
       },
       {
         "id": 52,
         "node1_id": 24,
         "node2_id": 31,
-        "weight": 15
+        "weight": 5.0
       },
       {
         "id": 53,

@@ -21,14 +21,14 @@ MyTool = function () {
         "select":new Raster('select').scale(2)
     }
 
-    this.helpText = new PointText({
+    /*this.helpText = new PointText({
         point: new Point(0,0),
         content: "help",
         fontSize: 24,
         justification: 'right'
-    });
+    });*/
 
-    this.helpText.visible = false;
+    //this.helpText.visible = false;
 
     this.iconType = "movecanvas";
 
@@ -254,13 +254,17 @@ MyTool = function () {
 
         if (this.searching)
         {
-            this.helpText.content = this.helpIntro+this.helpTypes[this.inputI];
+
+            EditorJS.SetHint(this.helpIntro+this.helpTypes[this.inputI]);
+
+            /*this.helpText.content = ;
             this.helpText.visible = true;
-            this.helpText.position = this.targetPosition+new Point(0,50);
+            this.helpText.position = this.targetPosition+new Point(0,50);*/
         }
         else
         {
-            this.helpText.visible = false;
+            EditorJS.SetHint("");
+            //this.helpText.visible = false;
         }
 
 
@@ -316,7 +320,40 @@ function setVisibleLayer(layer,isText,visible)
 
 
 
-PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosition,getToolData) {
+markupMain = function(t)
+{
+    t.initMarkup = function () {
+        this.drawMarkup = [];
+        this.markupCoords = [];
+        for (var i=0;i<this.markupNumber;i++)
+        {
+            this.drawMarkup.push(new PointText({
+                point: new Point(0,0),
+                content: '.',
+                fontSize: 10,
+                justification: 'left',
+                fillColor : '#000000',
+                style : {fontWeight:'bold'}
+            }));
+
+            this.markupCoords.push([0,0]);
+        }
+    }
+    t.updateMarkup = function () {
+        for (var i=0;i<this.markupNumber;i++)
+        {
+            this.drawMarkup[i].position =  pointToWindow(new Point(this.markupCoords[i][0], this.markupCoords[i][1]))+new Point(15,-15);
+        }
+    }
+    t.setVisibleMarkup = function (visible) {
+        for (var i=0;i<this.markupNumber;i++)
+        {
+            this.drawMarkup[i].visible = visible;
+        }
+    }
+}
+
+PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosition,getToolData,markupNumber) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -349,8 +386,6 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
 
 
 
-    this.setVisibleMarkup = function (visible) {}
-
 
     this.x =0;
     this.y =0;
@@ -379,6 +414,10 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
     this.drawElement.strokeWidth = 2;
     this.drawElement.fillColor = color;
 
+
+
+
+
     if (this.textColor!=null)
     {
         this.drawText = new PointText({
@@ -396,7 +435,10 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
     }
 
 
-
+    markupMain(this);
+    this.markupNumber = markupNumber;
+    this.initMarkup();
+    this.setVisibleMarkup(false);
 
 
 
@@ -438,6 +480,8 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
         }
 
 
+        this.updateMarkup();
+
 
     }
 
@@ -456,7 +500,6 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
 
     //updateAll();
 }
-
 
 
 
@@ -484,36 +527,7 @@ LineElement = function (obj,mainType,layerType,color,textColor,width,updatePosit
 
 
 
-    this.initMarkup = function () {
-        this.drawMarkup = [];
-        this.markupCoords = [];
-        for (var i=0;i<this.markupNumber;i++)
-        {
-            this.drawMarkup.push(new PointText({
-                point: new Point(0,0),
-                content: 'aaaaaaaaa',
-                fontSize: 10,
-                justification: 'left',
-                fillColor : '#000000',
-                style : {fontWeight:'bold'}
-            }));
-
-            this.markupCoords.push([0,0]);
-        }
-    }
-    this.updateMarkup = function () {
-        for (var i=0;i<this.markupNumber;i++)
-        {
-
-            this.drawMarkup[i].position =  pointToWindow(new Point(this.markupCoords[i][0], this.markupCoords[i][1]))+new Point(20,-20);
-        }
-    }
-    this.setVisibleMarkup = function (visible) {
-        for (var i=0;i<this.markupNumber;i++)
-        {
-            this.drawMarkup[i].visible = visible;
-        }
-    }
+    markupMain(this);
     this.markupNumber = markupNumber;
     this.initMarkup();
     this.setVisibleMarkup(false);
@@ -587,7 +601,7 @@ LineElement = function (obj,mainType,layerType,color,textColor,width,updatePosit
 }
 
 
-DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,getToolData) {
+DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,getToolData,markupNumber) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -641,7 +655,10 @@ DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,ge
         });
 
 
-    this.setVisibleMarkup = function (visible) {}
+    markupMain(this);
+    this.markupNumber = markupNumber;
+    this.initMarkup();
+    this.setVisibleMarkup(false);
 
 
     this.updatePath = function () {
@@ -682,6 +699,9 @@ DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,ge
         if (this.textColor!=null)
             this.drawText.position = new Point((newPoints[0].x+newPoints[2].x)/2,(newPoints[0].y+newPoints[2].y-60)/2)+new Point(14,14);
 
+
+        this.updateMarkup();
+
     }
 
     this.getToolData = getToolData;
@@ -695,7 +715,7 @@ DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,ge
 
 }
 
-RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,getToolData) {
+RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,getToolData,markupNumber) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -719,8 +739,8 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
         this.drawText = new PointText({
             point: new Point(0,0),
             content: '',
-            fontSize: 12,
-            justification: 'left',
+            fontSize: 11,
+            justification: 'center',
             fillColor : this.textColor
         });
 
@@ -750,8 +770,10 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
 */
     //console.log(this.pathData);
 
-
-    this.setVisibleMarkup = function (visible) {}
+    markupMain(this);
+    this.markupNumber = markupNumber;
+    this.initMarkup();
+    this.setVisibleMarkup(false);
 
     this.updatePath = function () {
 
@@ -770,6 +792,8 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
             this.y2]];
 
 
+        var cx = 0;
+        var cy  =0;
         for (var i=0;i<pathData.length;i++)
         {
             var p = pathData[i];
@@ -778,10 +802,19 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
 
             this.drawElement.segments[i].point.x = np.x;
             this.drawElement.segments[i].point.y = np.y;
+            cx+=np.x;
+            cy+=np.y;
 
         }
+        cx/=pathData.length;
+        cy/=pathData.length;
 
 
+        if (this.textColor!=null)
+            this.drawText.position = new Point(cx,cy);
+
+
+        this.updateMarkup();
     }
 
     this.getToolData = getToolData;
@@ -794,7 +827,7 @@ RectElement = function(obj,mainType,layerType,color,textColor,updatePosition,get
 
 }
 
-PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosition,getToolData) {
+PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosition,getToolData,markupNumber) {
 
     this.obj = obj;
     this.mainType=  mainType;
@@ -831,6 +864,7 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
 
 
 
+
     this.x = 0;
     this.y = 0;
 
@@ -839,7 +873,6 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
 
 
 
-    this.setVisibleMarkup = function (visible) {}
 
 
 
@@ -880,6 +913,10 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
         this.drawElement.lineTo(new Point(0,0))
     }
 
+    markupMain(this);
+    this.markupNumber = markupNumber;
+    this.initMarkup();
+    this.setVisibleMarkup(false);
 
 
     this.updatePath = function () {
@@ -914,6 +951,7 @@ PortalElement = function(obj,mainType,layerType,color,textColor,type,updatePosit
 
 
 
+        this.updateMarkup();
     }
 
     this.getToolData = getToolData;
@@ -962,7 +1000,8 @@ function addElevatorElement(elevator)
                 x:this.x+0.5*Math.cos(this.direction/180*Math.PI),
                 y:this.y+0.5*Math.sin(this.direction/180*Math.PI)}
                 ]
-        }
+        },
+        0
     )
     elements.push(e);
     return e;
@@ -1001,7 +1040,8 @@ function addStaircaseElement(staircase)
                 x:this.x+0.5*Math.cos(this.direction/180*Math.PI),
                 y:this.y+0.5*Math.sin(this.direction/180*Math.PI)}
             ]
-        }
+        },
+        0
     )
 
     elements.push(e);
@@ -1022,7 +1062,8 @@ function addFloorElement(floor) {
 
         },function () {
             return [{type:"moveobject",search:"floor",index:0,x:this.x,y:this.y}]
-        }
+        },
+        0
     )
     elements.push(e);
     return e;
@@ -1045,7 +1086,8 @@ function addRoomElement(room) {
 
         },function () {
             return [{type:"moveobject",search:"room",index:0,x:this.x,y:this.y}]
-        }
+        },
+        0
     )
     elements.push(e);
     return e;
@@ -1105,12 +1147,27 @@ function addFurnitureElement(furniture) {
             this.y2 = this.obj.room.floor.y+this.obj.y2;
 
             this.drawText.content = this.obj.name;
+
+
+            this.markupCoords = [
+                [this.x1,this.y1],
+                [this.x1,(this.y1+this.y2)/2],
+                [(this.x1+this.x2)/2,this.y1]
+            ]
+
+            this.drawMarkup[0].content = '('+MyMath.round(this.obj.x1,2)+','+MyMath.round(this.obj.y1,2)+')';
+            this.drawMarkup[1].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.x1,y:this.obj.y1},{x:this.obj.x1,y:this.obj.y2}),2)+'m';
+            this.drawMarkup[2].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.x1,y:this.obj.y1},{x:this.obj.x2,y:this.obj.y1}),2)+'m';
+
         },function () {
             return [
                 {type:"moveobject",index:0,search:"furniture",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
                 {type:"movepoint",index:1,search:null,x:this.x1,y:this.y1},
                 {type:"movepoint",index:2,search:null,x:this.x2,y:this.y2}]
-        })
+        },
+        3)
 
     elements.push(e);
     return e;
@@ -1131,7 +1188,7 @@ function addNodeElement(node) {
             this.y = this.obj.floor.y+this.obj.y;
 
             this.drawText.content = this.obj.id;
-        },null
+        },null,0
     )
     elements.push(e);
     return e;
@@ -1173,7 +1230,7 @@ function addDoorElement(door) {
                 {type:"moveobject",index:0,search:"door",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
                 {type:"movepoint",index:1,search:null,x:this.x1+0.01,y:this.y1+0.01},
                 {type:"movepoint",index:2,search:null,x:this.x2+0.01,y:this.y2+0.01}]
-        })
+        },0)
 
     elements.push(e);
     return e;
@@ -1214,13 +1271,27 @@ function addQRElement(qr) {
             this.drawElement.fillColor.alpha = this.obj.canSearch ? 1 : 0;
 
             this.drawText.content = this.obj.id+(this.obj.canSearch ? ' '+this.obj.name : '')+ ' ('+Math.round(this.obj.direction)+'*)'
+
+
+
+
+            this.markupCoords = [
+                [(this.x+this.obj.room.floor.x+this.obj.wall.x1)/2,(this.y+this.obj.room.floor.y+this.obj.wall.y1)/2],
+                [(this.x+this.obj.room.floor.x+this.obj.wall.x2)/2,(this.y+this.obj.room.floor.y+this.obj.wall.y2)/2]
+            ]
+
+            this.drawMarkup[0].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.x,y:this.obj.y},{x:this.obj.wall.x1,y:this.obj.wall.y1}),2)+'m';
+            this.drawMarkup[1].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.x,y:this.obj.y},{x:this.obj.wall.x2,y:this.obj.wall.y2}),2)+'m';
+
         },
         function () {
 
             return [{type:"moveobject",search:"qr",index:0,
                 x:this.x-0.1*Math.cos(this.direction/180*Math.PI),
                 y:this.y-0.1*Math.sin(this.direction/180*Math.PI)}]
-        }
+        },2
     )
     elements.push(e);
     return e;

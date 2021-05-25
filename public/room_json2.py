@@ -226,12 +226,23 @@ def new_portal(floor,_id,x,y,portal_type,direction,room_id,wh=[]):
                             "height":wh[1]})
                         nd_st[_id] = r["staircases"][-1]
                     elif portal_type=='elevator':
+
+
+                        bestWid = -1
+                        minDist = -1
+                        for w in r["walls"]:
+                            dist = distPointSegment(w["x1"],w["y1"],w["x2"],w["y2"],x,y)
+                            if (dist<minDist or bestWid==-1):
+                                minDist = dist
+                                bestWid = w["id"]
+
+                        
                         r["elevators"].append({
                             "id":portal_ids[portal_type],
                             "x":x,
                             "y":y,
                             "direction":aa,
-                            "wall_id":-1})
+                            "wall_id": w["id"]})
                         nd_el[_id] = r["elevators"][-1]
                         
                         
@@ -314,7 +325,7 @@ def new_edge(id1,id2):
                 el2["elevator_up_id"] = el1["id"]
                 
 
-            t = 20
+            t = 1
             
         else:
 
@@ -331,7 +342,7 @@ def new_edge(id1,id2):
                 st2["staircase_up_id"] = st1["id"]
 
             
-            t = 15
+            t = st1["height"]+st2["height"]
             
 
 
@@ -556,9 +567,9 @@ def build220():
 
     map_id = 220
 
-    mapp = {"name":"Тестовое здание",
+    mapp = {"name":"Тестовое здание (old)",
             "id":map_id,
-            "description":"Карта тестового несуществующего строения",
+            "description":"Карта тестового несуществующего строения. Графы составлены вручную при помощи скрипта",
             "address":"Покровский б-р, 11, Москва, Россия",            
             "floors":[],
             "graph":{"nodes":[],"edges":[]}
@@ -758,7 +769,7 @@ def build22():
     global mapp,map_id
     map_id = 22
 
-    mapp = {"name":"Тестовое здание 2",
+    mapp = {"name":"Тестовое здание 2 (old)",
             "id":map_id,
             "description":"Карта тестового несуществующего строения но с одним этажом",
             "address":"Покровский б-р, 11, Москва, Россия",            
@@ -855,9 +866,9 @@ def build33():
     global mapp,map_id
     map_id = 33
 
-    mapp = {"name":"Квартира Тимура 1",
+    mapp = {"name":"Квартира Тимура 1 (old)",
             "id":map_id,
-            "description":"Квартира для тестирования приложения 1",
+            "description":"Квартира для тестирования приложения 1. Графы составлены вручную при помощи скрипта",
             "address":"Москва, Россия",            
             "floors":[],
             "graph":{"nodes":[],"edges":[]}
@@ -944,9 +955,9 @@ def build34():
     global mapp,map_id
     map_id = 34
 
-    mapp = {"name":"Комната Тимура 1",
+    mapp = {"name":"Комната Тимура 1 (old)",
             "id":map_id,
-            "description":"Комната для тестирования приложения 1",
+            "description":"Комната для тестирования приложения 1. Графы составлены вручную при помощи скрипта",
             "address":"Москва, Россия",            
             "floors":[],
             "graph":{"nodes":[],"edges":[]}
@@ -990,9 +1001,9 @@ def build35():
     global mapp,map_id
     map_id = 35
 
-    mapp = {"name":"Квартира Тимура 2",
+    mapp = {"name":"Квартира Тимура 2 (old)",
             "id":map_id,
-            "description":"Квартира для тестирования приложения 1",
+            "description":"Квартира для тестирования приложения 1. Графы составлены вручную при помощи скрипта",
             "address":"Москва, Россия",            
             "floors":[],
             "graph":{"nodes":[],"edges":[]}
@@ -1072,9 +1083,9 @@ def build36():
     global mapp,map_id
     map_id = 36
 
-    mapp = {"name":"Многоэтажная Квартира Тимура 1",
+    mapp = {"name":"Многоэтажная Квартира 1 (old)",
             "id":map_id,
-            "description":"Квартира для тестирования перехода между этажами 1",
+            "description":"Квартира для тестирования перехода между этажами 1. Графы составлены вручную при помощи скрипта",
             "address":"Москва, Россия",            
             "floors":[],
             "graph":{"nodes":[],"edges":[]}

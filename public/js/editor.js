@@ -177,6 +177,11 @@ function EditorController() {
 
 
 
+    this.LoadSchemeInfo = function(id,f)
+    {
+        BackendJS.LoadSchemeInfo(id,f);
+    }
+
     this.SetVisibleLayer = function (layer,isText,visible)
     {
         DrawJS.SetVisibleLayer(layer,isText,visible)
@@ -305,7 +310,11 @@ function EditorController() {
 
 
         this.waitingToCreate = type+"_"+dir+"_link";
-        DrawJS.AskInput([type],"Adding "+type+" link. Select:",[type+" "+dir]);
+
+
+        DrawJS.AskInput([type],
+            "Добавляем связь между "+(type==="elevator"?"лифтами":"лестницами")+". Пожалуйста, выберите: ",
+            [(type==="elevator"?"Лифт":"Лестницу")+" "+(dir==="up"?"выше":"ниже")]);
 
 
 
@@ -325,12 +334,17 @@ function EditorController() {
         BackendJS.OpenSchemeInfoData(id);
     }
 
-    this.OpenSchemeQRPDF = function() {
-        BackendJS.OpenSchemeQRPDF(this.scheme.id);
+    this.OpenSchemeQRPDF = function(id) {
+
+        if (typeof id==="undefined")
+            id = this.scheme.id
+        BackendJS.OpenSchemeQRPDF(id);
     }
 
-    this.OpenSchemeHelpPDF = function() {
-        BackendJS.OpenSchemeHelpPDF(this.scheme.id);
+    this.OpenSchemeHelpPDF = function(id) {
+        if (typeof id==="undefined")
+            id = this.scheme.id
+        BackendJS.OpenSchemeHelpPDF(id);
     }
 
     this.MainCreate = function (data) {
@@ -339,7 +353,7 @@ function EditorController() {
             this.maxFloorId+=1;
             let f = new Floor(this.scheme,{
                 id:this.maxFloorId,
-                name:"new floor",
+                name:"Этаж",
                 rooms:[],
                 doors:[]
             },this)
@@ -360,7 +374,7 @@ function EditorController() {
                 let cy = 5+Math.round(Math.random()*6);
                 r = new Room(data[0],{
                     id:this.maxRoomId,
-                    name:"new room",
+                    name:"Комната",
                     description:"",
                     can_search: true,
                     elevators:[],
@@ -531,8 +545,11 @@ function EditorController() {
                     xx+=w.x1;
                     yy+=w.y1;
                 })
-                xx/=r.walls.length+Math.round(Math.random())
-                yy/=r.walls.length+Math.round(Math.random());
+                xx/=r.walls.length;
+                yy/=r.walls.length;
+
+                xx+=Math.round(Math.random()*2);
+                yy+=Math.round(Math.random()*2);
 
 
 
@@ -567,6 +584,20 @@ function EditorController() {
                 let w = data[0];
 
 
+                let eLow = data[1];
+                let eUp = data[2];
+
+                if (eLow && eLow.room.floor === r.floor)
+                    eLow = null;
+
+                if (eUp && eUp.room.floor === r.floor)
+                    eUp = null;
+
+                if (eLow && eUp && eLow.room.floor === eUp.room.floor)
+                    eUp = null;
+
+
+
                 let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
 
                 if (dir<0)
@@ -588,31 +619,31 @@ function EditorController() {
 
 
 
-                if (data[1]!==null)
+                if (eLow!==null)
                 {
-                    jData['elevator_down_id'] = data[1].id;
+                    jData['elevator_down_id'] = eLow.id;
 
                 }
 
 
-                if (data[2]!==null)
+                if (eUp!==null)
                 {
-                    jData['elevator_up_id'] = data[2].id;
+                    jData['elevator_up_id'] = eUp.id;
 
                 }
 
                 let e = new Elevator(r,jData,this)
 
 
-                if (data[1]!==null)
+                if (eLow!==null)
                 {
-                    data[1].elevatorUp = e;
+                    eLow.elevatorUp = e;
                 }
 
 
-                if (data[2]!==null)
+                if (eUp!==null)
                 {
-                    data[2].elevatorDown = e;
+                    eUp.elevatorDown = e;
 
                 }
 
@@ -955,44 +986,59 @@ function EditorController() {
 
     this.NewRoom = function () {
         this.waitingToCreate = "room";
-        DrawJS.AskInput(["floor"],"Adding new room. Please select:",["Floor"]);
+        DrawJS.AskInput(["floor"],"Добавляем новую комнату. Пожалуйста, выберите: ",["Этаж"]);
 
     }
 
     this.NewWall = function () {
         this.waitingToCreate = "wall";
-        DrawJS.AskInput(["wall"],"Adding new wall. Please select:",["Wall"])
+        DrawJS.AskInput(["wall"],
+            "Добавляем новую стену. Пожалуйста, выберите: ",
+            ["Стену"])
 
     }
 
     this.NewDoor = function () {
         this.waitingToCreate = "door";
-        DrawJS.AskInput(["wall","wall"],"Adding new door. Please select:",["Wall 1","Wall 2"])
+        DrawJS.AskInput(["wall","wall"],
+            "Добавляем новую дверь. Пожалуйста, выберите: ",
+            ["Стену 1","Стену 2"])
 
     }
 
     this.NewFurniture = function () {
         this.waitingToCreate = "furniture";
-        DrawJS.AskInput(["room"],"Adding new furniture. Please select:",["Room 1"])
+        DrawJS.AskInput(["room"],
+            "Добавляем новую мебель/препятствие. Пожалуйста, выберите: ",
+            ["Комнату"])
 
 
     }
 
     this.NewStaircase = function () {
         this.waitingToCreate = "staircase";
-        DrawJS.AskInput(["room","staircase","staircase"],"Adding new staircase. Please select:",["Room","Lower Staircase","Upper Staircase"])
+        DrawJS.AskInput(["room","staircase","staircase"],
+            "Добавляем новую лестницу. Пожалуйста, выберите: ",
+            ["Комнату",
+                "Лестницу ниже\n(Правая кнопка мыши, если лестницы ниже нет)",
+                "Лестницу выше\n(Правая кнопка мыши, если лестницы выше нет)"])
 
     }
 
     this.NewElevator = function () {
         this.waitingToCreate = "elevator";
-        DrawJS.AskInput(["wall","elevator","elevator"],"Adding new elevator. Please select:",["Wall","Lower Elevator","Upper Elevator"])
+        DrawJS.AskInput(["wall","elevator","elevator"],
+            "Добавляем новый лифт. Пожалуйста, выберите: ",
+            ["Стену",
+                "Лифт ниже\n(Правая кнопка мыши, если лифта ниже нет)",
+                "Лифт выше\n(Правая кнопка мыши, если лифта выше нет)"])
 
     }
 
     this.NewQR = function () {
         this.waitingToCreate = "qr";
-        DrawJS.AskInput(["wall"],"Adding new qr. Please select:",["wall"]);
+        DrawJS.AskInput(["wall"],
+            "Добавляем новую QR-метку. Пожалуйста, выберите: ",["Стену"]);
 
 
     }
@@ -1017,6 +1063,10 @@ function EditorController() {
         scheme.graph.nodes = []
 
 
+    }
+
+    this.SetHint = function (text) {
+        InterfaceJS.SetHint(text);
     }
 
     this.CreateGraph = function (trType,full) {
@@ -1778,6 +1828,8 @@ function EditorController() {
         console.log ('TOTAL SECONDS '+((new Date().getTime() / 1000)-startTime));
 
     }
+
+
 
 
 

@@ -403,20 +403,63 @@ function InterfaceController() {
             this.OnEditorLayerBox(l,false);
         }.bind(this));
 
-        let plist = document.getElementById("examples_list");
-        ["33","36","220"].forEach(function (i) {
+        let li = document.getElementById("examples_list");
 
-            let b = document.createElement("button");
 
-            b.textContent  = i;
-            b.setAttribute("onclick", "InterfaceJS.ClickLoadScheme("+i+");");
-            plist.appendChild(b);
 
-        })
+        this.idToInfo = {};
+        ["36","33","220","42382"].forEach(function (i) {
+
+
+
+            EditorJS.LoadSchemeInfo(i,function (data) {
+
+                /*let b = document.createElement("button");
+
+                b.textContent  = data.name;
+                b.setAttribute("onclick", "InterfaceJS.ClickLoadScheme("+i+");");
+                plist.appendChild(b);*/
+
+                this.idToInfo[data.id] = data;
+                let option = document.createElement( 'option' );
+                option.value = data.id;
+                option.text = data.name;
+                li.add( option );
+
+
+            }.bind(this))
+
+
+
+        }.bind(this))
 
         console.log("changed");
 
 
+    }
+    this.ClickExample = function () {
+        let li = document.getElementById("examples_list");
+        let d = this.idToInfo[li.options[li.selectedIndex].value];
+
+        document.getElementById("example_description").textContent = d.description;
+    }
+
+    this.ClickGetExampleQRPF = function () {
+        let li =document.getElementById("examples_list");
+
+        EditorJS.OpenSchemeQRPDF(li.options[li.selectedIndex].value);
+    }
+    this.ClickGetExampleHelpPDF = function () {
+        let li =document.getElementById("examples_list");
+
+        EditorJS.OpenSchemeHelpPDF(li.options[li.selectedIndex].value);
+    }
+    this.ClickSelectExample = function () {
+
+        let li = document.getElementById("examples_list");
+
+        EditorJS.LoadScheme(li.options[li.selectedIndex].value);
+        this.CloseWindow();
     }
 
 
@@ -468,6 +511,10 @@ function InterfaceController() {
                 document.getElementById('uploaded_id').textContent = EditorJS.scheme.id;
                 document.getElementById('uploaded_name').textContent = EditorJS.scheme.name;
                 break;
+            case "examples":
+
+                this.ClickExample();
+                break;
         }
 
     }
@@ -491,9 +538,28 @@ function InterfaceController() {
 
     }
 
-    this.ClickLoadScheme = function (id) {
-        EditorJS.LoadScheme(id);
-        this.CloseWindow();
+
+    this.hintText ="";
+    this.SetHint = function (text) {
+
+        if (text!==this.hintText)
+        {
+            let d = document.getElementById("toolbar_hint");
+            if (text==="")
+            {
+                d.style.display = "none";
+            }
+            else
+            {
+                d.style.display = "block";
+                t = document.getElementById("toolbar_hint_text");
+                t.textContent = text;
+            }
+
+            this.hintText = text;
+        }
+
     }
+
 }
 

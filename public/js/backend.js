@@ -32,6 +32,17 @@ function BackendController() {
     }
 
 
+    this.LoadSchemeInfo = function (id,onComplete,onFail) {
+        $.ajax({
+            type: "GET",
+            url: '/scheme/'+id+'/info'
+        }).done(function(scheme) {
+            onComplete(scheme);
+        }).fail(function() {
+            onFail();
+        })
+    }
+
     this.OpenSchemeData = function(id) {
 
 

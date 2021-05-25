@@ -34,7 +34,7 @@
     .overlay_examples {
         width: 100%;
         height: 100%;
-        background-color: #e2d3b6;
+        background-color: #e8e6dd;
     }
     .overlay_help {
         width: 100%;
@@ -61,6 +61,17 @@
         transform: translate(-50%, -50%);
     }
 
+    #toolbar_hint {
+        position:absolute;
+        background-color: #fffbb8;
+        width:370pt;
+        height:30pt;
+        pointer-events:auto;
+        text-align: center;
+        top: 70%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+    }
 
     .toolbar_show {
         position: relative;
@@ -363,7 +374,7 @@
                 <div id="furniture_params" class="controller_params">
 
                     <br />
-                    Препятствие<br /><br />
+                    Препятствие/Мебель<br /><br />
 
 
 
@@ -479,6 +490,11 @@
 
 <div style="pointer-events:none;  position: absolute; width:100%; height:100%">
 
+    <div id="toolbar_hint" style="display: none" >
+
+        <output id="toolbar_hint_text">Добавлем новый тест тест тест</output>
+        </div>
+
     <div class="toolbar_create" >
 
         <div style="display: block">
@@ -565,7 +581,20 @@
     <div class="overlay_help">
         <br/>
         Справка<br/><br/>
-        //todo
+        <br/>
+        Данный редактор предназначено для создания схем навигации для мобильного AR-приложения.<br/><br/>
+        1. Воспроизведите план помещения.<br/>Единица измерения в приложении = 1 метр<br/>
+        2. Расставьте QR-метки на всех этажах.<br/>
+        3. Сгенерируйте граф навигации.<br/>
+        4. Загрузите схему на сервер.<br/>
+        5. Скачайте QR-коды и инструкции по разметке.<br/>
+        <br/>
+
+
+        Управление:<br/>
+        ЛКМ по фону - Перемещение камеры<br/>
+        ЛКМ по объекту - Выбор/перемещение объекта<br/>
+        ЛКМ+ALT - Перемещение объекта без привязки<br/>
 
         <input type="button" onclick="InterfaceJS.CloseWindow()" value="Ок" style="position: absolute; right: 10pt;bottom: 10pt;">
 
@@ -573,12 +602,23 @@
     <div class="overlay_examples">
 
         <br/>
-        Пример<br/><br/>
-        <div id="examples_list">
+        Скачать пример<br/><br/>
+        <select id="examples_list" onchange="InterfaceJS.ClickExample()">
+        </select><br /><br />
 
-        </div>
+        Описание:<br/>
+        <textarea rows="7" id="example_description" style="width:80%" readonly></textarea>
+        <br />
 
-        <input type="button" onclick="InterfaceJS.CloseWindow()" value="Ок" style="position: absolute; right: 10pt;bottom: 10pt;">
+
+        <input type="button" onclick="InterfaceJS.ClickGetExampleQRPF()" value="Скачать QR-коды"><br/><br/>
+        <input type="button" onclick="InterfaceJS.ClickGetExampleHelpPDF()" value="Скачать разметку">
+
+
+
+        <input type="button" onclick="InterfaceJS.CloseWindow()" value="Отмена" style="position: absolute; right: 70pt;bottom: 10pt;">
+
+        <input type="button" onclick="InterfaceJS.ClickSelectExample()" value="Открыть" style="position: absolute; right: 10pt;bottom: 10pt;">
 
     </div>
 </div>
