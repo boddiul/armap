@@ -1050,6 +1050,10 @@ function addStaircaseElement(staircase)
 
 
 function addFloorElement(floor) {
+
+    mainOffset.x = -floor.x;
+    mainOffset.y = -floor.y;
+
     e = new PointElement(floor,"floor","floor",
         "#c10037",
         "#c10037",
@@ -1058,7 +1062,7 @@ function addFloorElement(floor) {
             this.x = this.obj.x;
             this.y = this.obj.y;
 
-            this.drawText.content = this.obj.id+' '+this.obj.name;
+            this.drawText.content = this.obj.name;
 
         },function () {
             return [{type:"moveobject",search:"floor",index:0,x:this.x,y:this.y}]
@@ -1070,6 +1074,8 @@ function addFloorElement(floor) {
 }
 
 function addRoomElement(room) {
+
+
 
     e = new PointElement(room,"room","room",
         "#02c100",
@@ -1084,10 +1090,30 @@ function addRoomElement(room) {
 
             this.drawElement.fillColor.alpha = this.obj.canSearch ? 1 : 0;
 
+            var minX = null;
+            var minY = null;
+            this.obj.walls.forEach(function (w) {
+                if (minX===null || (w.x1<=minX && w.y1<=minY))
+                {
+                    minX = w.x1;
+                    minY = w.y1;
+                }
+            })
+
+            this.markupCoords = [
+                [this.obj.floor.x+minX,this.obj.floor.y+minY]
+            ]
+
+            this.drawMarkup[0].content = '('+MyMath.round(minX,2)+','+MyMath.round(minY,2)+')';
+
+
+
+
+
         },function () {
             return [{type:"moveobject",search:"room",index:0,x:this.x,y:this.y}]
         },
-        0
+        1
     )
     elements.push(e);
     return e;
@@ -1109,24 +1135,27 @@ function addWallElement(wall) {
 
 
             this.markupCoords = [
+                [this.obj.room.floor.x+(this.obj.prevWall.x1+this.obj.prevWall.x2)/2,
+                    this.obj.room.floor.y+(this.obj.prevWall.y1+this.obj.prevWall.y2)/2],
                 [this.x1,this.y1],
                 [(this.x1+this.x2)/2,(this.y1+this.y2)/2],
                 [this.x2,this.y2]
             ]
 
-            this.drawMarkup[0].content = '('+MyMath.round(this.obj.x1,2)+','+MyMath.round(this.obj.y1,2)+')';
-            this.drawMarkup[1].content = MyMath.round(MyMath.pointDistance(
+            this.drawMarkup[0].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.prevWall.x1,y:this.obj.prevWall.y1},{x:this.obj.prevWall.x2,y:this.obj.prevWall.y2}),2)+'m';
+            this.drawMarkup[1].content = '('+MyMath.round(this.obj.x1,2)+','+MyMath.round(this.obj.y1,2)+')';
+            this.drawMarkup[2].content = MyMath.round(MyMath.pointDistance(
                 {x:this.obj.x1,y:this.obj.y1},{x:this.obj.x2,y:this.obj.y2}),2)+'m';
-            this.drawMarkup[2].content = '('+MyMath.round(this.obj.x2,2)+','+MyMath.round(this.obj.y2,2)+')';
+            this.drawMarkup[3].content = '('+MyMath.round(this.obj.x2,2)+','+MyMath.round(this.obj.y2,2)+')';
 
 
         },function () {
             return [
                 {type:"moveobject",index:0,search:"wall",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
-                {type:"movepoint",index:1,search:null,x:this.x1,y:this.y1},
-                {type:"movepoint",index:2,search:null,x:this.x2,y:this.y2}]
+                {type:"movepoint",index:1,search:null,x:this.x1,y:this.y1}]
         },
-        3)
+        4)
 
 
 
@@ -1362,17 +1391,17 @@ function init()
 
 
 
-    for (var l=-50;l<50;l++)
+    for (var l=-50;l<300;l++)
     {
 
 
         var line = new LineElement(null,"grid","grid",'#d8effa',null,1,null,null,0);
-        line.setCoords(l,-5000,l,5000)
+        line.setCoords(l,-50,l,400)
         elements.push(line)
 
 
         line = new LineElement(null,"grid","grid",'#d8effa',null,1,null,null,0);
-        line.setCoords(-5000,l,5000,l)
+        line.setCoords(-50,l,400,l)
 
         elements.push(line)
 

@@ -11,6 +11,8 @@ function InterfaceController() {
     }
 
     this.ClickOpenFile = function () {
+
+
         var fileToLoad = document.getElementById("file-input").files[0];
 
         var fileReader = new FileReader();
@@ -18,10 +20,18 @@ function InterfaceController() {
         {
             var textFromFileLoaded = fileLoadedEvent.target.result;
 
+            try {
+                var j = JSON.parse(textFromFileLoaded);
+                EditorJS.SetScheme(j);
+            }
+            catch (e) {
+                this.ShowErrorMessage("Открытый файл не соответсвует JSON-формату")
+            }
 
-            EditorJS.SetScheme(JSON.parse(textFromFileLoaded));
 
-        };
+
+
+        }.bind(this);
         fileReader.readAsText(fileToLoad, "UTF-8");
     }
 
@@ -321,6 +331,11 @@ function InterfaceController() {
 
     }
 
+
+    this.ShowErrorMessage = function (msg) {
+        alert(msg);
+    }
+
     this.UpdateParams = function (type,obj) {
 
 
@@ -408,7 +423,7 @@ function InterfaceController() {
 
 
         this.idToInfo = {};
-        ["36","33","220","42382"].forEach(function (i) {
+        ["36","33","220","50709"].forEach(function (i) {
 
 
 
@@ -468,15 +483,29 @@ function InterfaceController() {
     }
 
     this.ClickOpenWindowUpload = function () {
-        this.OpenWindow('scheme_params');
+
+        try {
+            EditorJS.CheckScheme();
+            this.OpenWindow('scheme_params');
+        }
+        catch(e)
+        {
+            this.ShowErrorMessage(e.message);
+        }
+
     }
 
 
     this.ClickUploadScheme = function () {
 
-        EditorJS.CheckScheme();
-        EditorJS.UploadScheme();
-
+        try {
+            EditorJS.CheckScheme();
+            EditorJS.UploadScheme();
+        }
+        catch(e)
+        {
+            this.ShowErrorMessage(e.message);
+        }
     }
 
 

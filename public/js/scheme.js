@@ -644,12 +644,19 @@ Node = function(graph,jsonDataNode,editorData) {
             id:this.id,
             x:this.x,
             y:this.y,
-            floor_id:this.floor.id
+            floor_id:this.floor.id,
+            obj_type:this.objType,
+            obj_id:this.obj.id
         }
+
+
+
 
         if (this.direction)
             j["direction"] = this.direction / 180 * Math.PI;
 
+        if (this.objType==="qr")
+            j["direction"] = this.obj.direction/180*Math.PI;
 
 
         return j;

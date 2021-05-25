@@ -215,17 +215,23 @@ function EditorController() {
 
         DrawJS.Init();
 
-        this.scheme = new Scheme(jsonMap,this);
 
-        console.log(this);
-        this.ShowParams("scheme",this.scheme);
+        try
+        {
+            this.scheme = new Scheme(jsonMap,this);
+            this.ShowParams("scheme",this.scheme);
+            DrawJS.UpdateCanvas();
+            InterfaceJS.UpdateFloorList(this.scheme.floors);
+        }
+        catch (e) {
+
+            InterfaceJS.ShowErrorMessage("JSON не соответсвует формату схемы навигации")
+            this.NewFile();
+        }
 
 
 
 
-        DrawJS.UpdateCanvas();
-
-        InterfaceJS.UpdateFloorList(this.scheme.floors);
     }
 
     this.LoadScheme = function(id) {
@@ -239,6 +245,45 @@ function EditorController() {
 
 
     this.CheckScheme = function () {
+
+
+
+            if (this.scheme.floors.length<1)
+                throw {message:"Пустой план здания"}
+
+
+            let usedQrIds = {}
+            this.scheme.graph.nodes.forEach(function (n) {
+                if (n.objType==="qr")
+                    usedQrIds[n.obj.id] = n;
+
+            })
+
+            this.scheme.floors.forEach(function (f) {
+                let qrNums = 0;
+
+                //if (f.rooms.length<1)
+                //    throw {message:f.name+": На этаже отсутсвуют комнаты"}
+
+                f.rooms.forEach(function (r) {
+                    r.qrs.forEach(function (q) {
+                        qrNums+=1;
+
+                        if (! (q.id in usedQrIds))
+                            throw {message:"QR-код "+q.id+" не привязан к графу. Сгенерируйте граф заново"}
+                    })
+                })
+
+                if (qrNums===0 && f.rooms.length>0)
+                    throw {message:f.name+": На этаже отсутсвуют QR-метки"}
+            })
+
+
+            if (this.scheme.graph.nodes.length<1)
+                throw {message:"Не сгенерирован граф навигации"}
+
+
+
 
     }
 
@@ -353,7 +398,7 @@ function EditorController() {
             this.maxFloorId+=1;
             let f = new Floor(this.scheme,{
                 id:this.maxFloorId,
-                name:"Этаж",
+                name:"Этаж ("+this.maxFloorId+")",
                 rooms:[],
                 doors:[]
             },this)
@@ -1083,7 +1128,7 @@ function EditorController() {
         var maxNodeId = 0;
         var maxEdgeId = 0;
 
-
+        var lastRoom = null;
         try
         {
 
@@ -1097,7 +1142,7 @@ function EditorController() {
 
                 f.rooms.forEach(function (r) {
 
-
+                    lastRoom = r;
 
 
 
@@ -1734,7 +1779,7 @@ function EditorController() {
                                 id:maxEdgeId++,
                                 node1_id:n1.id,
                                 node2_id:nDown.id,
-                                weight:15
+                                weight:s.height+s.staircaseDown.height
                             })
 
 
@@ -1747,7 +1792,7 @@ function EditorController() {
                                 id:maxEdgeId++,
                                 node1_id:n1.id,
                                 node2_id:nUp.id,
-                                weight:15
+                                weight:s.height+s.staircaseUp.height
                             })
 
                             scheme.graph.edges.push(e)
@@ -1780,7 +1825,7 @@ function EditorController() {
                                 id:maxEdgeId++,
                                 node1_id:n1.id,
                                 node2_id:nDown.id,
-                                weight:15
+                                weight:1
                             })
 
 
@@ -1793,7 +1838,7 @@ function EditorController() {
                                 id:maxEdgeId++,
                                 node1_id:n1.id,
                                 node2_id:nUp.id,
-                                weight:15
+                                weight:1
                             })
 
                             scheme.graph.edges.push(e)
@@ -1820,7 +1865,12 @@ function EditorController() {
             DrawJS.UpdateCanvas();
         }
         catch (e) {
-            alert("Мебель пересекается/Прилегает друг к другу"+'\n'+e.message);
+            InterfaceJS.ShowErrorMessage("Ошибка при создании графа в комнате:\n"+lastRoom.id+" "+lastRoom.name+"\n\n" +
+                "К ошибке могли привети следующие условия:\n" +
+                "1.Стены пересекают друг друга;\n" +
+                "2.Мебель пересекается друг с другом;\n" +
+                "3.Мебель пересекается со стенами;\n" +
+                "4.Мебель вне стен.");
 
             this.ClearGraph();
         }
