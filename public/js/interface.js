@@ -242,7 +242,7 @@ function InterfaceController() {
         {
             EditorJS.SetSelectedObjectParam("canSearch",d.checked);
         }
-        else if (param==="direction" || param==="width" || param==="height")
+        else if (param==="direction" || param==="width" || param==="height" )
         {
 
             let val = d.value;
@@ -369,6 +369,11 @@ function InterfaceController() {
                 break;
             case "door":
                 document.getElementById("p_door_id").value = obj.id;
+
+                document.getElementById("p_door_width_text").value =
+                    document.getElementById("p_door_width_bar").value =
+                        obj.width;
+
                 break;
             case "qr":
                 document.getElementById("p_qr_id").value = obj.id;

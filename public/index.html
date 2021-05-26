@@ -368,6 +368,12 @@
 
                     [ID]=<output id="p_door_id">0</output><br /><br />
 
+                    Ширина (m):<br />
+                    <input id="p_door_width_bar" type="range"  min="0.3" max="2" step="0.1" style="width:70pt"
+                           oninput="InterfaceJS.OnInputParam(this,'width');">
+                    <input id="p_door_width_text" type="text" style="width:20pt" oninput="InterfaceJS.OnInputParam(this,'width');"><br />
+
+
                     <button onclick="InterfaceJS.ClickDestroy()">Удалить</button><br />
 
                 </div>
