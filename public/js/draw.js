@@ -55,7 +55,11 @@ MyTool = function () {
         {
             var itemAdded = false;
 
-            if (this.targetType==="select")
+            if (mouseRight)
+            {
+                this.inputResult.push(null);
+                itemAdded = true;
+            } else if (this.targetType==="select")
             {
 
 
@@ -63,11 +67,6 @@ MyTool = function () {
                 itemAdded = true;
 
 
-            }
-            else if (mouseRight)
-            {
-                this.inputResult.push(null);
-                itemAdded = true;
             }
 
             if (itemAdded)
@@ -286,7 +285,7 @@ function setVisibleLayer(layer,isText,visible)
 
     layerVisible[layer+(isText ?'_text':'')] = visible;
 
-    console.log(layerVisible);
+    //console.log(layerVisible);
 
     typeLayers[layer].forEach(function (o) {
         if (isText)
@@ -493,7 +492,7 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
 
     this.updatePath();
 
-    console.log(mainType,layerType,layerVisible[layerType]);
+    //console.log(mainType,layerType,layerVisible[layerType]);
     this.setVisible(false,layerVisible[layerType]);
     this.setVisible(true,layerVisible[layerType+'_text']);
 
@@ -1352,7 +1351,7 @@ function destroyElement(obj) {
 
     if (e)
     {
-        console.log(e);
+        //console.log(e);
         elements.splice(eI,1);
         e.drawElement.remove();
         if (typeof  e.drawText != "undefined")

@@ -195,6 +195,17 @@
 
                 return Math.sqrt(aa*aa+bb*bb)
             }
+            this.segmentDirection = function (a,b) {
+                let dir = Math.atan2(b.y-a.y,b.x-a.x) + Math.PI/2;
+
+                if (dir<0)
+                    dir +=Math.PI*2;
+
+                if (dir>Math.PI*2)
+                    dir -= Math.PI*2;
+
+                return dir;
+            }
         }
         BackendJS = new BackendController();
         EditorJS = new EditorController();
@@ -532,8 +543,8 @@
             <label for="graph_type">Сглаживание:</label>
             <select name="graph_type" id="graph_type">
                 <option value="none">Нет</option>
-                <option value="type1" selected="selected">Вариант 1</option>
-                <option value="type2" >Вариант 2</option>
+                <option value="type1" >Вариант 1</option>
+                <option value="type2" selected="selected">Вариант 2</option>
             </select><br />
             <button onclick="InterfaceJS.ClickCreateGraph(true)">Сгенерировать</button><br />
 

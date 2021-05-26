@@ -96,7 +96,7 @@ function EditorController() {
             this.SetScheme(scheme);
             }.bind(this),
             function (e) {
-            console.log(e);
+         //   console.log(e);
         });
     }
 
@@ -161,12 +161,14 @@ function EditorController() {
 
 
         }.bind(this), function (e) {
-            console.log(e);
+         //   console.log(e);
         });
 
     }
 
     this.SetSelectedObjectParam = function (param,value) {
+
+
 
         this.currentParamObject[param] = value;
 
@@ -300,6 +302,9 @@ function EditorController() {
         }
         else if (this.waitingToCreate==="door")
         {
+
+
+
             // 0 - wall1
             // 1 - wall2
             if (data[0]!==null && data[1]!==null)
@@ -312,44 +317,68 @@ function EditorController() {
 
                 this.maxDoorId+=1;
 
-                var f = data[0].room.floor;
-                var w1 = data[0];
-                var w2 = data[1];
+                let f = data[0].room.floor;
+                let w1 = data[0];
+                let w2 = data[1];
 
 
 
-                /*
-                var w1 = r1.walls.reduce(function(prev, curr) {
-                    return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r2.x,2)+Math.pow((curr.y1+curr.y2)/2-r2.y,2))
-                    < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r2.x,2)+Math.pow((prev.y1+prev.y2)/2-r2.y,2))
-                        ? curr : prev);
-                });
-
-                var w2 = r2.walls.reduce(function(prev, curr) {
-                    return (Math.sqrt(Math.pow((curr.x1+curr.x2)/2-r1.x,2)+Math.pow((curr.y1+curr.y2)/2-r1.y,2))
-                    < Math.sqrt(Math.pow((prev.x1+prev.x2)/2-r1.x,2)+Math.pow((prev.y1+prev.y2)/2-r1.y,2))
-                        ? curr : prev);
-                });*/
-
-
+                let rr = 0.6+Math.random()*0.3
+                let x1 = w1.x1+(w1.x2-w1.x1)*rr;
+                let y1 = w1.y1+(w1.y2-w1.y1)*rr;
+                let p2 = MyMath.pointOnSegment({x:x1,y:y1},{x:w2.x1,y:w2.y1},{x:w2.x2,y:w2.y2})
 
                 d = new Door(f,{
                     id:this.maxDoorId,
-                    x1:(w1.x1+w1.x2)/2,
-                    y1:(w1.y1+w1.y2)/2,
-                    x2:(w2.x1+w2.x2)/2,
-                    y2:(w2.y1+w2.y2)/2,
+                    x1:x1,
+                    y1:y1,
+                    x2:p2.x,
+                    y2:p2.y,
                     room1_id: w1.room.id,
                     room2_id: w2.room.id,
                     wall1_id: w1.id,
                     wall2_id: w2.id,
-                    width:0.9
+                    width:0.7
                 },this)
 
                 f.doors.push(d);
 
                 d.SetLinks();
             }
+
+            if (data[0]!==null && data[1]==null)
+            {
+                this.maxDoorId+=1;
+
+                let f = data[0].room.floor;
+                let w = data[0];
+
+
+                let dir = MyMath.segmentDirection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2});
+
+
+                d = new Door(f,{
+                    id:this.maxDoorId,
+                    x1:(w.x1+w.x2)/2+0.2*Math.cos(dir),
+                    y1:(w.y1+w.y2)/2+0.2*Math.sin(dir),
+                    x2:(w.x1+w.x2)/2,
+                    y2:(w.y1+w.y2)/2,
+                    room1_id: -1,
+                    room2_id: w.room.id,
+                    wall1_id: -1,
+                    wall2_id: w.id,
+                    width:0.7
+                },this)
+
+
+                f.doors.push(d);
+
+                d.SetLinks();
+
+               // console.log(d)
+            }
+
+
 
         }
         else if (this.waitingToCreate==="qr")
@@ -364,13 +393,8 @@ function EditorController() {
                 var w = data[0];
 
 
-                let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
 
-                if (dir<0)
-                    dir +=Math.PI*2;
-
-                if (dir>Math.PI*2)
-                    dir -= Math.PI*2;
+                let dir = MyMath.segmentDirection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2});
 
                 let rr = 0.25+0.5*Math.random()
 
@@ -456,8 +480,8 @@ function EditorController() {
                 xx/=r.walls.length;
                 yy/=r.walls.length;
 
-                xx+=Math.round(Math.random()*2);
-                yy+=Math.round(Math.random()*2);
+                xx+=0.5+Math.round(Math.random()*10)/10;
+                yy+=0.5+Math.round(Math.random()*10)/10;
 
 
 
@@ -506,13 +530,8 @@ function EditorController() {
 
 
 
-                let dir = Math.atan2(w.y2-w.y1,w.x2-w.x1) + Math.PI/2;
+                let dir = MyMath.segmentDirection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2});
 
-                if (dir<0)
-                    dir +=Math.PI*2;
-
-                if (dir>Math.PI*2)
-                    dir -= Math.PI*2;
 
 
                 let jData = {
@@ -851,11 +870,8 @@ function EditorController() {
                         {
                             this.maxQRId+=1;
 
-                            let dir = Math.atan2(wall.y2-wall.y1,wall.x2-wall.x1) + Math.PI/2;
-                            if (dir<0)
-                                dir +=Math.PI*2;
-                            if (dir>Math.PI*2)
-                                dir -= Math.PI*2;
+                            let dir = MyMath.segmentDirection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2});
+
 
                             var q = new QR(wall.room,{
                                 id:this.maxQRId,
@@ -1022,17 +1038,17 @@ function EditorController() {
                     let startWall = r.walls[0];
                     let w = startWall;
 
-                    console.log('START MOVE');
+                    //console.log('START MOVE');
 
-                    consoleWithNoSource(r.id,r.name)
+                   // consoleWithNoSource(r.id,r.name)
                     while (w.nextWall!==startWall)
                     {
-                        consoleWithNoSource(w.x1, w.y1);
+                        //consoleWithNoSource(w.x1, w.y1);
                         contour.push(new poly2tri.Point(w.x1, w.y1));
 
                         w = w.nextWall;
                     }
-                    consoleWithNoSource(w.x1, w.y1);
+                   // consoleWithNoSource(w.x1, w.y1);
                     contour.push(new poly2tri.Point(w.x1, w.y1));
 
 
@@ -1079,11 +1095,11 @@ function EditorController() {
                     }
 
                     r.furniture.forEach(function (f) {
-                        consoleWithNoSource(' ');
+                       /* consoleWithNoSource(' ');
                         consoleWithNoSource(f.x1, f.y1);
                         consoleWithNoSource(f.x2, f.y1);
                         consoleWithNoSource(f.x2, f.y2);
-                        consoleWithNoSource(f.x1, f.y2);
+                        consoleWithNoSource(f.x1, f.y2);*/
 
 
                         let dxx = (f.x1<f.x2) ? 1 : -1;
@@ -1157,7 +1173,7 @@ function EditorController() {
 
                         t.canPass = true;
 
-                        console.log(t);
+                       // console.log(t);
                         let ePoints = [
                             [t.points_[0],t.points_[1],MyMath.pointDistance(t.points_[0],t.points_[1])],
                             [t.points_[1],t.points_[2],MyMath.pointDistance(t.points_[1],t.points_[2])],
@@ -1802,7 +1818,7 @@ function EditorController() {
                     }
                     if (add) {
 
-                        console.log(n);
+                      //  console.log(n);
 
                         roomNodes.push(n);
                         idToNode[n.id.toString()] = n;
@@ -1833,8 +1849,8 @@ function EditorController() {
 
                 });
 
-                console.log(roomGraph);
-                console.log(initNodes);
+             //   console.log(roomGraph);
+               // console.log(initNodes);
 
                 let sg = new SearchGraph(roomGraph);
 
@@ -1854,7 +1870,7 @@ function EditorController() {
                     }
 
 
-                console.log(usedId);
+              //  console.log(usedId);
 
                 let nodesForDeletion = {};
                 let edgesForDeletion = {};
@@ -1876,7 +1892,7 @@ function EditorController() {
                 });
 
 
-                console.log(nodesForDeletion);
+               // console.log(nodesForDeletion);
                 scheme.graph.nodes = scheme.graph.nodes.filter(n => !(n.id in nodesForDeletion))
 
                 scheme.graph.edges = scheme.graph.edges.filter(e => !(e.id in edgesForDeletion))

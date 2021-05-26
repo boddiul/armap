@@ -788,15 +788,25 @@ Door = function(floor,jsonDataDoor,editorData)
 
         if (!free)
         {
-            let np = MyMath.pointOnSegment({x:this.x1,y:this.y1},{x:this.wall1.x1,y:this.wall1.y1},{x:this.wall1.x2,y:this.wall1.y2})
 
-            this.x1 = np.x;
-            this.y1 = np.y;
+            if (this.wall1!==null)
+            {
 
-            np = MyMath.pointOnSegment({x:this.x2,y:this.y2},{x:this.wall2.x1,y:this.wall2.y1},{x:this.wall2.x2,y:this.wall2.y2})
+                let np = MyMath.pointOnSegment({x:this.x1,y:this.y1},{x:this.wall1.x1,y:this.wall1.y1},{x:this.wall1.x2,y:this.wall1.y2})
 
-            this.x2 = np.x;
-            this.y2 = np.y;
+                this.x1 = np.x;
+                this.y1 = np.y;
+            }
+
+            if (this.wall2!==null)
+            {
+                let np = MyMath.pointOnSegment({x:this.x2,y:this.y2},{x:this.wall2.x1,y:this.wall2.y1},{x:this.wall2.x2,y:this.wall2.y2})
+
+                this.x2 = np.x;
+                this.y2 = np.y;
+            }
+
+
 
         }
 
@@ -1305,7 +1315,7 @@ Room = function(floor,jsonDataRoom,editorData)
 
             this.furniture.forEach(function (f) {
 
-                console.log(f);
+              //  console.log(f);
                 f.destroy(false);
             })
             this.qrs.forEach(function (q) {
@@ -1383,7 +1393,7 @@ Floor = function(scheme,jsonDataFloor,editorData)
     this.id = jsonDataFloor.id;
 
 
-    console.log(editorData)
+  //  console.log(editorData)
 
     if (editorData!==null)
     {

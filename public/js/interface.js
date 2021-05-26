@@ -150,7 +150,7 @@ function InterfaceController() {
         let li = document.getElementById("graph_type");
 
         let tt = li.options[li.selectedIndex].value;
-        console.log(tt);
+      //  console.log(tt);
         switch(tt)
         {
             case "none":graphType =0; break;
@@ -423,7 +423,7 @@ function InterfaceController() {
 
 
         ["room","elevator","node","edge","door","qr","furniture","staircase"].forEach(function (l) {
-            console.log(l)
+           // console.log(l)
             this.OnEditorLayerBox(l,true);
             this.OnEditorLayerBox(l,false);
         }.bind(this));
@@ -458,7 +458,7 @@ function InterfaceController() {
 
         }.bind(this))
 
-        console.log("changed");
+       // console.log("changed");
 
 
     }
