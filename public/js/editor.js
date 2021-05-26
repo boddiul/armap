@@ -372,11 +372,14 @@ function EditorController() {
                 if (dir>Math.PI*2)
                     dir -= Math.PI*2;
 
+                let rr = 0.25+0.5*Math.random()
 
                 var q = new QR(r,{
                     id:this.maxQRId,
-                    x : w.x1+(w.x2-w.x1)*0.3,
-                    y : w.y1+(w.y2-w.y1)*0.3,
+                    can_search:false,
+                    name:"",
+                    x : w.x1+(w.x2-w.x1)*rr,
+                    y : w.y1+(w.y2-w.y1)*rr,
                     direction:dir,
                     wall_id:w.id
                 },this)
