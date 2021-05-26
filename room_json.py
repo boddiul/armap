@@ -242,7 +242,7 @@ def new_portal(floor,_id,x,y,portal_type,direction,room_id,wh=[]):
                             "x":x,
                             "y":y,
                             "direction":aa,
-                            "wall_id": w["id"]})
+                            "wall_id": bestWid})
                         nd_el[_id] = r["elevators"][-1]
                         
                         

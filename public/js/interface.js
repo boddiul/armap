@@ -23,6 +23,9 @@ function InterfaceController() {
             try {
                 var j = JSON.parse(textFromFileLoaded);
                 EditorJS.SetScheme(j);
+
+
+                //document.getElementById("file-input").value = "";
             }
             catch (e) {
                 this.ShowErrorMessage("Выбранный файл не соответсвует JSON-формату")

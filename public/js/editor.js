@@ -859,6 +859,8 @@ function EditorController() {
 
                             var q = new QR(wall.room,{
                                 id:this.maxQRId,
+                                name : "",
+                                can_search : false,
                                 x : wall.x1+(wall.x2-wall.x1)*(posStart+posEnd)/2,
                                 y : wall.y1+(wall.y2-wall.y1)*(posStart+posEnd)/2,
                                 direction:dir,

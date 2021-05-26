@@ -234,7 +234,7 @@
               "x": 7,
               "y": 2.5,
               "direction": 4.71238898038469,
-              "wall_id": 13,
+              "wall_id": 12,
               "elevator_up_id": 1
             }
           ],
@@ -549,7 +549,7 @@
               "x": 7,
               "y": 2.5,
               "direction": 4.71238898038469,
-              "wall_id": 27,
+              "wall_id": 26,
               "elevator_down_id": 0
             }
           ],
