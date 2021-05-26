@@ -51,6 +51,7 @@ function EditorController() {
             obj = this.scheme;
         this.currentParamObject = obj;
 
+        this.currentParamObjectType = type;
 
         InterfaceJS.ShowParams(type,obj);
 
@@ -182,7 +183,7 @@ function EditorController() {
     this.DestroySelectedObject = function () {
 
 
-        if (this.currentParamObject.destroy)
+        if (typeof this.currentParamObject.destroy!=="undefined")
         {
 
 
@@ -193,6 +194,83 @@ function EditorController() {
             InterfaceJS.ShowParams("scheme",null);
         }
 
+
+    }
+
+
+    this.CopySelectedObject = function () {
+
+        if (this.currentParamObjectType === "floor") {
+            let j = this.currentParamObject.ToJSON();
+
+            this.maxFloorId+=1;
+            j.id = this.maxFloorId;
+            j.name = "Этаж (" +j.id+")"
+
+            let roomNewIds = {};
+            let wallNewIds = {};
+            j.rooms.forEach(function (r) {
+                roomNewIds[r.id] = ++this.maxRoomId;
+                r.id = this.maxRoomId;
+
+                r.walls.forEach(function (w) {
+                    wallNewIds[w.id] = ++this.maxWallId;
+                    w.id = this.maxWallId;
+                }.bind(this));
+
+                r.walls.forEach(function (w) {
+                    w.wall_prev_id = wallNewIds[w.wall_prev_id];
+                    w.wall_next_id = wallNewIds[w.wall_next_id];
+                }.bind(this));
+
+                r.qrs.forEach(function (q) {
+                    q.id = ++this.maxQRId;
+                    q.wall_id = wallNewIds[q.wall_id];
+                }.bind(this))
+
+                r.elevators.forEach(function (e) {
+                    e.id = ++this.maxElevatorId;
+                    e.wall_id = wallNewIds[e.wall_id];
+                    e.elevator_down_id = -1;
+                    e.elevator_up_id  =-1;
+                }.bind(this))
+
+                r.staircases.forEach(function (s) {
+                    s.id = ++this.maxStaircaseId;
+                    s.staircase_down_id = -1;
+                    s.staircase_up_id  =-1;
+                }.bind(this))
+
+                r.furniture.forEach(function (fu) {
+                    fu.id = ++this.maxFurnitureId;
+                }.bind(this))
+            }.bind(this))
+
+            j.doors.forEach(function (d) {
+                d.id = ++this.maxDoorId;
+                if (d.room1_id!==-1)
+                    d.room1_id = roomNewIds[d.room1_id];
+                if (d.room2_id!==-1)
+                    d.room2_id = roomNewIds[d.room2_id];
+                if (d.wall1_id!==-1)
+                    d.wall1_id = wallNewIds[d.wall1_id];
+                if (d.wall2_id!==-1)
+                    d.wall2_id = wallNewIds[d.wall2_id];
+            }.bind(this))
+
+            let f = new Floor(this.scheme,j,this)
+
+            this.scheme.floors.push(f);
+            f.SetLinks();
+
+
+            InterfaceJS.UpdateFloorList(this.scheme.floors);
+
+
+            InterfaceJS.ShowParams(this.currentParamObjectType, this.currentParamObject);
+
+            DrawJS.UpdateCanvas();
+        }
 
     }
 
@@ -266,6 +344,7 @@ function EditorController() {
             },this)
 
             this.scheme.floors.push(f);
+            f.SetLinks();
 
 
             InterfaceJS.UpdateFloorList(this.scheme.floors);
@@ -717,7 +796,8 @@ function EditorController() {
                     let qc = [...r.qrs];
 
                     qc.forEach(function (q) {
-                        q.destroy(true);
+                        if (!q.canSearch)
+                            q.destroy(true);
                     })
                     //r.qrs = [];
                 })
@@ -1751,7 +1831,7 @@ function EditorController() {
                 "1.Стены пересекают друг друга;\n" +
                 "2.Мебель пересекается друг с другом;\n" +
                 "3.Мебель пересекается со стенами;\n" +
-                "4.Мебель вне стен.");
+                "4.Мебель вне стен.\n\n\n"+e);
 
             this.ClearGraph();
         }

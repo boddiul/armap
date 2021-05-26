@@ -128,8 +128,8 @@ Staircase = function(room,jsonDataStaircase,editorData)
     this.x = jsonDataStaircase.x;
     this.y = jsonDataStaircase.y;
 
-    this.width = jsonDataStaircase.width;
-    this.height = jsonDataStaircase.height;
+    this.width = Number(jsonDataStaircase.width);
+    this.height = Number(jsonDataStaircase.height);
 
     this.direction = jsonDataStaircase.direction / Math.PI * 180;
 
@@ -725,7 +725,7 @@ Door = function(floor,jsonDataDoor,editorData)
     this.x2 = jsonDataDoor.x2;
     this.y1 = jsonDataDoor.y1;
     this.y2 = jsonDataDoor.y2;
-    this.width = jsonDataDoor.width;
+    this.width = Number(jsonDataDoor.width);
     this.initWall1Id = jsonDataDoor.wall1_id;
     this.initWall2Id = jsonDataDoor.wall2_id;
 
@@ -1404,8 +1404,11 @@ Floor = function(scheme,jsonDataFloor,editorData)
 
 
 
-    this.x = (this.id-1)*14;
-    this.y = (this.id-1)*3;
+
+    this.x =null;
+    this.y =-this.id;
+    //this.x = (this.id-1)*14;
+    //this.y = (this.id-1)*3;
 
     this.name = jsonDataFloor.name;
 
@@ -1427,8 +1430,26 @@ Floor = function(scheme,jsonDataFloor,editorData)
         this.doors.forEach(function (d) {
             d.SetLinks();
         })
-    }
 
+
+        let maxX=0;
+        this.scheme.floors.forEach(function (f) {
+            if (f.x!==null)
+                f.rooms.forEach(function (r) {
+                    r.walls.forEach(function (w) {
+                        if (f.x+w.x1>maxX)
+                            maxX=f.x+w.x1;
+                    })
+                })
+        })
+
+        this.x = maxX+1;
+
+
+        if (DrawJS)
+            this.drawElement = DrawJS.AddFloorElement(this);
+
+    }
 
 
 
@@ -1455,8 +1476,6 @@ Floor = function(scheme,jsonDataFloor,editorData)
         this.y+=dy;
     }
 
-    if (DrawJS)
-        this.drawElement = DrawJS.AddFloorElement(this);
 
 
 
@@ -1532,29 +1551,6 @@ Scheme = function(jsonDataScheme,editorData)
         //return cacheMapData;
     }
 
-    this.GetFloors = function () {
-        return this.floors;
-    }
-
-    this.GetRooms = function () {
-        rs = [];
-        this.floors.forEach(function (f) {
-            f.rooms.forEach(function (r) {
-                rs.push(r);
-            })
-        })
-        return rs;
-    }
-
-    this.GetDoors = function () {
-        ds = [];
-        this.floors.forEach(function (f) {
-            f.doors.forEach(function (d) {
-                ds.push(d);
-            })
-        })
-        return ds;
-    }
 
 
 

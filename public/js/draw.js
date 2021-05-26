@@ -401,7 +401,7 @@ PointElement = function (obj,mainType,layerType,color,textColor,type,updatePosit
     else if (type==="circle")
         this.drawElement = new Path.Circle({
             center: [0,0],
-            radius: 6
+            radius: 2
         });
     else if (type==="triangle")
         this.drawElement = new Path.RegularPolygon(new Point(0,0),3,10);

@@ -178,7 +178,11 @@ function InterfaceController() {
         EditorJS.DestroySelectedObject();
     }
 
+    this.ClickCopy = function () {
 
+
+        EditorJS.CopySelectedObject();
+    }
 
     this.valueToFloorId = {}
 
@@ -250,7 +254,7 @@ function InterfaceController() {
 
             let val = d.value;
             if (!isNaN(val)) {
-                EditorJS.SetSelectedObjectParam(param,val);
+                EditorJS.SetSelectedObjectParam(param,Number(val));
                 this.UpdateParams(this.currentType,this.currentObj);
             }
 
@@ -433,7 +437,7 @@ function InterfaceController() {
 
 
         this.idToInfo = {};
-        ["36","33","220","50709"].forEach(function (i) {
+        ["36","33","220","50709","53286"].forEach(function (i) {
 
 
 
