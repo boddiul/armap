@@ -697,7 +697,7 @@ DoorElement = function (obj,mainType,layerType,color,textColor,updatePosition,ge
 
 
         if (this.textColor!=null)
-            this.drawText.position = new Point((newPoints[0].x+newPoints[2].x)/2,(newPoints[0].y+newPoints[2].y-60)/2)+new Point(14,14);
+            this.drawText.position = new Point((newPoints[0].x+newPoints[2].x)/2,(newPoints[0].y+newPoints[2].y+60)/2)+new Point(14,-14);
 
 
         this.updateMarkup();
@@ -1254,12 +1254,21 @@ function addDoorElement(door) {
                 this.direction2 = this.direction1-180;
 
 
+
+            this.markupCoords = [
+                [(this.x1+this.x2)/2,(this.y1+this.y2)/2]
+            ]
+
+            this.drawMarkup[0].content = MyMath.round(MyMath.pointDistance(
+                {x:this.obj.x1,y:this.obj.y1},{x:this.obj.x2,y:this.obj.y2}),2)+'m';
+
+
         },function () {
             return [
                 {type:"moveobject",index:0,search:"door",x:(this.x1+this.x2)/2,y:(this.y1+this.y2)/2},
                 {type:"movepoint",index:1,search:null,x:this.x1+0.01,y:this.y1+0.01},
                 {type:"movepoint",index:2,search:null,x:this.x2+0.01,y:this.y2+0.01}]
-        },0)
+        },1)
 
     elements.push(e);
     return e;

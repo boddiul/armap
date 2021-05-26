@@ -367,7 +367,9 @@ function InterfaceController() {
             case "wall":
                 document.getElementById("p_wall_id").value = obj.id;
                 break;
-
+            case "door":
+                document.getElementById("p_door_id").value = obj.id;
+                break;
             case "qr":
                 document.getElementById("p_qr_id").value = obj.id;
                 document.getElementById("p_qr_name").value = obj.name;
