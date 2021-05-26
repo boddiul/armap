@@ -557,7 +557,7 @@ def qrnodes():
 
 def saveMap():
     global mapp,map_id
-    with open("init/map"+str(map_id)+".json", "w",encoding='utf8') as data_file:
+    with open("public/init/map"+str(map_id)+".json", "w",encoding='utf8') as data_file:
         json.dump(mapp, data_file, indent=2, sort_keys=False,ensure_ascii=False)
 
 
