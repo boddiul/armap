@@ -109,6 +109,8 @@ function EditorController() {
                 throw {message:"Пустой план здания"}
 
 
+
+
             let usedQrIds = {}
             this.scheme.graph.nodes.forEach(function (n) {
                 if (n.objType==="qr")
@@ -126,18 +128,19 @@ function EditorController() {
                     r.qrs.forEach(function (q) {
                         qrNums+=1;
 
-                        if (! (q.id in usedQrIds))
+                        if (! (q.id in usedQrIds) && this.scheme.graph.nodes.length>0)
                             throw {message:"QR-код "+q.id+" не привязан к графу. Сгенерируйте граф заново"}
-                    })
-                })
+                    }.bind(this))
+                }.bind(this))
 
                 if (qrNums===0 && f.rooms.length>0)
-                    throw {message:f.name+": На этаже отсутсвуют QR-метки"}
-            })
+                    throw {message:f.name+": На этаже отсутствуют QR-метки"}
+            }.bind(this))
 
 
-            if (this.scheme.graph.nodes.length<1)
-                throw {message:"Не сгенерирован граф навигации"}
+
+        if (this.scheme.graph.nodes.length<1)
+            throw {message:"Не сгенерирован граф навигации"}
 
 
 

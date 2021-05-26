@@ -25,7 +25,7 @@ function InterfaceController() {
                 EditorJS.SetScheme(j);
             }
             catch (e) {
-                this.ShowErrorMessage("Открытый файл не соответсвует JSON-формату")
+                this.ShowErrorMessage("Выбранный файл не соответсвует JSON-формату")
             }
 
 
