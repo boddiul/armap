@@ -241,7 +241,7 @@
 <div class="toolbar_file"> Схема:
     <button onclick="InterfaceJS.ClickNewFile()">Новый файл</button>
 
-    <input type="file" onchange="InterfaceJS.ClickOpenFile()" id="file-input"/>
+    <input type="file" onchange="InterfaceJS.ClickOpenFile()" onclick="this.value=null;"id="file-input"/>
 
     <button onclick="InterfaceJS.ClickSaveFile()">Сохранить файл</button>
 
@@ -335,7 +335,7 @@
                     Фоновое изображение<br /><br />
 
 
-                    <input type="file" onchange="InterfaceJS.ClickSetBackImage()" id="image-input"/><br />
+                    <input type="file" onchange="InterfaceJS.ClickSetBackImage() " onclick="this.value=null;" id="image-input"/><br />
                     <br />
                     <button onclick="InterfaceJS.ClickRemoveBackImage()">Убрать</button><br />
                     <br />
