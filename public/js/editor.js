@@ -505,18 +505,22 @@ function EditorController() {
                 let selectedWall = data[0];
                 let nextWall = data[0].nextWall;
 
+
+
+                let nx = Math.round((selectedWall.x1+selectedWall.x2)/2*10)/10;
+                let ny =Math.round((selectedWall.y1+selectedWall.y2)/2*10)/10;
                 let newWall = new Wall(r,{
                     id:this.maxWallId,
-                    x1 : (selectedWall.x1+selectedWall.x2)/2,
-                    y1 : (selectedWall.y1+selectedWall.y2)/2,
+                    x1 : nx,
+                    y1 : ny,
                     x2 : selectedWall.x2,
                     y2 : selectedWall.y2,
                     wall_prev_id : selectedWall.id,
                     wall_next_id : nextWall.id
                 },this);
 
-                selectedWall.x2 = (selectedWall.x1+selectedWall.x2)/2;
-                selectedWall.y2 = (selectedWall.y1+selectedWall.y2)/2;
+                selectedWall.x2 = nx;
+                selectedWall.y2 = ny;
                 selectedWall.nextWall = newWall;
                 nextWall.prevWall = newWall;
 
