@@ -1984,6 +1984,23 @@ function EditorController() {
         });
     }
 
+
+    this.SetBackImage = function (id) {
+
+        DrawJS.SetBackImage(id);
+        DrawJS.UpdateCanvas();
+    }
+    this.RemoveBackImage = function () {
+
+        DrawJS.RemoveBackImage();
+        DrawJS.UpdateCanvas();
+    }
+    this.SetBackImageScale = function (scale) {
+
+        DrawJS.SetBackImageScale(scale);
+        DrawJS.UpdateCanvas();
+    }
+
 }
 
 

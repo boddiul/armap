@@ -1378,6 +1378,15 @@ function init()
     project.activeLayer.removeChildren();
 
 
+    backScale = 1;
+    /*backImage = new Raster('test');
+    backImage.applyMatrix = false;
+
+    backImage.opacity = 0.3;*/
+
+    backImage = null;
+
+
     typeLayers = {}
     types = ["room","door","elevator","wall","staircase","qr","node","edge","furniture","floor"]
 
@@ -1424,8 +1433,39 @@ function init()
 
 
 
+function removeBackImage() {
+
+    if (backImage!==null)
+    {
+        backImage.remove();
+        backImage = null;
+    }
+}
+function setBackImage(id) {
+    removeBackImage();
+
+
+    backImage = new Raster(id);
+    backImage.opacity = 0.3;
+    backScale = 1;
+    backImage.applyMatrix = 0;
+}
+function setBackImageScale(s) {
+    backScale = s;
+
+}
+
 function updateAll()
 {
+
+    if (backImage!==null)
+    {
+        var k = mainScale/50*backScale;
+         backImage.scaling = new Point(k,k)
+        backImage.position = new Point(backImage.width/2*k,-backImage.height/2*k)+pointToWindow(new Point(0,0));
+
+    }
+
     elements.forEach(function (e) {
         if (e.updatePosition)
             e.updatePosition();
@@ -1587,3 +1627,7 @@ DrawJS.OnLoad = mainOnLoad;
 DrawJS.DestroyElement = destroyElement;
 
 DrawJS.UpdateCanvas = updateAll;
+
+DrawJS.SetBackImage = setBackImage;
+DrawJS.SetBackImageScale = setBackImageScale;
+DrawJS.RemoveBackImage = removeBackImage;

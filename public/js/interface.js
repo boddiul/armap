@@ -604,5 +604,49 @@ function InterfaceController() {
 
     }
 
+
+
+
+    this.ClickRemoveBackImage = function () {
+
+
+        EditorJS.RemoveBackImage();
+    }
+    this.ClickSetBackImage = function () {
+
+
+        var fileToLoad = document.getElementById("image-input").files[0];
+        var fileReader = new FileReader();
+        fileReader.onloadend  = function(fileLoadedEvent)
+        {
+
+            document.getElementById("back_image").src = fileLoadedEvent.target.result;
+
+
+
+            EditorJS.SetBackImage("back_image");
+        };
+        fileReader.readAsDataURL(fileToLoad);
+
+
+
+
+    }
+    this.OnSetBackImageScale = function (d) {
+
+
+        let val = d.value;
+        if (!isNaN(val)) {
+            EditorJS.SetBackImageScale(val);
+
+            document.getElementById("image_scale_bar").value = document.getElementById("image_scale_text").value = val;
+
+
+
+        }
+
+
+    }
+
 }
 
