@@ -60,7 +60,9 @@ folderMain = 'public/maps/';
 // Setting up the public directory
 app.use(Express.static('public'));
 
-app.use(Express.json());
+app.use(Express.json({limit: '10mb'}));
+
+
 
 function getScheme(schemeId, full, res)
 {
@@ -279,12 +281,19 @@ app.get('/scheme/:schemeId/qrHelp/:qrId', (req, res) => {
     paper.setup(size);
 
 
+    let qx = 0;
+    let qy = 0;
     let currentRoom = null;
     scheme.floors.forEach(function (f) {
         f.rooms.forEach(function (r) {
             r.qrs.forEach(function (q) {
                 if (q.id===qrId)
+                {
                     currentRoom = r;
+                    qx = q.x;
+                    qy = q.y;
+                }
+
             }.bind(this))
         }.bind(this))
     }.bind(this));
@@ -315,11 +324,18 @@ app.get('/scheme/:schemeId/qrHelp/:qrId', (req, res) => {
 
     let scale = (scaleX<scaleY) ? scaleY : scaleX;
 
+
+
     let cx = (maxX+minX)/2;
     let cy = (maxY+minY)/2;
 
 
-
+    if (scale>0.08)
+    {
+        scale = 0.08;
+        cx = qx;
+        cy = qy;
+    }
 
     let drawCoords = function(p) {
 

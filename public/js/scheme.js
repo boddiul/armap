@@ -91,11 +91,10 @@ QR = function(room,jsonDataQR,editorData)
             for (let i=0;i<nodes.length;i++)
                 if (nodes[i].obj === this)
                     index = i;
-
+                console.log(index);
             if (index!==-1)
             {
                 nodes[index].destroy(true);
-                nodes.splice(index,1);
             }
 
 
@@ -238,7 +237,7 @@ Staircase = function(room,jsonDataStaircase,editorData)
             if (index!==-1)
             {
                 nodes[index].destroy(true);
-                nodes.splice(index,1);
+                //nodes.splice(index,1);
             }
 
 
@@ -376,7 +375,7 @@ Elevator = function(room,jsonDataElevator,editorData)
             if (index!==-1)
             {
                 nodes[index].destroy(true);
-                nodes.splice(index,1);
+                //nodes.splice(index,1);
             }
 
 
@@ -549,16 +548,11 @@ Edge = function(graph,jsonDataEdge,editorData)
 
         if (deep)
         {
-            index = -1;
-            let edges = this.graph.edges;
-            for (let i=0;i<edges.length;i++)
-                if (edges[i].obj === this)
-                    index = i;
 
-            if (index!==-1)
-            {
-                edges[index].destroy(true);
-                edges.splice(index,1);
+
+            let index = $.inArray(this, this.graph.edges);
+            if (index !== -1) {
+                this.graph.edges.splice(index, 1);
             }
         }
 
@@ -697,6 +691,15 @@ Node = function(graph,jsonDataNode,editorData) {
 
 
             })
+
+
+            let index = $.inArray(this, this.graph.nodes);
+            if (index !== -1) {
+                this.graph.nodes.splice(index, 1);
+            }
+
+
+
         }
 
 
@@ -851,7 +854,7 @@ Door = function(floor,jsonDataDoor,editorData)
             if (index!==-1)
             {
                 nodes[index].destroy(true);
-                nodes.splice(index,1);
+               // nodes.splice(index,1);
             }
         }
 
@@ -1096,6 +1099,14 @@ Wall = function(room,jsonDataWall,editorData)
 
         if (deep)
         {
+
+            let index = $.inArray(this, this.room.walls);
+            if (index !== -1) {
+                this.room.walls.splice(index, 1);
+            }
+
+
+
             this.nextWall.move(0,0,0,false);
             this.prevWall.move(0,0,0,false);
 
@@ -1313,6 +1324,36 @@ Room = function(floor,jsonDataRoom,editorData)
             }
 
 
+            let nodesToDestroy = [];
+
+
+            for (let i =0;i<this.floor.scheme.graph.nodes.length;i++)
+            {
+                if (this.floor.scheme.graph.nodes[i].obj===this)
+                    nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
+
+
+                ['room','room1','room2'].forEach(function (p) {
+                    if (typeof  this.floor.scheme.graph.nodes[i].obj[p]!='undefined')
+                        if (this.floor.scheme.graph.nodes[i].obj[p]===this)
+                            nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
+                }.bind(this));
+
+
+            }
+
+
+           // console.log(nodesToDestroy)
+            nodesToDestroy.forEach(function (n) {
+                n.destroy(true);
+            })
+
+           // console.log(this.floor.scheme.graph.nodes);
+
+
+
+
+
             this.furniture.forEach(function (f) {
 
               //  console.log(f);
@@ -1321,6 +1362,10 @@ Room = function(floor,jsonDataRoom,editorData)
             this.qrs.forEach(function (q) {
                 q.destroy(false);
             })
+
+
+
+
             this.walls.forEach(function (w) {
                 w.destroy(false);
             })
@@ -1360,23 +1405,7 @@ Room = function(floor,jsonDataRoom,editorData)
 
 
 
-            let nodesToDestroy = [];
 
-
-            for (let i =0;i<this.floor.scheme.graph.nodes.length;i++)
-            {
-                if (this.floor.scheme.graph.nodes[i].obj===this)
-                    nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
-
-
-                if (typeof  this.floor.scheme.graph.nodes[i].obj.room!='undefined')
-                    if (this.floor.scheme.graph.nodes[i].obj.room===this)
-                        nodesToDestroy.push(this.floor.scheme.graph.nodes[i]);
-            }
-
-            nodesToDestroy.forEach(function (n) {
-                n.destroy(true);
-            })
         }
 
 
@@ -1495,6 +1524,11 @@ Floor = function(scheme,jsonDataFloor,editorData)
             })
 
 
+
+            let index = $.inArray(this, this.scheme.floors);
+            if (index !== -1) {
+                this.scheme.floors.splice(index, 1);
+            }
 
         }
     }

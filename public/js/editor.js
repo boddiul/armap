@@ -1227,6 +1227,7 @@ function EditorController() {
 
                     var triangles = swctx.getTriangles();
 
+                    console.log(triangles);
 
 
 
@@ -1306,9 +1307,12 @@ function EditorController() {
 
 
 
+                        console.log(t.canPass);
+
+
                         if (t.canPass)
                         {
-                            if (trType===1) {
+                            if (trType===1 && triangles.length>1) {
 
 
                                 let s = 1;
@@ -1345,7 +1349,7 @@ function EditorController() {
 
 
 
-                            if (trType===2)
+                            if (trType===2  && triangles.length>1)
                             {
                                 let s =0;
                                 xx = 0;
@@ -1379,8 +1383,7 @@ function EditorController() {
                                                 let pp2y = (otherPoints[oti].y+otherPoints[oti+1].y)/2;
 
 
-                                                let dist = Math.sqrt(Math.pow(pp1x-pp2x,2)+Math.pow(pp1y-pp2y,2));
-
+                                                let dist = MyMath.pointDistance({x:pp1x,y:pp1y},{x:pp2x,y:pp2y})
                                                 if (best_i===null || dist<min_dist)
                                                 {
                                                     best_i = ti;
@@ -1420,6 +1423,9 @@ function EditorController() {
                             scheme.graph.nodes.push(p);
                             p.SetLinks();
 
+                            console.log(p);
+
+
 
                             t.node = p;
                         }
@@ -1444,7 +1450,7 @@ function EditorController() {
                                         id:maxEdgeId++,
                                         node1_id:t.node.id,
                                         node2_id:ot.node.id,
-                                        weight:Math.sqrt(Math.pow(t.node.x-ot.node.x,2)+Math.pow(t.node.y-ot.node.y,2))
+                                        weight:MyMath.pointDistance(t.node,ot.node)
                                     })
                                     scheme.graph.edges.push(e)
                                     e.SetLinks();
@@ -1479,7 +1485,7 @@ function EditorController() {
                             if (n.objType==="in_room" && el.room && n.obj.id ===el.room.id)
                             {
 
-                                let dist = Math.sqrt(Math.pow(n.x-el.x,2)+Math.pow(n.y-el.y,2));
+                                let dist = MyMath.pointDistance(n,el);
 
                                 if (minDist===null || dist<minDist)
                                 {
@@ -1532,8 +1538,7 @@ function EditorController() {
                             if (n.objType==="in_room" && st.room && n.obj.id ===st.room.id)
                             {
 
-                                dist = Math.sqrt(Math.pow(n.x-st.x,2)+Math.pow(n.y-st.y,2))
-
+                                dist = MyMath.pointDistance(n,st);
                                 if (minDist===null || dist<minDist)
                                 {
                                     bestRoomNode = n;
@@ -1595,24 +1600,60 @@ function EditorController() {
                     let minDist2 = null;
 
                     scheme.graph.nodes.forEach(function (n) {
-                        let dist = Math.sqrt(Math.pow(n.x-xx,2)+Math.pow(n.y-yy,2));
+                        let dist = MyMath.pointDistance(n,{x:xx,y:yy});
                         if (n.objType==="in_room" && d.room1 && n.obj.id ===d.room1.id)
                         {
                             if (minDist1===null || dist<minDist1)
                             {
-                                bestRoomNode1 = n;
-                                minDist1 = dist;
+
+                                let intersects = false;
+                                d.room1.walls.forEach(function (w) {
+
+                                    if (w!==d.wall1 && MyMath.segmentIntersection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2},n,{x:xx,y:yy}))
+                                    {
+                                        console.log("INTERSECTION");
+                                        console.log(w);
+                                        intersects = true;
+                                    }
+
+                                })
+
+                                if (!intersects)
+                                {
+
+                                    bestRoomNode1 = n;
+                                    minDist1 = dist;
+                                }
+
                             }
                         }
                         if (n.objType==="in_room" && d.room2 && n.obj.id ===d.room2.id)
                         {
                             if (minDist2===null || dist<minDist2)
                             {
-                                bestRoomNode2 = n;
-                                minDist2 = dist;
+                                let intersects = false;
+                                d.room2.walls.forEach(function (w) {
+
+                                    if (w!==d.wall2 && MyMath.segmentIntersection({x:w.x1,y:w.y1},{x:w.x2,y:w.y2},n,{x:xx,y:yy}))
+                                    {
+
+
+
+                                        intersects = true;
+                                    }
+                                })
+
+                                if (!intersects)
+                                {
+
+                                    bestRoomNode2 = n;
+                                    minDist2 = dist;
+                                }
                             }
                         }
                     })
+
+
                     if (bestRoomNode1!==null)
                     {
                         e = new Edge(scheme.graph,{

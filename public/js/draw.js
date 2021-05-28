@@ -1527,8 +1527,8 @@ function onScroll(event)
 
 
 
-    if (mainScale<15)
-        mainScale = 15;
+    if (mainScale<5)
+        mainScale = 5;
     if (mainScale>500)
         mainScale = 500;
 
